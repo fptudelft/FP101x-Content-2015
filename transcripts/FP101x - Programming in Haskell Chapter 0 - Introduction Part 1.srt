@@ -1,0 +1,621 @@
+1
+00:00:01,520 --> 00:00:03,560
+Welcome everybody, to the
+
+2
+00:00:03,560 --> 00:00:08,849
+FP101x functional programming MOOC.
+I'm really happy that we can do this one
+
+3
+00:00:08,849 --> 00:00:12,820
+as a MOOC with exercises and
+everything.
+
+4
+00:00:12,820 --> 00:00:17,820
+Let's get started
+
+5
+00:00:17,820 --> 00:00:23,480
+immediately. One thing that I wanted
+to tell you before we get going
+
+6
+00:00:23,480 --> 00:00:28,160
+is that this is a MOOC about functional
+programming that's what the title says
+
+7
+00:00:28,160 --> 00:00:33,090
+FP101 functional programming. This is
+not a course on Haskell, were using
+
+8
+00:00:33,090 --> 00:00:33,920
+Haskell
+
+9
+00:00:33,920 --> 00:00:39,379
+as a functional language but we're not
+learning to program Haskell per se.
+
+10
+00:00:39,379 --> 00:00:42,469
+Let me tell you a little bit 
+of a story.
+
+11
+00:00:42,469 --> 00:00:46,000
+I travel a lot, going to conferences,
+
+12
+00:00:46,000 --> 00:00:49,200
+giving courses et cetera 
+
+13
+00:00:49,200 --> 00:00:52,989
+and during those travels I have ample 
+time to watch TV.
+
+14
+00:00:52,989 --> 00:00:57,520
+One night I was zapping through the channels
+
+15
+00:00:57,520 --> 00:01:00,770
+and there was one of those survival
+shows
+
+16
+00:01:00,770 --> 00:01:03,960
+where this guy was trying to make up
+
+17
+00:01:03,960 --> 00:01:07,340
+camp at night and trying to make a fire
+
+18
+00:01:07,340 --> 00:01:10,939
+but his matches were wet. 
+
+19
+00:01:10,939 --> 00:01:14,030
+He could have gotten in panic and said:
+
+20
+00:01:14,030 --> 00:01:17,250
+my matches are wet I cannot make a fire.
+
+21
+00:01:17,250 --> 00:01:20,680
+What he did instead is he took a
+cell phone
+
+22
+00:01:20,680 --> 00:01:23,840
+and his knife and he
+
+23
+00:01:23,840 --> 00:01:27,869
+took the battery out of his cell phone,
+opened the battery
+
+24
+00:01:27,869 --> 00:01:30,869
+and then the battery started to combust.
+
+25
+00:01:30,869 --> 00:01:35,220
+That's what he used to start a fire.
+And this is the same
+
+26
+00:01:35,220 --> 00:01:38,380
+attitude that I want to teach you in
+this course.
+
+27
+00:01:38,380 --> 00:01:42,530
+While we're learning to do
+functional programming using Haskell so
+
+28
+00:01:42,530 --> 00:01:44,159
+Haskell's our matches,
+
+29
+00:01:44,159 --> 00:01:47,860
+when at work you don't have matches
+available
+
+30
+00:01:47,860 --> 00:01:52,049
+you still can do functional programming.
+Sometimes you have to smash your
+
+31
+00:01:52,049 --> 00:01:52,950
+cell phone
+
+32
+00:01:52,950 --> 00:01:58,320
+and open your battery to start a fire.
+Don't think that this is about
+
+33
+00:01:58,320 --> 00:02:02,030
+Haskell per se, we're going to teach
+functional programming
+
+34
+00:02:02,030 --> 00:02:06,299
+using Haskell. 
+Alright, let's get
+
+35
+00:02:06,299 --> 00:02:09,869
+started then.
+
+36
+00:02:09,869 --> 00:02:13,090
+What's the problem that we're trying to
+solve? The problem
+
+37
+00:02:13,090 --> 00:02:17,000
+is the so called software crisis. 
+We all know
+
+38
+00:02:17,000 --> 00:02:21,090
+as developers that writing code is
+pretty difficult.
+
+39
+00:02:21,090 --> 00:02:24,180
+We're writing huge programs and
+
+40
+00:02:24,180 --> 00:02:28,500
+what we need to do is to reduce the
+time
+
+41
+00:02:28,500 --> 00:02:32,830
+and the cost of development. 
+We want to deliver software fast
+
+42
+00:02:32,830 --> 00:02:37,200
+and we want to deliver correct software. 
+The question is
+
+43
+00:02:37,200 --> 00:02:40,440
+how can we make programs
+
+44
+00:02:40,440 --> 00:02:44,260
+such that that we are confident that our
+programs work
+
+45
+00:02:44,260 --> 00:02:47,609
+and how can we make code
+
+46
+00:02:47,609 --> 00:02:50,959
+such that this code is delivered fast.
+
+47
+00:02:50,959 --> 00:02:54,370
+It doesn't take years to deliver but
+it takes 
+
+48
+00:02:54,370 --> 00:03:00,970
+months or as long as it needs to be. 
+One way to do that, and we see this now
+
+49
+00:03:00,970 --> 00:03:06,260
+in all modern programming languages, is to
+add features to our languages
+
+50
+00:03:06,260 --> 00:03:11,310
+that allow programs to be written
+clearly concisely and at a high level of
+
+51
+00:03:11,310 --> 00:03:12,220
+abstraction.
+
+52
+00:03:12,220 --> 00:03:16,319
+And the techniques that we use in these
+modern languages
+
+53
+00:03:16,319 --> 00:03:19,880
+are all based on functional programming.
+These techniques
+
+54
+00:03:19,880 --> 00:03:23,989
+are all based on concepts from the 
+lambda calculus.
+
+55
+00:03:23,989 --> 00:03:27,410
+And Haskell is a
+
+56
+00:03:27,410 --> 00:03:30,660
+functional language that is pure and
+therefore
+
+57
+00:03:30,660 --> 00:03:34,669
+a really good vehicle to teach these
+concept.
+
+58
+00:03:34,669 --> 00:03:39,019
+Functional languages
+
+59
+00:03:39,019 --> 00:03:42,799
+therefore provide a very elegant framework
+
+60
+00:03:42,799 --> 00:03:46,120
+to write code at a high level of
+abstraction.
+
+61
+00:03:46,120 --> 00:03:50,139
+But as I said, Haskell is just our
+vehicle.
+
+62
+00:03:50,139 --> 00:03:55,329
+What we learn in this course, you
+will be able to apply this
+
+63
+00:03:55,329 --> 00:03:59,169
+to any language even if you're programming
+in assembly
+
+64
+00:03:59,169 --> 00:04:02,599
+or in Java or in PHP
+
+65
+00:04:02,599 --> 00:04:06,489
+or in JavaScript, all the ideas that you
+will learn here
+
+66
+00:04:06,489 --> 00:04:09,720
+you can apply immediately
+
+67
+00:04:09,720 --> 00:04:13,150
+in whatever language you're happening
+to use.
+
+68
+00:04:13,150 --> 00:04:16,930
+What is a functional programming
+language?
+
+69
+00:04:16,930 --> 00:04:20,700
+The ideas about that
+
+70
+00:04:20,700 --> 00:04:24,960
+vary, there's no real clear
+definition.
+
+71
+00:04:24,960 --> 00:04:28,740
+If we take a very purist approach a
+functional language
+
+72
+00:04:28,740 --> 00:04:32,800
+is a language in which we program using
+mathematical functions.
+
+73
+00:04:32,800 --> 00:04:37,980
+And that definition applies to Haskell,
+which is a pure language, one of the very
+
+74
+00:04:37,980 --> 00:04:38,830
+few
+
+75
+00:04:38,830 --> 00:04:42,320
+functional programming languages that is
+pure. But of course
+
+76
+00:04:42,320 --> 00:04:46,860
+and when I say that we can use these
+techniques to program also in other
+
+77
+00:04:46,860 --> 00:04:47,670
+languages
+
+78
+00:04:47,670 --> 00:04:52,020
+we cannot use that definition.
+
+79
+00:04:52,020 --> 00:04:56,020
+What will use in this course is the
+following definition: 
+
+80
+00:04:56,020 --> 00:04:56,930
+functional programming
+
+81
+00:04:56,930 --> 00:05:00,900
+is a style of programming in which
+
+82
+00:05:00,900 --> 00:05:04,310
+expressions are more important than
+using statements.
+
+83
+00:05:04,310 --> 00:05:09,000
+What we want to do is: we want to
+compose programs using expressions
+
+84
+00:05:09,000 --> 00:05:13,800
+and these expressions deliver a value so
+we take two expressions that deliver a
+
+85
+00:05:13,800 --> 00:05:14,530
+value
+
+86
+00:05:14,530 --> 00:05:18,620
+and compose them in a bigger expression.
+
+87
+00:05:18,620 --> 00:05:23,780
+Compare and contrast that with writing
+your program using statements.
+
+88
+00:05:23,780 --> 00:05:28,040
+When you compose statements the
+statements have an implicit side-effect
+
+89
+00:05:28,040 --> 00:05:32,410
+on the global state and they
+communicate values via that global
+
+90
+00:05:32,410 --> 00:05:32,880
+state.
+
+91
+00:05:32,880 --> 00:05:36,000
+Whereas in an expression based
+
+92
+00:05:36,000 --> 00:05:40,620
+programming style expressions return
+values
+
+93
+00:05:40,620 --> 00:05:46,320
+and we compose these values directly.
+A functional programming language
+
+94
+00:05:46,320 --> 00:05:50,190
+is a language that supports and
+encourages
+
+95
+00:05:50,190 --> 00:05:53,410
+writing code using expressions.
+
+96
+00:05:53,410 --> 00:05:57,230
+As I said before, most modern
+languages
+
+97
+00:05:57,230 --> 00:06:01,240
+now support this style. 
+And they support the style
+
+98
+00:06:01,240 --> 00:06:04,850
+specifically by supporting lambda
+expressions.
+
+99
+00:06:04,850 --> 00:06:08,830
+We'll see examples of functional
+programming
+
+100
+00:06:08,830 --> 00:06:11,960
+in many many languages as we progress
+
+101
+00:06:11,960 --> 00:06:15,430
+through this course. Let's
+
+102
+00:06:15,430 --> 00:06:19,190
+start with our first fragment of code
+here. 
+
+103
+00:06:19,190 --> 00:06:22,440
+This is some old-fashioned Java
+
+104
+00:06:22,440 --> 00:06:27,070
+where we're computing the sum of the
+integers from one to ten.
+
+105
+00:06:27,070 --> 00:06:31,250
+The way we do that, as I said, in the
+traditional imperative
+
+106
+00:06:31,250 --> 00:06:33,820
+style, this is based by doing
+
+107
+00:06:33,820 --> 00:06:38,530
+statements. The first thing we do
+is we declare a variable total
+
+108
+00:06:38,530 --> 00:06:41,920
+of type int. We initialize it with zero
+
+109
+00:06:41,920 --> 00:06:46,380
+and then we write a for loop with a
+loop variable.
+
+110
+00:06:46,380 --> 00:06:49,660
+That int i, that you see there and then we
+
+111
+00:06:49,660 --> 00:06:53,530
+assign to that the total
+variable:
+
+112
+00:06:53,530 --> 00:06:57,100
+total variable + i. Here you see that
+
+113
+00:06:57,100 --> 00:07:00,240
+the program is written
+
+114
+00:07:00,240 --> 00:07:03,860
+in an imperative style. 
+We have statements,
+
+115
+00:07:03,860 --> 00:07:06,990
+we have mutable state and we
+
+116
+00:07:06,990 --> 00:07:10,660
+imperatively execute statement after
+statement
+
+117
+00:07:10,660 --> 00:07:14,160
+updating the state to compute the result.
+
+118
+00:07:14,160 --> 00:07:18,710
+Now here is how you would write that same
+program
+
+119
+00:07:18,710 --> 00:07:21,980
+in Haskell. The first thing you see is
+that it's
+
+120
+00:07:21,980 --> 00:07:26,980
+much more concise but the other thing is
+that there's no statement. It's just
+
+121
+00:07:26,980 --> 00:07:30,230
+two expressions. 
+The expression you see
+
+122
+00:07:30,230 --> 00:07:33,430
+here
+
+123
+00:07:33,430 --> 00:07:36,740
+on the right. One dot dot ten.
+
+124
+00:07:36,740 --> 00:07:40,300
+Creates a list of the integers from one
+to ten.
+
+125
+00:07:40,300 --> 00:07:43,920
+And then we just sum those integers up.
+
+126
+00:07:43,920 --> 00:07:47,380
+So here you see that we're composing
+
+127
+00:07:47,380 --> 00:07:52,670
+the code by having an expression. 
+One that creates this list from one to ten
+
+128
+00:07:52,670 --> 00:07:56,600
+and then we apply that value
+
+129
+00:07:56,600 --> 00:07:59,680
+to a function sum that will sum things
+
+130
+00:07:59,680 --> 00:08:03,080
+up for us. In Java 8
+
+131
+00:08:03,080 --> 00:08:06,670
+you can write the same code
+
+132
+00:08:06,670 --> 00:08:10,040
+using Java 8 streams, we will
+
+133
+00:08:10,040 --> 00:08:14,070
+dive deeper into Java 8 and a future
+
+134
+00:08:14,070 --> 00:08:17,590
+lesson but for now here is the way
+
+135
+00:08:17,590 --> 00:08:21,990
+we do this in Haskell. 
+Thank you
+
+136
+00:08:21,990 --> 00:08:24,590
+and see you in part two.
+

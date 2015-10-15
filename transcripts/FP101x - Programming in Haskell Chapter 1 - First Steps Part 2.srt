@@ -1,0 +1,890 @@
+1
+00:00:00,919 --> 00:00:05,140
+Welcome back! 
+I hope you have all installed GHC
+
+2
+00:00:05,140 --> 00:00:08,599
+and played a little bit by typing in
+expressions.
+
+3
+00:00:08,599 --> 00:00:13,330
+What we're going to do now is move beyond
+simple expressions
+
+4
+00:00:13,330 --> 00:00:18,350
+and see how we can load full Haskell
+programs
+
+5
+00:00:18,350 --> 00:00:23,310
+into GHC. 
+In Haskell, programs are not called
+
+6
+00:00:23,310 --> 00:00:27,260
+programs. Typically Haskell people refer
+to their code
+
+7
+00:00:27,260 --> 00:00:30,689
+as scripts because 
+
+8
+00:00:30,689 --> 00:00:34,190
+Haskell programs are maybe shorter
+than normal code.
+
+9
+00:00:34,190 --> 00:00:37,730
+I just call them Haskell programs,
+
+10
+00:00:37,730 --> 00:00:41,550
+but the haskell parlance
+
+11
+00:00:41,550 --> 00:00:44,899
+is scripts.
+
+12
+00:00:44,899 --> 00:00:50,610
+New functions, if you want to
+define a complete Haskell program,
+
+13
+00:00:50,610 --> 00:00:53,870
+you define them in a
+
+14
+00:00:53,870 --> 00:00:57,170
+text file that contains a list of function
+definitions
+
+15
+00:00:57,170 --> 00:01:00,840
+and this text file
+
+16
+00:01:00,840 --> 00:01:06,040
+has a suffix .hs that indicates
+that it's a
+
+17
+00:01:06,040 --> 00:01:10,170
+Haskell file. 
+Just like an HTML file has an
+
+18
+00:01:10,170 --> 00:01:14,340
+.html suffix, or CSS files have .css
+
+19
+00:01:14,340 --> 00:01:17,890
+suffix, or Java file
+
+20
+00:01:17,890 --> 00:01:21,350
+has a .java suffix,
+
+21
+00:01:21,350 --> 00:01:25,000
+a Haskell file is called whatever
+
+22
+00:01:25,000 --> 00:01:29,049
+.hs. So this is not mandatory,
+
+23
+00:01:29,049 --> 00:01:32,320
+but it's useful that you can see when you
+
+24
+00:01:32,320 --> 00:01:35,689
+list the files in a directory that you
+can see that this
+
+25
+00:01:35,689 --> 00:01:40,210
+is a Haskell script. 
+Now when you
+
+26
+00:01:40,210 --> 00:01:44,430
+are using GHC,
+
+27
+00:01:44,430 --> 00:01:47,530
+what you do is you edit your
+
+28
+00:01:47,530 --> 00:01:52,049
+script in one window, using whatever
+editor of choice,
+
+29
+00:01:52,049 --> 00:01:55,259
+and then whenever you make a change, you
+load your
+
+30
+00:01:55,259 --> 00:01:59,460
+script into GHC and
+start
+
+31
+00:01:59,460 --> 00:02:03,590
+executing expressions. 
+So that's the kind of workflow
+
+32
+00:02:03,590 --> 00:02:07,369
+that we will be using for most of the
+course. For simple things
+
+33
+00:02:07,369 --> 00:02:12,080
+that's what you. Of course, when you're
+building commercial Haskell applications
+
+34
+00:02:12,080 --> 00:02:13,420
+this is not what you do.
+
+35
+00:02:13,420 --> 00:02:16,450
+You will compile them into standalone
+executables,
+
+36
+00:02:16,450 --> 00:02:21,550
+but for the purposes of this course, this
+is the workflow: we have
+
+37
+00:02:21,550 --> 00:02:25,950
+the editor window open, we have the GHCi
+interpreter open
+
+38
+00:02:25,950 --> 00:02:30,150
+and then we will load the scripts.
+In this case,
+
+39
+00:02:30,150 --> 00:02:33,880
+we will create a
+
+40
+00:02:33,880 --> 00:02:37,140
+text file test.hs and in there
+
+41
+00:02:37,140 --> 00:02:40,840
+we put two function definitions. 
+The first one:
+
+42
+00:02:40,840 --> 00:02:45,380
+double of x equals x + x
+- does what it promises -
+
+43
+00:02:45,380 --> 00:02:49,890
+and then we can quadruple by
+calling double of double of x.
+
+44
+00:02:49,890 --> 00:02:55,459
+So we save that file and then
+we start
+
+45
+00:02:55,459 --> 00:02:59,690
+GHCi and invoking it with
+
+46
+00:02:59,690 --> 00:03:04,400
+test.hs and now both the Haskell
+standard library
+
+47
+00:03:04,400 --> 00:03:08,220
+and the functions quadruple and
+double that we defined
+
+48
+00:03:08,220 --> 00:03:12,030
+in the test.hs will be
+available. For example, we can call
+
+49
+00:03:12,030 --> 00:03:13,500
+quadruple of 10
+
+50
+00:03:13,500 --> 00:03:16,819
+and it will return 40, but we can also
+
+51
+00:03:16,819 --> 00:03:21,049
+still call all the standard library
+functions. For example
+
+52
+00:03:21,049 --> 00:03:24,660
+we can take
+
+53
+00:03:24,660 --> 00:03:30,070
+double of 2 of this list. Double of 2 is
+4, so this is the same as take 4,
+
+54
+00:03:30,070 --> 00:03:30,650
+
+
+55
+00:03:30,650 --> 00:03:33,820
+so we take the first 4 elements
+of the list.
+
+56
+00:03:33,820 --> 00:03:39,200
+Now what we do
+
+57
+00:03:39,200 --> 00:03:44,540
+is we just leave GHC open, we
+returnw to our editor and
+
+58
+00:03:44,540 --> 00:03:47,579
+add
+
+59
+00:03:47,579 --> 00:03:51,290
+2 new definitions: one is factorial
+
+60
+00:03:51,290 --> 00:03:56,750
+and the other one is average. 
+Since we're starting here,
+
+61
+00:03:56,750 --> 00:04:01,180
+we are using some syntax that 
+we haven't introduced yet so
+
+62
+00:04:01,180 --> 00:04:04,380
+bear with me. 
+So product
+
+63
+00:04:04,380 --> 00:04:08,100
+of 1 to n - this thing here 
+
+64
+00:04:08,100 --> 00:04:11,840
+is the list of values 1 up to n -
+
+65
+00:04:11,840 --> 00:04:16,070
+and then product is the
+standard library function
+
+66
+00:04:16,070 --> 00:04:19,169
+that multiplies all the values 
+in a list, so
+
+67
+00:04:19,169 --> 00:04:24,330
+this is a good definition of factorial.
+Then when we want to calculate the
+
+68
+00:04:24,330 --> 00:04:25,480
+average
+
+69
+00:04:25,480 --> 00:04:29,350
+of a list we sum
+
+70
+00:04:29,350 --> 00:04:33,780
+all the elements - the values of the elements -
+and we divide that
+
+71
+00:04:33,780 --> 00:04:38,020
+by the length of the list. 
+Of course, this is not a very smart
+
+72
+00:04:38,020 --> 00:04:41,780
+implementation of average, but that
+doesn't matter... we're not
+
+73
+00:04:41,780 --> 00:04:45,750
+here to define average, we're doing
+this to learn
+
+74
+00:04:45,750 --> 00:04:51,220
+GHCi. The thing that we're using here is
+this trick here in Haskell
+
+75
+00:04:51,220 --> 00:04:55,280
+is that when you put a function name
+
+76
+00:04:55,280 --> 00:04:59,390
+between these single back quotes,
+
+77
+00:04:59,390 --> 00:05:02,580
+it becomes an infix operator.
+
+78
+00:05:02,580 --> 00:05:06,290
+So if you write
+
+79
+00:05:06,290 --> 00:05:09,620
+x `f` y
+
+80
+00:05:09,620 --> 00:05:12,900
+that's really just syntactic sugar for
+
+81
+00:05:12,900 --> 00:05:18,410
+f x y. Some people like this thing
+as an infix operator,
+
+82
+00:05:18,410 --> 00:05:21,640
+others like it just as a regular
+operator
+
+83
+00:05:21,640 --> 00:05:25,690
+- it's your choice. 
+This is syntactic convention. So this is not
+
+84
+00:05:25,690 --> 00:05:26,960
+a string or anything,
+
+85
+00:05:26,960 --> 00:05:31,440
+it's really taking a function and turning
+that into an infix operator.
+
+86
+00:05:31,440 --> 00:05:35,290
+Then in GHCi, we call reload
+
+87
+00:05:35,290 --> 00:05:39,020
+and it will read the file
+
+88
+00:05:39,020 --> 00:05:42,920
+test.hs, add all the new bindings that we just
+defined
+
+89
+00:05:42,920 --> 00:05:46,410
+- that was for factorial, so we can now
+call factorial
+
+90
+00:05:46,410 --> 00:05:49,610
+and then we can call average as well.
+
+91
+00:05:49,610 --> 00:05:54,520
+Here you see the workflow:
+you have your GHCi open, your editor
+
+92
+00:05:54,520 --> 00:05:58,360
+you edit, you call reload, and then you
+can try
+
+93
+00:05:58,360 --> 00:06:03,430
+your code out. 
+A few syntactic
+
+94
+00:06:03,430 --> 00:06:07,960
+things, or oddities in Haskell:
+functions
+
+95
+00:06:07,960 --> 00:06:12,480
+and parameter names must begin with
+lower case
+
+96
+00:06:12,480 --> 00:06:15,730
+letters.
+
+97
+00:06:15,730 --> 00:06:19,530
+If you define a function, it must be
+
+98
+00:06:19,530 --> 00:06:23,010
+of any of these forms. 
+But any of these
+
+99
+00:06:23,010 --> 00:06:26,720
+starts with a lower case
+
+100
+00:06:26,720 --> 00:06:30,580
+letter. You can use a regular quotes
+
+101
+00:06:30,580 --> 00:06:34,310
+if you're too lazy to
+invent a name. That's
+
+102
+00:06:34,310 --> 00:06:37,950
+something that I often miss in other
+languages, where I just want to say
+
+103
+00:06:37,950 --> 00:06:38,710
+x prime or
+
+104
+00:06:38,710 --> 00:06:42,520
+x double prime, et cetera.
+
+105
+00:06:42,520 --> 00:06:47,210
+If you define a type, a type
+has to start with an
+
+106
+00:06:47,210 --> 00:06:51,710
+uppercase name and that's the
+reason. In Haskell,
+
+107
+00:06:51,710 --> 00:06:55,130
+the types and identifiers
+
+108
+00:06:55,130 --> 00:06:58,180
+are in different namespaces and that's
+determined
+
+109
+00:06:58,180 --> 00:07:01,620
+by whether it starts with a lower case or
+
+110
+00:07:01,620 --> 00:07:05,540
+upper case identifier. That can be
+confusing if you come from a different
+
+111
+00:07:05,540 --> 00:07:06,830
+language like
+
+112
+00:07:06,830 --> 00:07:10,990
+Java, or C# or JavaScript.
+
+113
+00:07:10,990 --> 00:07:15,000
+The other thing is that in
+Haskell we use
+
+114
+00:07:15,000 --> 00:07:19,800
+a very mild form of Hungarian
+notation.
+
+115
+00:07:19,800 --> 00:07:22,930
+If a parameter has an
+
+116
+00:07:22,930 --> 00:07:27,700
+s suffix, so for example if you have a
+parameter named
+
+117
+00:07:27,700 --> 00:07:31,420
+xs or ns or nss,
+
+118
+00:07:31,420 --> 00:07:35,840
+that means a list of values
+
+119
+00:07:35,840 --> 00:07:39,640
+of type x and this is a list of
+values
+
+120
+00:07:39,640 --> 00:07:44,460
+of type n - sometimes the n doesn't
+correspond to the
+
+121
+00:07:44,460 --> 00:07:49,360
+type name - but typically when you see an
+s at the end you know that it's a list.
+
+122
+00:07:49,360 --> 00:07:52,460
+If there's 2 s's at the end 
+- like here -
+
+123
+00:07:52,460 --> 00:07:55,910
+you know that it's a list of lists.
+
+124
+00:07:55,910 --> 00:07:59,630
+Thats by convention. So if you want to
+look like a real Haskell programmer,
+
+125
+00:07:59,630 --> 00:08:03,370
+you should always use this convention.
+When your parameter is a list, 
+
+126
+00:08:03,370 --> 00:08:07,250
+it always ends with s, and usually
+
+127
+00:08:07,250 --> 00:08:10,410
+Haskell identifiers are short
+
+128
+00:08:10,410 --> 00:08:13,900
+so you don't it elements,
+you call it xs.
+
+129
+00:08:13,900 --> 00:08:17,510
+Another
+
+130
+00:08:17,510 --> 00:08:21,370
+interesting thing that Haskell has in
+common with by Python
+
+131
+00:08:21,370 --> 00:08:25,050
+is that white space is significant. 
+The
+
+132
+00:08:25,050 --> 00:08:28,100
+exact rules are quite subtle, but
+
+133
+00:08:28,100 --> 00:08:32,350
+we are just using Haskell
+
+134
+00:08:32,350 --> 00:08:35,630
+in very simple ways, so this
+
+135
+00:08:35,630 --> 00:08:40,880
+is kind of sufficient. If you have a
+sequence of definitions - like here -
+
+136
+00:08:40,880 --> 00:08:44,600
+they all have to start in the same
+column. Here
+
+137
+00:08:44,600 --> 00:08:47,760
+a, b and c all start
+
+138
+00:08:47,760 --> 00:08:51,230
+in the same column.
+In this case here,
+
+139
+00:08:51,230 --> 00:08:55,300
+b has a space to the left of it,
+
+140
+00:08:55,300 --> 00:08:58,780
+so now all these definitions don't start
+in the same column.
+
+141
+00:08:58,780 --> 00:09:01,860
+That's wrong! 
+Or in this case, c
+
+142
+00:09:01,860 --> 00:09:04,990
+and a don't start in the same column as b..
+
+143
+00:09:04,990 --> 00:09:08,130
+also wrong.
+
+144
+00:09:08,130 --> 00:09:11,460
+White space is significant in Haskell,
+
+145
+00:09:11,460 --> 00:09:15,600
+so make sure that all your definitions
+are lined up - this is called the layout rule.
+
+146
+00:09:15,600 --> 00:09:19,290
+The layout rule
+
+147
+00:09:19,290 --> 00:09:22,660
+is there to avoid writing
+
+148
+00:09:22,660 --> 00:09:26,080
+unnecessary syntax. 
+Haskell folks
+
+149
+00:09:26,080 --> 00:09:30,050
+like to write this: 
+a = b + c where
+
+150
+00:09:30,050 --> 00:09:33,510
+and then in the where clause we have
+a list of definitions that
+
+151
+00:09:33,510 --> 00:09:37,230
+all start in the same column and then d
+
+152
+00:09:37,230 --> 00:09:40,440
+here stars in the same column as a,
+
+153
+00:09:40,440 --> 00:09:44,060
+so that belongs to the same group
+as a.
+
+154
+00:09:44,060 --> 00:09:47,950
+You can write this with explicit
+
+155
+00:09:47,950 --> 00:09:51,920
+curly braces and semicolons
+- if you want to -
+
+156
+00:09:51,920 --> 00:09:55,700
+but that looks a lot more
+
+157
+00:09:55,700 --> 00:09:59,850
+verbose. 
+Haskell programmers like brevity,
+
+158
+00:09:59,850 --> 00:10:03,110
+so they'll often use significant white
+space.
+
+159
+00:10:03,110 --> 00:10:06,640
+This looks a little bit clowny.
+
+160
+00:10:06,640 --> 00:10:10,520
+In the Haskell world, when you write code like
+this people will look like
+
+161
+00:10:10,520 --> 00:10:14,090
+"you didn't do enough wax on, wax off".
+
+162
+00:10:14,090 --> 00:10:21,090
+Here's some GHC commands that are
+useful
+
+163
+00:10:21,220 --> 00:10:24,330
+and I really
+
+164
+00:10:24,330 --> 00:10:29,620
+invite you to play around with it
+When you do the exercises for
+
+165
+00:10:29,620 --> 00:10:33,220
+subsequent lectures, make sure that you
+leverage
+
+166
+00:10:33,220 --> 00:10:36,800
+GHC or whatever other compiler you use,
+
+167
+00:10:36,800 --> 00:10:41,930
+to help you. We have seen
+reload, but you can also just
+
+168
+00:10:41,930 --> 00:10:45,820
+load a fresh script.
+
+169
+00:10:45,820 --> 00:10:49,050
+From the interpreter
+
+170
+00:10:49,050 --> 00:10:52,430
+you can open the editor, so you can edit
+
+171
+00:10:52,430 --> 00:10:56,270
+a file with a certain name, 
+or edit the current script.
+
+172
+00:10:56,270 --> 00:10:59,880
+This one here is super useful:
+
+173
+00:10:59,880 --> 00:11:03,550
+it gives the type of an expression and I do
+this
+
+174
+00:11:03,550 --> 00:11:08,330
+all the time - I never write types myself. 
+I ask what the type is and I go
+
+175
+00:11:08,330 --> 00:11:11,589
+in the editor and paste in the type.
+
+176
+00:11:11,589 --> 00:11:15,959
+You definitely should use :?
+
+177
+00:11:15,959 --> 00:11:19,649
+and that gives you a list of all the
+commands
+
+178
+00:11:19,649 --> 00:11:23,970
+with a small explanation. 
+Of course,
+
+179
+00:11:23,970 --> 00:11:27,350
+I hope that you will not use this
+
+180
+00:11:27,350 --> 00:11:31,079
+last command to quit GHC,
+
+181
+00:11:31,079 --> 00:11:34,450
+but that you will, for the next
+eight weeks,
+
+182
+00:11:34,450 --> 00:11:39,709
+be constantly using GHC.
+
+183
+00:11:39,709 --> 00:11:43,010
+There will be a lot of exercises
+
+184
+00:11:43,010 --> 00:11:46,660
+and the exercises will be on the website.
+
+185
+00:11:46,660 --> 00:11:49,680
+All these exercises,
+
+186
+00:11:49,680 --> 00:11:54,510
+you should be able to
+do them in any language. You don't
+
+187
+00:11:54,510 --> 00:11:55,600
+have to use
+
+188
+00:11:55,600 --> 00:11:59,990
+GHC, but in this case, since this lecture
+is about
+
+189
+00:11:59,990 --> 00:12:03,029
+GHC, they will be
+
+190
+00:12:03,029 --> 00:12:06,610
+GHC-specific. 
+In general,
+
+191
+00:12:06,610 --> 00:12:10,680
+as I said in the very first lecture, this
+is a course
+
+192
+00:12:10,680 --> 00:12:15,430
+about functional programming. It's not a
+course about Haskell and it's definitely
+
+193
+00:12:15,430 --> 00:12:17,320
+not a course about GHC,
+
+194
+00:12:17,320 --> 00:12:22,020
+but in this specific case the exercises for
+this chapter and
+
+195
+00:12:22,020 --> 00:12:25,250
+for this lecture are on GHCi.
+
+196
+00:12:25,250 --> 00:12:29,459
+Happy hacking and 
+see you all next week!
+

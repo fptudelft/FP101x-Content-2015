@@ -1,0 +1,1073 @@
+1
+00:00:01,189 --> 00:00:03,649
+Hey everybody, and welcome back to
+
+2
+00:00:03,649 --> 00:00:07,149
+FP101x - Functional Programming.
+
+3
+00:00:07,149 --> 00:00:10,340
+What we're going
+
+4
+00:00:10,340 --> 00:00:14,009
+to do today is taking the first
+
+5
+00:00:14,009 --> 00:00:18,160
+baby steps in learning Haskell.
+
+6
+00:00:18,160 --> 00:00:21,390
+One of my favorite movies of all time
+
+7
+00:00:21,390 --> 00:00:25,890
+is the Karate Kid and if you haven't
+seen this movie,
+
+8
+00:00:25,890 --> 00:00:29,170
+stop watching
+
+9
+00:00:29,170 --> 00:00:32,200
+this lecture and go watch this movie
+first.
+
+10
+00:00:32,200 --> 00:00:37,030
+Every time I need to learn something new,
+I rewatch the Karate Kid
+
+11
+00:00:37,030 --> 00:00:40,730
+and I can tell you... I've seen it
+maybe
+
+12
+00:00:40,730 --> 00:00:44,210
+20-30 times and every time I watch it,
+
+13
+00:00:44,210 --> 00:00:47,820
+I learn something new.
+If you
+
+14
+00:00:47,820 --> 00:00:50,890
+watch the movie, you will see that
+
+15
+00:00:50,890 --> 00:00:55,500
+the boy here, Daniel, wants
+to learn karate
+
+16
+00:00:55,500 --> 00:00:59,390
+and mister Miyagi, the gentleman
+here
+
+17
+00:00:59,390 --> 00:01:03,320
+on the other side, makes him do a
+lot of
+
+18
+00:01:03,320 --> 00:01:08,320
+what Daniel thinks are pointless
+exercises. And he gets kind of frustrated.
+
+19
+00:01:08,320 --> 00:01:11,400
+But in order to learn something you have
+to go
+
+20
+00:01:11,400 --> 00:01:15,650
+through a lot of exercises because
+there's a lot of muscle memory or, in
+
+21
+00:01:15,650 --> 00:01:20,049
+case of programming you have to have the
+muscle memory in your fingers. They're
+
+22
+00:01:20,049 --> 00:01:22,950
+certain things should not have to think
+about.
+
+23
+00:01:22,950 --> 00:01:27,520
+That you have to drill. That you have to
+do over and over and over again.
+
+24
+00:01:27,520 --> 00:01:32,430
+And that's what we are going to do in
+this lecture today.
+
+25
+00:01:32,430 --> 00:01:36,070
+So don't get frustrated, don't be like
+Daniel.
+
+26
+00:01:36,070 --> 00:01:40,280
+Be a grownup and just do your exercises
+
+27
+00:01:40,280 --> 00:01:44,420
+on and on: wax on wax off, wax on, wax off...
+
+28
+00:01:44,420 --> 00:01:47,640
+until it becomes completely automatic
+
+29
+00:01:47,640 --> 00:01:51,450
+and then you can use your brain to solve
+the real problem.
+
+30
+00:01:51,450 --> 00:01:55,649
+You don't have to think about the basics
+anymore. And every time you learn
+
+31
+00:01:55,649 --> 00:01:56,549
+something new
+
+32
+00:01:56,549 --> 00:02:01,049
+rewatch this great movie.
+
+33
+00:02:01,049 --> 00:02:05,560
+Let's show some Haskell. The Haskell implementation
+that we're using
+
+34
+00:02:05,560 --> 00:02:10,319
+in this course is the Glasgow Haskell
+Compiler
+
+35
+00:02:10,319 --> 00:02:13,530
+sometimes also called the Glorious
+Haskell Compiler
+
+36
+00:02:13,530 --> 00:02:18,190
+and GHC is the leading implementation of
+Haskell.
+
+37
+00:02:18,190 --> 00:02:23,540
+It has both a compiler and an
+interactive
+
+38
+00:02:23,540 --> 00:02:26,900
+REPL loop that you can use to type in
+your
+
+39
+00:02:26,900 --> 00:02:30,310
+code.
+The interactive nature
+
+40
+00:02:30,310 --> 00:02:34,300
+of the GHC interpreter makes it really
+easy
+
+41
+00:02:34,300 --> 00:02:37,459
+to experiment with Haskell
+
+42
+00:02:37,459 --> 00:02:40,769
+and that's why it's also very useful for
+this course.
+
+43
+00:02:40,769 --> 00:02:44,330
+Many of the exercises
+
+44
+00:02:44,330 --> 00:02:47,790
+that you will get during the course, you
+can do
+
+45
+00:02:47,790 --> 00:02:51,519
+by using GHC.
+I don't
+
+46
+00:02:51,519 --> 00:02:54,800
+see that as cheating because
+
+47
+00:02:54,800 --> 00:02:58,730
+as programmers, we should really use the
+compiler
+
+48
+00:02:58,730 --> 00:03:04,420
+to help us. The computer is there
+to help us program the computer.
+
+49
+00:03:04,420 --> 00:03:08,660
+If we don't use that, that would be
+stupid. GHC
+
+50
+00:03:08,660 --> 00:03:14,079
+is freely available from the website
+here. The link will be also be on the
+
+51
+00:03:14,079 --> 00:03:17,880
+course website, and you can also
+
+52
+00:03:17,880 --> 00:03:21,220
+Google or Bing for the Haskell platform
+
+53
+00:03:21,220 --> 00:03:24,780
+and it's available for all major
+platforms
+
+54
+00:03:24,780 --> 00:03:29,910
+Mac, Windows and Linux.
+To start GHC,
+
+55
+00:03:29,910 --> 00:03:33,840
+you just type from the command line 'ghci'
+
+56
+00:03:33,840 --> 00:03:37,549
+and then you get some
+
+57
+00:03:37,549 --> 00:03:41,230
+text blurps and there you see a prompt
+
+58
+00:03:41,230 --> 00:03:44,970
+Prelude> and that's where you can start
+typing in
+
+59
+00:03:44,970 --> 00:03:49,180
+expressions. For example we can type in
+the expression
+
+60
+00:03:49,180 --> 00:03:53,150
+2 + 3 * 4 and
+
+61
+00:03:53,150 --> 00:03:57,690
+GHCi will then print the result for that.
+In this case we're really using
+
+62
+00:03:57,690 --> 00:04:01,380
+GHCi as kind of a calculator.
+
+63
+00:04:01,380 --> 00:04:05,250
+It's a little bit like a calculator
+on the command line interface,
+
+64
+00:04:05,250 --> 00:04:10,340
+instead of a calculator with buttons.
+What we also see here is that since
+
+65
+00:04:10,340 --> 00:04:13,680
+2 + 3 * 4 apparently is 14
+
+66
+00:04:13,680 --> 00:04:17,459
+that multiplication binds stronger
+
+67
+00:04:17,459 --> 00:04:20,640
+than addition. So there's no surprises
+there as
+
+68
+00:04:20,640 --> 00:04:24,450
+most languages have that.
+If we want to
+
+69
+00:04:24,450 --> 00:04:28,450
+first do the addition and then
+the multiplication, we have to put
+
+70
+00:04:28,450 --> 00:04:31,510
+parentheses, so we write
+(2 + 3) * 4
+
+71
+00:04:31,510 --> 00:04:35,910
+and then the result is 20.
+We can do
+
+72
+00:04:35,910 --> 00:04:40,880
+more complicated expressions like the
+square root of (3 ^ 2 + 4 ^2)
+
+73
+00:04:41,630 --> 00:04:46,690
+and we get 5.
+
+74
+00:04:46,690 --> 00:04:50,100
+As you saw, there was the
+Prelude>
+
+75
+00:04:50,100 --> 00:04:53,490
+prompt
+
+76
+00:04:53,490 --> 00:04:58,260
+here. So the Haskell Prelude it's like
+the SDK for Haskell. These are all the
+
+77
+00:04:58,260 --> 00:04:59,390
+standard functions
+
+78
+00:04:59,390 --> 00:05:03,330
+that come for free with Haskell.
+On the website
+
+79
+00:05:03,330 --> 00:05:07,930
+we will tell you how to get
+other libraries for Haskell,
+
+80
+00:05:07,930 --> 00:05:13,620
+but we won't discuss that in too much
+detail right here. You
+
+81
+00:05:13,620 --> 00:05:16,740
+you can read up on that.
+We will
+
+82
+00:05:16,740 --> 00:05:20,840
+will try to stick with just the
+standard library functions - the standard
+
+83
+00:05:20,840 --> 00:05:21,390
+prelude.
+
+84
+00:05:21,390 --> 00:05:27,680
+A lot of the functions in the prelude
+
+85
+00:05:27,680 --> 00:05:30,710
+are functions over lists.
+
+86
+00:05:30,710 --> 00:05:34,750
+We're going to walk through a
+couple of them and then in later lectures
+
+87
+00:05:34,750 --> 00:05:38,810
+we will implemented these functions in
+several different
+
+88
+00:05:38,810 --> 00:05:42,500
+manners. The first function here is head,
+which takes a list,
+
+89
+00:05:42,500 --> 00:05:46,350
+and the way we write lists in Haskell
+is with square brackets and the
+
+90
+00:05:46,350 --> 00:05:48,280
+elements separated by commas,
+
+91
+00:05:48,280 --> 00:05:52,030
+so the head of [1,2,3,4,5] is
+
+92
+00:05:52,030 --> 00:05:56,110
+unsurprisingly 1.
+The tail,
+
+93
+00:05:56,110 --> 00:06:00,130
+that's the opposite of head, so is
+everything on the list
+
+94
+00:06:00,130 --> 00:06:03,340
+except the head, so the tail of [1,2,3,4,5]
+
+95
+00:06:03,340 --> 00:06:07,710
+is the list [2,3,4,5].
+We can also select
+
+96
+00:06:07,710 --> 00:06:11,360
+the n-th element of the list with
+this
+
+97
+00:06:11,360 --> 00:06:16,250
+double exclamation mark operator.
+If we want to select the second element
+
+98
+00:06:16,250 --> 00:06:17,160
+of the list
+
+99
+00:06:17,160 --> 00:06:20,320
+[1,2,3,4,5] we get
+
+100
+00:06:20,320 --> 00:06:24,030
+3. So what do we learn from this?
+Well...
+
+101
+00:06:24,030 --> 00:06:27,029
+that the first element of the list
+
+102
+00:06:27,029 --> 00:06:29,610
+has index 0.
+
+103
+00:06:29,610 --> 00:06:32,749
+Haskell starts
+
+104
+00:06:32,749 --> 00:06:36,849
+indexing lists by zero.
+There's
+
+105
+00:06:36,849 --> 00:06:40,409
+2 exclamation marks here and there's
+
+106
+00:06:40,409 --> 00:06:44,159
+a good reason for that:
+because in Haskell,
+
+107
+00:06:44,159 --> 00:06:47,189
+lists are not arrays,
+so indexing
+
+108
+00:06:47,189 --> 00:06:50,909
+into the list here at the second
+element
+
+109
+00:06:50,909 --> 00:06:54,729
+will traverse the list. So it
+will traverse the list, throw away 1
+
+110
+00:06:54,729 --> 00:06:59,509
+throw away 2 and then return 3.
+This is not a constant time
+
+111
+00:06:59,509 --> 00:07:04,209
+operation. Indexing into a list, unlike
+indexing into an array,
+
+112
+00:07:04,209 --> 00:07:07,919
+in Haskell is linear in the length
+of the list.
+
+113
+00:07:07,919 --> 00:07:13,099
+In general linear in the size of the
+
+114
+00:07:13,099 --> 00:07:13,599
+list.
+
+115
+00:07:13,599 --> 00:07:17,509
+But fortunately
+
+116
+00:07:17,509 --> 00:07:21,180
+we will hardly see uses
+
+117
+00:07:21,180 --> 00:07:24,629
+of this operator in practice.
+
+118
+00:07:24,629 --> 00:07:28,550
+If you find yourself wanting to use list
+indexing
+
+119
+00:07:28,550 --> 00:07:34,180
+then you know that you have not done
+enough wax on, wax off, wax on, wax off.
+
+120
+00:07:34,180 --> 00:07:37,569
+Tou're still too much in the mindset of
+
+121
+00:07:37,569 --> 00:07:40,689
+imperative programming using arrays.
+
+122
+00:07:40,689 --> 00:07:45,189
+In Haskell we typically use higher
+order functions like map, filter, fold
+
+123
+00:07:45,189 --> 00:07:48,300
+and not indexing to
+
+124
+00:07:48,300 --> 00:07:53,119
+perform complex operations over lists.
+Here's another
+
+125
+00:07:53,119 --> 00:07:59,719
+example - take 3 - it takes the first
+three elements of a list. If we have
+
+126
+00:07:59,719 --> 00:08:01,180
+the list [1,2,3,4,5]
+
+127
+00:08:01,180 --> 00:08:04,680
+it returns the first three
+elements
+
+128
+00:08:04,680 --> 00:08:08,139
+[1,2,3]
+Drop
+
+129
+00:08:08,139 --> 00:08:11,619
+is the opposite, so it takes a number
+
+130
+00:08:11,619 --> 00:08:16,719
+and a list and it drops the first
+three elements of the list. In some
+
+131
+00:08:16,719 --> 00:08:17,769
+sense, drop
+
+132
+00:08:17,769 --> 00:08:20,819
+and take are
+
+133
+00:08:20,819 --> 00:08:24,300
+the generalizations of head and tail.
+Head and tail
+
+134
+00:08:24,300 --> 00:08:29,159
+just take the first and the rest of the
+list and then with take and drop
+
+135
+00:08:29,159 --> 00:08:33,130
+you can generalize that
+to arbitrary numbers.
+
+136
+00:08:33,130 --> 00:08:36,370
+Calculating the length of the list...
+
+137
+00:08:36,370 --> 00:08:40,459
+we do that by
+
+138
+00:08:40,459 --> 00:08:44,930
+calling the function length.
+Length of [1,2,3,4,5] is 5.
+
+139
+00:08:44,930 --> 00:08:49,180
+Again, lists in Haskell are not
+like arrays
+
+140
+00:08:49,180 --> 00:08:53,910
+in other languages, so taking the length
+is not a constant time operation.
+
+141
+00:08:53,910 --> 00:08:58,070
+It takes time linearly in the
+length of the list.
+
+142
+00:08:58,070 --> 00:09:04,890
+Sum sums up all the elements so
+if we call sum of [1,2,3,4,5]
+
+143
+00:09:04,890 --> 00:09:09,040
+the result is 15.
+Product
+
+144
+00:09:09,040 --> 00:09:12,570
+is the same as sum, except instead of
+adding up the numbers, it
+
+145
+00:09:12,570 --> 00:09:17,080
+multiplies all of them, so
+multiplying
+
+146
+00:09:17,080 --> 00:09:21,520
+1, 2, 3, 4 and 5 - like taking
+the factorial of 5 -
+
+147
+00:09:21,520 --> 00:09:27,649
+is 120. Appending two lists is another
+common operation: you take 2 lists and
+
+148
+00:09:27,649 --> 00:09:30,290
+you smash them together into a new list,
+so if I
+
+149
+00:09:30,290 --> 00:09:33,570
+append [1,2,3] with [4,5]
+
+150
+00:09:33,570 --> 00:09:38,660
+we get the list [1,2,3,4,5].
+The last function here
+
+151
+00:09:38,660 --> 00:09:43,220
+on this slide is reversing a list.
+
+152
+00:09:43,220 --> 00:09:46,260
+Reverse [1,2,3,4,5] gives you
+
+153
+00:09:46,260 --> 00:09:50,380
+[5,4,3,2,1]
+In the rest of
+
+154
+00:09:50,380 --> 00:09:54,990
+these lectures, we will define all
+these functions ourselves
+
+155
+00:09:54,990 --> 00:09:58,300
+in several ways, but right now
+
+156
+00:09:58,300 --> 00:10:01,600
+it's good to play with them to
+see what they do,
+
+157
+00:10:01,600 --> 00:10:05,040
+and then we will be ready to
+implement them.
+
+158
+00:10:05,040 --> 00:10:08,640
+Then we will know what they are
+supposed to do.
+
+159
+00:10:08,640 --> 00:10:12,380
+Here's
+
+160
+00:10:12,380 --> 00:10:16,260
+another very important slide
+
+161
+00:10:16,260 --> 00:10:20,839
+and that is about function application.
+Haskell
+
+162
+00:10:20,839 --> 00:10:24,450
+is very different than mathematics on
+the one side
+
+163
+00:10:24,450 --> 00:10:27,700
+and very different from other
+programming languages as well.
+
+164
+00:10:27,700 --> 00:10:32,910
+In mathematics when you apply a function -
+mathematics that you do in school or
+
+165
+00:10:32,910 --> 00:10:34,860
+college when you take analysis -
+
+166
+00:10:34,860 --> 00:10:38,100
+when you apply a function to an argument,
+
+167
+00:10:38,100 --> 00:10:41,649
+you always use parentheses.
+In this case
+
+168
+00:10:41,649 --> 00:10:45,100
+when we apply a function here...
+this is
+
+169
+00:10:45,100 --> 00:10:49,410
+applying a function f to arguments
+a and b
+
+170
+00:10:49,410 --> 00:10:52,180
+and then adding c
+
+171
+00:10:52,180 --> 00:10:55,910
+space d.
+In mathematics,
+
+172
+00:10:55,910 --> 00:10:59,460
+typically, and that comes from
+physics
+
+173
+00:10:59,460 --> 00:11:03,720
+is that space means multiplication.
+
+174
+00:11:03,720 --> 00:11:07,300
+If you look at the mathematical
+textbook
+
+175
+00:11:07,300 --> 00:11:11,430
+and you see c d
+
+176
+00:11:11,430 --> 00:11:14,800
+it usually means c multiplied by d
+
+177
+00:11:14,800 --> 00:11:18,480
+and therefore when you apply a function
+you're using
+
+178
+00:11:18,480 --> 00:11:24,330
+parentheses like this to disambiguate.
+Since in Haskell
+
+179
+00:11:24,330 --> 00:11:27,530
+function application is used much more
+often
+
+180
+00:11:27,530 --> 00:11:30,990
+than multiplication,
+whereas in physics
+
+181
+00:11:30,990 --> 00:11:34,630
+multiplication is used more often, so
+that's where
+
+182
+00:11:34,630 --> 00:11:40,080
+multiplication is given the most
+white symbol, the least
+
+183
+00:11:40,080 --> 00:11:43,680
+visible symbol, the most white spacey symbol.
+In Haskell,
+
+184
+00:11:43,680 --> 00:11:46,680
+function application is denoted by white
+space
+
+185
+00:11:46,680 --> 00:11:50,050
+so that it's not so much in
+your face.
+
+186
+00:11:50,050 --> 00:11:54,050
+So in Haskell instead of writing
+f (a,b) + c d
+
+187
+00:11:54,050 --> 00:11:58,960
+function application
+becomes
+
+188
+00:11:58,960 --> 00:12:02,660
+denoted by a space,
+so it's f a b + c * d
+
+189
+00:12:06,180 --> 00:12:09,540
+In most programming languages
+
+190
+00:12:09,540 --> 00:12:13,790
+you would write
+
+191
+00:12:13,790 --> 00:12:18,540
+f (a, b) so they are in
+some sense the
+
+192
+00:12:18,540 --> 00:12:23,680
+worst of two worlds: there you
+have to write everything explicit.
+
+193
+00:12:23,680 --> 00:12:27,970
+In Haskell we made the decision that
+function application
+
+194
+00:12:27,970 --> 00:12:31,900
+is done by using a space and
+multiplication
+
+195
+00:12:31,900 --> 00:12:35,500
+is done by using multiplication.
+
+196
+00:12:35,500 --> 00:12:39,080
+Also,
+
+197
+00:12:39,080 --> 00:12:42,480
+function application binds stronger
+
+198
+00:12:42,480 --> 00:12:45,790
+than any other operator.
+If you see
+
+199
+00:12:45,790 --> 00:12:49,820
+f a + b, that means
+f applied to a
+
+200
+00:12:49,820 --> 00:12:52,970
+plus b,
+It doesn't mean f
+
+201
+00:12:52,970 --> 00:12:57,250
+applied to (a + b).
+
+202
+00:12:57,250 --> 00:13:01,080
+People have to get used to this.
+This doesn't mean
+
+203
+00:13:01,080 --> 00:13:04,210
+f times a plus b.
+It means
+
+204
+00:13:04,210 --> 00:13:05,350
+f applied
+
+205
+00:13:05,350 --> 00:13:08,400
+to a plus b.
+So that's
+
+206
+00:13:08,400 --> 00:13:12,370
+kind of similar to multiplication binding
+stronger than addition.
+
+207
+00:13:12,370 --> 00:13:16,800
+Here's a table that give you
+
+208
+00:13:16,800 --> 00:13:20,210
+a couple of more expressions
+
+209
+00:13:20,210 --> 00:13:23,410
+on the one side Haskell,
+
+210
+00:13:23,410 --> 00:13:27,750
+and on the other side mathematics.
+So this is what you should forget.
+
+211
+00:13:27,750 --> 00:13:31,240
+I'm going to stand in front of that..this
+is what you should forget.
+
+212
+00:13:31,240 --> 00:13:34,320
+And this is what you should learn.
+
+213
+00:13:34,320 --> 00:13:38,590
+So forget what's behind me and learn
+
+214
+00:13:38,590 --> 00:13:42,670
+what's on this side.
+
+215
+00:13:42,670 --> 00:13:45,890
+Instead of f open parentheses x,
+we write
+
+216
+00:13:45,890 --> 00:13:50,420
+f space x. Instead of passing two
+parameters to f
+
+217
+00:13:50,420 --> 00:13:55,230
+we apply f to x and then
+apply that result to y.
+
+218
+00:13:55,230 --> 00:14:00,540
+Instead of f open parens g, open parens x
+we can write
+
+219
+00:14:00,540 --> 00:14:04,110
+f of g of x and later we'll see
+
+220
+00:14:04,110 --> 00:14:07,120
+that we can write that using function
+composition
+
+221
+00:14:07,120 --> 00:14:11,680
+as f composed g.
+
+222
+00:14:11,680 --> 00:14:14,940
+the rest of the examples
+
+223
+00:14:14,940 --> 00:14:18,720
+should be obvious.
+If you just look at
+
+224
+00:14:18,720 --> 00:14:22,680
+shapes of these two - don't try to
+interpret them - you will see that the
+
+225
+00:14:22,680 --> 00:14:24,300
+Haskell code here
+
+226
+00:14:24,300 --> 00:14:27,650
+looks much lighter-weight than the code
+
+227
+00:14:27,650 --> 00:14:33,070
+on this side. Haskell programmers are
+lazy - we don't want to type too much -
+
+228
+00:14:33,070 --> 00:14:36,470
+so this looks much more beautiful
+than this
+
+229
+00:14:36,470 --> 00:14:39,860
+and that's why Haskell's syntax is designed
+the way it is.
+
+230
+00:14:39,860 --> 00:14:43,350
+Thank you!.
+This was the end of Part 1.
+
+231
+00:14:43,350 --> 00:14:46,680
+See you in a bit for the remainder of
+
+232
+00:14:46,680 --> 00:14:47,320
+chapter 1.
+

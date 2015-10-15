@@ -1,0 +1,63 @@
+1
+00:00:00,539 --> 00:00:04,730
+The content of this MOOC is based on the
+fantastic book
+
+2
+00:00:04,730 --> 00:00:08,710
+by Graham Hutton: Programming in Haskell.
+
+
+3
+00:00:08,710 --> 00:00:11,870
+I strongly recommend that,
+
+4
+00:00:11,870 --> 00:00:15,259
+as you follow the lectures,
+you
+
+5
+00:00:15,259 --> 00:00:19,630
+read the chapters in the book for extra
+background information
+
+6
+00:00:19,630 --> 00:00:24,439
+and deeper knowledge. Cambridge
+University Press has been so kind
+
+7
+00:00:24,439 --> 00:00:28,220
+to offer you a 25% discount on
+the book,
+
+8
+00:00:28,220 --> 00:00:32,040
+both on the printed version and on the
+electronic version.
+
+9
+00:00:32,040 --> 00:00:36,559
+Of course, you don't have to type
+in this URL here;
+
+10
+00:00:36,559 --> 00:00:40,450
+the URL will be available on the
+course website,
+
+11
+00:00:40,450 --> 00:00:44,809
+Please consider to get the book
+because I think it will
+
+12
+00:00:44,809 --> 00:00:48,219
+very much enhance the learning
+experience of this MOOC.
+
+13
+00:00:48,219 --> 00:00:51,350
+Have a lot of fun and happy hacking!
+

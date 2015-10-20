@@ -258,7 +258,7 @@ Now what we do
 57
 00:03:39,200 --> 00:03:44,540
 is we just leave GHC open, we
-returnw to our editor and
+return to our editor and
 
 58
 00:03:44,540 --> 00:03:47,579

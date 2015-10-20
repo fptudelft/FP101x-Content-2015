@@ -25,7 +25,7 @@ n =  a 'div' length xs
 
  {- 
 -- answer c
-m = a `div` length xs
+n = a `div` length xs
 where
      a  = 10
      xs = [1, 2, 3, 4, 5]

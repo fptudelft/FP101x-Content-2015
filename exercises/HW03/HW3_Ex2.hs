@@ -15,16 +15,16 @@ True || _ = True
 
 {-
 -- answer c
-b || c 
+b || c
    | b == c = True
-   | otherwise False
+   | otherwise = False
 -}
 
 {-
 -- answer d
 b || c
    | b == c = b
-   |otherwise = true
+   |otherwise = True
 -}
 
 {-
@@ -37,7 +37,7 @@ _ || True = True
 -- answer f
 b || c
    | b == c = c
-   | otherwise True
+   | otherwise = True
 -}
 
 {-

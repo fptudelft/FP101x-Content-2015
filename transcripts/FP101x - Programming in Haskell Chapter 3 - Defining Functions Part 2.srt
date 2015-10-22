@@ -1,0 +1,759 @@
+1
+00:00:01,510 --> 00:00:03,129
+Welcome back!
+
+2
+00:00:03,129 --> 00:00:06,150
+In the first part of this lecture
+
+3
+00:00:06,150 --> 00:00:09,519
+we have seen some simple examples of
+
+4
+00:00:09,519 --> 00:00:13,210
+how to define functions in Haskell
+and especially how that
+
+5
+00:00:13,210 --> 00:00:16,570
+differs from most contemporary languages.
+
+6
+00:00:16,570 --> 00:00:20,830
+We have seen that in Haskell
+conditionals are expressions, not
+
+7
+00:00:20,830 --> 00:00:21,609
+statements
+
+8
+00:00:21,609 --> 00:00:25,369
+but that Haskell programmers rather
+write
+
+9
+00:00:25,369 --> 00:00:28,849
+guarded equations than conditional
+expressions.
+
+10
+00:00:28,849 --> 00:00:32,630
+The other thing we have seen is how
+to define functions
+
+11
+00:00:32,630 --> 00:00:35,940
+using pattern matching.
+
+12
+00:00:35,940 --> 00:00:40,950
+And we have seen in particular how to
+define functions over lists
+
+13
+00:00:40,950 --> 00:00:45,460
+using pattern matching. What we're going
+to look at now
+
+14
+00:00:45,460 --> 00:00:49,450
+is how to define functions, because
+Haskell is a functional language
+
+15
+00:00:49,450 --> 00:00:52,579
+so we have to have a way, a concise way
+
+16
+00:00:52,579 --> 00:00:56,250
+to define functions. And that is
+lambda expressions.
+
+17
+00:00:56,250 --> 00:01:01,120
+You probably know lambda expressions
+
+18
+00:01:01,120 --> 00:01:05,049
+from the language that you're using.
+If you are a Java programmer
+
+19
+00:01:05,049 --> 00:01:09,450
+in Java 8 the lambda expressions
+were introduced.
+
+20
+00:01:09,450 --> 00:01:13,000
+If you are a C# programmer, you
+know lambda expressions.
+
+21
+00:01:13,000 --> 00:01:16,030
+If you are a Hack or PHP programmer
+
+22
+00:01:16,030 --> 00:01:20,830
+you have lambda expressions. In
+JavaScript you have lambda expressions.
+
+23
+00:01:20,830 --> 00:01:22,080
+Lambda expressions are
+
+24
+00:01:22,080 --> 00:01:25,220
+everywhere. C++, you name it, D
+
+25
+00:01:25,220 --> 00:01:31,229
+Swift, every modern language has lambda
+expressions. And as we saw in the very
+
+26
+00:01:31,229 --> 00:01:32,170
+first lecture
+
+27
+00:01:32,170 --> 00:01:35,270
+this was an invention from Alonzo Church
+
+28
+00:01:35,270 --> 00:01:38,640
+in the 1930s.
+
+29
+00:01:38,640 --> 00:01:41,880
+In most languages lambda expressions
+look similar
+
+30
+00:01:41,880 --> 00:01:45,009
+and in Haskell they look as follows:
+
+31
+00:01:45,009 --> 00:01:48,439
+They look like this:
+
+32
+00:01:48,439 --> 00:01:52,759
+Lambda x, arrow, body of the lambda
+expression.
+
+33
+00:01:52,759 --> 00:01:56,829
+In the actual code that you type
+you don't write the lambda.
+
+34
+00:01:56,829 --> 00:02:00,060
+You write the slash, so you write \x
+
+35
+00:02:00,060 --> 00:02:03,450
+and instead of the arrow you write
+
+36
+00:02:03,450 --> 00:02:08,610
+-> but since we
+want these slides to look fancy
+
+37
+00:02:08,610 --> 00:02:10,229
+we are
+
+38
+00:02:10,229 --> 00:02:13,740
+actually writing a lambda and a real arrow.
+
+39
+00:02:13,740 --> 00:02:17,310
+But when you write this in code,
+you write slash
+
+40
+00:02:17,310 --> 00:02:21,170
+for the lambda and you just write the
+arrow
+
+41
+00:02:21,170 --> 00:02:24,890
+as you would expect. So what is this
+thing?
+
+42
+00:02:24,890 --> 00:02:28,920
+This is a function that takes an x
+and adds it
+
+43
+00:02:28,920 --> 00:02:33,580
+to itself. And that function has no name,
+so it's an expression
+
+44
+00:02:33,580 --> 00:02:36,690
+of function type. That's what lambda
+expressions are.
+
+45
+00:02:36,690 --> 00:02:40,220
+They are expressions that denote
+functions.
+
+46
+00:02:40,220 --> 00:02:43,370
+
+
+47
+00:02:43,370 --> 00:02:46,940
+In mathematics and
+
+48
+00:02:46,940 --> 00:02:50,420
+as Church designed them,
+
+49
+00:02:50,420 --> 00:02:54,480
+if you read the lambda calculus literature, they're
+written as a lambda, but we type them
+
+50
+00:02:54,480 --> 00:02:54,930
+as
+
+51
+00:02:54,930 --> 00:02:58,820
+backslash and instead of the arrow
+symbol
+
+52
+00:02:58,820 --> 00:03:02,370
+we write the arrow symbol.
+
+53
+00:03:02,370 --> 00:03:07,740
+But for the rest Haskell, I think, is a
+language that is closest to the lambda
+
+54
+00:03:07,740 --> 00:03:08,400
+calculus
+
+55
+00:03:08,400 --> 00:03:11,890
+because it's based on pure functions,
+whereas
+
+56
+00:03:11,890 --> 00:03:15,690
+in other languages lambda expressions are
+
+57
+00:03:15,690 --> 00:03:19,260
+I think a better way would be to call
+them closures.
+
+58
+00:03:19,260 --> 00:03:23,130
+And we will see why, because they can
+close over variables
+
+59
+00:03:23,130 --> 00:03:28,250
+in the outer scope. But these lambda
+expressions can have side effects.
+
+60
+00:03:28,250 --> 00:03:31,380
+But as we said it doesn't really
+matter.
+
+61
+00:03:31,380 --> 00:03:36,420
+We are really emphasizing the fact that
+functional programming is
+
+62
+00:03:36,420 --> 00:03:42,290
+programming using expressions. So why are
+lambda expressions useful?
+
+63
+00:03:42,290 --> 00:03:49,290
+Well, they are useful, because they allow
+you to express your intent better
+
+64
+00:03:49,400 --> 00:03:54,459
+when you're currying functions. Let's
+look at this first example here.
+
+65
+00:03:54,459 --> 00:03:58,250
+Instead of writing add x y = x+y
+
+66
+00:03:58,250 --> 00:04:01,959
+so this is a curried definition
+
+67
+00:04:01,959 --> 00:04:05,600
+This is a function that takes
+a parameter x
+
+68
+00:04:05,600 --> 00:04:08,780
+returns a function that takes a
+parameter y
+
+69
+00:04:08,780 --> 00:04:12,510
+and then returns x plus y. Really
+
+70
+00:04:12,510 --> 00:04:16,160
+the intent is better expressed by this:
+
+71
+00:04:16,160 --> 00:04:19,320
+add is a function
+
+72
+00:04:19,320 --> 00:04:24,630
+that takes a parameter x, returns a
+function that takes a parameter y
+
+73
+00:04:24,630 --> 00:04:27,750
+and then adds them together.
+
+74
+00:04:27,750 --> 00:04:30,830
+This is actually syntactic sugar
+
+75
+00:04:30,830 --> 00:04:35,669
+for this and when I write Haskell I often
+write them in this form.
+
+76
+00:04:35,669 --> 00:04:38,880
+Even though it's a little bit longer
+
+77
+00:04:38,880 --> 00:04:42,479
+it means that I have to type more
+characters
+
+78
+00:04:42,479 --> 00:04:46,680
+but I think this form is more readable
+than that form.
+
+79
+00:04:46,680 --> 00:04:50,039
+And in the course of
+
+80
+00:04:50,039 --> 00:04:53,860
+these lectures we will switch
+between
+
+81
+00:04:53,860 --> 00:04:58,350
+both of these. But again, if you look
+at my Haskell code
+
+82
+00:04:58,350 --> 00:05:03,220
+I prefer to write things using explicit
+lambdas to convey
+
+83
+00:05:03,220 --> 00:05:09,590
+the actual meaning of a curried
+function. Lambda expressions
+
+84
+00:05:09,590 --> 00:05:13,419
+are also useful when you want to
+
+85
+00:05:13,419 --> 00:05:17,110
+make explicit that you're returning a
+function. That's
+
+86
+00:05:17,110 --> 00:05:20,930
+in some sense the same as currying,
+but here
+
+87
+00:05:20,930 --> 00:05:24,539
+if we define a constant function
+
+88
+00:05:24,539 --> 00:05:29,710
+so this is a function that given an a will
+return a function that whatever b
+
+89
+00:05:29,710 --> 00:05:34,490
+you give it, will return that a. So 
+here it's defined: const of x
+
+90
+00:05:34,490 --> 00:05:39,380
+returns a function that will, whatever
+you give it, just ignore it
+
+91
+00:05:39,380 --> 00:05:43,990
+and return x. So that constant
+function there
+
+92
+00:05:43,990 --> 00:05:47,660
+is very concisely defined using a
+lambda expression
+
+93
+00:05:47,660 --> 00:05:50,740
+whereas here I think it's a little bit
+less clear.
+
+94
+00:05:50,740 --> 00:05:53,940
+Const of x underscore equals x.
+
+95
+00:05:53,940 --> 00:05:58,020
+This one doesn't make explicit
+the fact
+
+96
+00:05:58,020 --> 00:06:02,160
+that you are returning a function. So here
+it is also emphasized by putting the
+
+97
+00:06:02,160 --> 00:06:03,120
+parentheses
+
+98
+00:06:03,120 --> 00:06:06,300
+around the type and here you don't do that.
+
+99
+00:06:06,300 --> 00:06:09,500
+This is how I would write
+this function. I would
+
+100
+00:06:09,500 --> 00:06:12,840
+put the parentheses on the type and I
+
+101
+00:06:12,840 --> 00:06:18,099
+write the function as a lambda expression.
+
+102
+00:06:18,099 --> 00:06:21,650
+Here is another use of lambda expressions.
+
+103
+00:06:21,650 --> 00:06:25,530
+And that's to avoid inventing names.
+
+104
+00:06:25,530 --> 00:06:27,889
+Inventing names is
+
+105
+00:06:27,889 --> 00:06:32,259
+one of the hardest things that we have
+to do with programming.
+
+106
+00:06:32,259 --> 00:06:35,389
+Coming up with meaningful names, because often
+
+107
+00:06:35,389 --> 00:06:40,580
+the language forces you to
+name something where you just don't want
+
+108
+00:06:40,580 --> 00:06:42,990
+to name it. You just want to pass the thing
+directly.
+
+109
+00:06:42,990 --> 00:06:46,330
+For example: if I want to map a
+function
+
+110
+00:06:46,330 --> 00:06:50,539
+over a list, there is no reason I should
+give that function here
+
+111
+00:06:50,539 --> 00:06:54,520
+a name f. And what does f say anyway?
+
+112
+00:06:54,520 --> 00:06:57,810
+So instead, what I can do, I can just
+
+113
+00:06:57,810 --> 00:07:00,909
+pass a lambda expression to the map
+
+114
+00:07:00,909 --> 00:07:04,340
+and that will be used to map this
+function
+
+115
+00:07:04,340 --> 00:07:07,689
+over the list. This is
+
+116
+00:07:07,689 --> 00:07:11,370
+not idiomatic Haskell. This
+
+117
+00:07:11,370 --> 00:07:15,279
+is idiomatic Haskell. Really the only
+
+118
+00:07:15,279 --> 00:07:19,979
+place where you want to name something, is
+when you use it more than once.
+
+119
+00:07:19,979 --> 00:07:24,650
+Or if it becomes clear, but that's
+
+120
+00:07:24,650 --> 00:07:28,839
+up to interpretation. Here is another
+
+121
+00:07:28,839 --> 00:07:32,889
+oddity of Haskell and that's called
+sections.
+
+122
+00:07:32,889 --> 00:07:36,589
+With sections you can take
+
+123
+00:07:36,589 --> 00:07:39,919
+a binary operator, an infix operator,
+like plus
+
+124
+00:07:39,919 --> 00:07:43,089
+and use it as a function. So by putting
+
+125
+00:07:43,089 --> 00:07:47,589
+parentheses around it, you can use plus as a
+function. So 1+2
+
+126
+00:07:47,589 --> 00:07:51,629
+equals 3 and plus in parentheses
+
+127
+00:07:51,629 --> 00:07:56,599
+1 2 is also 3. This is a nice trick
+
+128
+00:07:56,599 --> 00:08:01,399
+because we can also put
+
+129
+00:08:01,399 --> 00:08:04,839
+(1+) and we can do
+
+130
+00:08:04,839 --> 00:08:08,460
+(+2) So we can section, we can
+
+131
+00:08:08,460 --> 00:08:12,029
+partially apply + by putting
+
+132
+00:08:12,029 --> 00:08:15,180
+parentheses around the plus. Here we see:
+
+133
+00:08:15,180 --> 00:08:18,699
+We can do (1+) which is a function
+
+134
+00:08:18,699 --> 00:08:22,020
+that expects a second argument, and will
+
+135
+00:08:22,020 --> 00:08:25,339
+add 1 to it. And here we have the function
+
+136
+00:08:25,339 --> 00:08:30,099
+section, (+2) which is a function that
+expects
+
+137
+00:08:30,099 --> 00:08:33,479
+a value here and then adds it
+
+138
+00:08:33,479 --> 00:08:37,829
+to it. So this is 1+2 equals 3.
+In general
+
+139
+00:08:37,829 --> 00:08:39,560
+
+
+140
+00:08:39,560 --> 00:08:43,279
+if funny plus is a binary
+operator
+
+141
+00:08:43,279 --> 00:08:47,100
+then you can write plus in parentheses
+
+142
+00:08:47,100 --> 00:08:50,129
+to use it as a normal function
+
+143
+00:08:50,129 --> 00:08:53,189
+and you can left or right section it by
+
+144
+00:08:53,189 --> 00:08:56,389
+partially applying it to an argument.
+
+145
+00:08:56,389 --> 00:09:00,509
+This is something that you will
+see quite a lot in Haskell
+
+146
+00:09:00,509 --> 00:09:04,759
+specially here, if you want to have a
+function that increments something
+
+147
+00:09:04,759 --> 00:09:11,029
+you just write (1+) as a section. Why
+are sections useful?
+
+148
+00:09:11,029 --> 00:09:16,249
+Here are a couple of examples. You
+want a function that takes an
+
+149
+00:09:16,249 --> 00:09:18,059
+argument and halves it?
+
+150
+00:09:18,059 --> 00:09:21,999
+You just write (/2)
+
+151
+00:09:21,999 --> 00:09:25,199
+And you don't have to write lambda x
+
+152
+00:09:25,199 --> 00:09:29,709
+x divided by 2. So sectioning allows
+you to write something
+
+153
+00:09:29,709 --> 00:09:32,990
+without inventing a name. And that's
+
+154
+00:09:32,990 --> 00:09:36,360
+the whole goal of this exercise.
+
+155
+00:09:36,360 --> 00:09:39,749
+Giving names is hard, so we want to avoid
+that.
+
+156
+00:09:39,749 --> 00:09:44,649
+And sectioning allows you to do that.
+
+157
+00:09:44,649 --> 00:09:51,120
+Here is a preview of the
+exercises. The exercises will be
+
+158
+00:09:51,120 --> 00:09:52,649
+available on the website.
+
+159
+00:09:52,649 --> 00:09:55,939
+And in these exercises we will ask you
+
+160
+00:09:55,939 --> 00:09:59,759
+to use some of these constructs that
+
+161
+00:09:59,759 --> 00:10:03,410
+we have seen in this lecture to define
+
+162
+00:10:03,410 --> 00:10:07,600
+functions. And as I promise you, this will
+be the last
+
+163
+00:10:07,600 --> 00:10:10,860
+exercise that's very Haskell
+specific
+
+164
+00:10:10,860 --> 00:10:14,819
+but since we have been
+talking about how Haskell
+
+165
+00:10:14,819 --> 00:10:18,689
+differs from other languages, I think
+it's quite useful
+
+166
+00:10:18,689 --> 00:10:23,490
+to follow the rest of the lectures to
+do these exercises
+
+167
+00:10:23,490 --> 00:10:26,809
+to get a little bit familiar
+
+168
+00:10:26,809 --> 00:10:31,110
+with the Haskell syntax. Happy hacking
+
+169
+00:10:31,110 --> 00:10:33,689
+and see you next week. Bye bye.
+

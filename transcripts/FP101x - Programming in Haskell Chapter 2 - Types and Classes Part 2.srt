@@ -1,0 +1,901 @@
+1
+00:00:01,430 --> 00:00:03,679
+Welcome back everybody to
+
+2
+00:00:03,679 --> 00:00:07,310
+the lecture 2
+
+3
+00:00:07,310 --> 00:00:10,550
+about types and classes.
+
+4
+00:00:10,550 --> 00:00:14,009
+In this part we're going to talk about
+types of
+
+5
+00:00:14,009 --> 00:00:18,750
+functions and since we are dealing with
+functional programming,
+
+6
+00:00:18,750 --> 00:00:22,050
+functions, values and types
+
+7
+00:00:22,050 --> 00:00:25,510
+are very important and since this
+
+8
+00:00:25,510 --> 00:00:29,730
+can be a little bit difficult for
+beginners
+
+9
+00:00:29,730 --> 00:00:34,120
+please pay attention to this lecture in
+particular because
+
+10
+00:00:34,120 --> 00:00:37,760
+if you miss this you will have
+difficulties
+
+11
+00:00:37,760 --> 00:00:42,809
+in all the remaining lectures. I
+will go a little bit slow here
+
+12
+00:00:42,809 --> 00:00:46,550
+and repeat many times because this is
+super important
+
+13
+00:00:46,550 --> 00:00:50,960
+that you understand this part. What is a
+function?
+
+14
+00:00:50,960 --> 00:00:54,510
+A function is a mapping from values
+
+15
+00:00:54,510 --> 00:00:58,210
+of one type to values of another type
+Here are two
+
+16
+00:00:58,210 --> 00:01:01,879
+very simple examples of function types
+the first one
+
+17
+00:01:01,879 --> 00:01:06,869
+is the function not (negation) which takes
+a boolean
+
+18
+00:01:06,869 --> 00:01:10,030
+and returns another boolean.
+
+19
+00:01:10,030 --> 00:01:13,530
+Nothing too complicated.
+
+20
+00:01:13,530 --> 00:01:16,790
+Let's look at the second function here:
+isDigit.
+
+21
+00:01:16,790 --> 00:01:20,130
+isDigit takes a character and checks
+
+22
+00:01:20,130 --> 00:01:25,420
+whether that character is a digit,
+whether that character is 0, 1, ...
+
+23
+00:01:25,420 --> 00:01:30,090
+up to nine. The type of that is Char to Bool.
+
+24
+00:01:30,090 --> 00:01:34,439
+What that means is it takes a value in
+the set of all characters
+
+25
+00:01:34,439 --> 00:01:38,220
+and will return a value in the set of
+booleans.
+
+26
+00:01:38,220 --> 00:01:43,159
+In general a function from t1 to t2
+
+27
+00:01:43,159 --> 00:01:48,509
+is... The type t1 -> t2
+
+28
+00:01:48,509 --> 00:01:51,540
+is the type of functions that map values
+
+29
+00:01:51,540 --> 00:01:54,630
+from type t1 to values
+
+30
+00:01:54,630 --> 00:01:58,360
+of type t2. t1 is
+
+31
+00:01:58,360 --> 00:02:01,909
+also sometimes called the domain of the
+function
+
+32
+00:02:01,909 --> 00:02:05,430
+and t2 is sometimes called the range
+
+33
+00:02:05,430 --> 00:02:07,460
+of the function.
+
+34
+00:02:07,460 --> 00:02:11,820
+Now you noticed that we write
+
+35
+00:02:11,820 --> 00:02:15,150
+the arrow of the function type is a nice
+arrow,
+
+36
+00:02:15,150 --> 00:02:20,500
+but when you use the key board to
+type in the actual code
+
+37
+00:02:20,500 --> 00:02:24,480
+you will type that as a dash followed by
+a greater than sign,
+
+38
+00:02:24,480 --> 00:02:29,340
+We will use the nicer
+syntax here but just you
+
+39
+00:02:29,340 --> 00:02:32,900
+be careful this is not how you
+type in
+
+40
+00:02:32,900 --> 00:02:38,020
+actually the arrow. When you have a
+function
+
+41
+00:02:38,020 --> 00:02:41,910
+just like with tuples and with lists
+
+42
+00:02:41,910 --> 00:02:45,030
+the types for the range and the domain
+are
+
+43
+00:02:45,030 --> 00:02:48,220
+unrestricted. For example we can have
+function here
+
+44
+00:02:48,220 --> 00:02:51,450
+add that takes as the argument a tuple
+
+45
+00:02:51,450 --> 00:02:56,040
+of two integers and returns as a result
+another integer.
+
+46
+00:02:56,040 --> 00:03:01,210
+add of (x, y) equals x plus y.
+You see here that
+
+47
+00:03:01,210 --> 00:03:05,330
+add takes a tuple of two integers
+
+48
+00:03:05,330 --> 00:03:10,150
+and returns a result that is an integer.
+The other function here
+
+49
+00:03:10,150 --> 00:03:15,600
+is a function that takes an Int and
+returns a list of integers.
+
+50
+00:03:15,600 --> 00:03:18,940
+That's perfectly fine and
+
+51
+00:03:18,940 --> 00:03:23,040
+the definition there: 0 to n returns
+the list
+
+52
+00:03:23,040 --> 00:03:27,500
+[0..n] we have seen in the very
+first lecture
+
+53
+00:03:27,500 --> 00:03:31,420
+that this square bracket with the
+
+54
+00:03:31,420 --> 00:03:35,239
+double dots denote the list from zero up
+to n.
+
+55
+00:03:35,239 --> 00:03:39,900
+One thing,
+
+56
+00:03:39,900 --> 00:03:43,959
+if we make the types,
+
+57
+00:03:43,959 --> 00:03:47,510
+the arguments and the results of function types
+
+58
+00:03:47,510 --> 00:03:52,989
+arbitrary, they can be functions
+themselves and this is where
+
+59
+00:03:52,989 --> 00:03:57,110
+curried functions come in. Instead of
+defining add
+
+60
+00:03:57,110 --> 00:04:00,790
+to take a tuple of integers and return an
+integer
+
+61
+00:04:00,790 --> 00:04:04,850
+in Haskell it is more common to define add
+as follows:
+
+62
+00:04:04,850 --> 00:04:09,380
+we define add as a function that takes an
+integer
+
+63
+00:04:09,380 --> 00:04:14,010
+and returns a function that takes
+another integer
+
+64
+00:04:14,010 --> 00:04:17,169
+and returns an integer.
+
+65
+00:04:17,169 --> 00:04:20,979
+Look at this type here: add is a
+function,
+
+66
+00:04:20,979 --> 00:04:23,979
+here we see that from this arrow,
+
+67
+00:04:23,979 --> 00:04:28,009
+that it takes an integer and returns a
+function
+
+68
+00:04:28,009 --> 00:04:31,889
+that takes another integer and returns
+an integer.
+
+69
+00:04:31,889 --> 00:04:36,430
+That is currying.
+
+70
+00:04:36,430 --> 00:04:39,430
+By itself currying is not
+
+71
+00:04:39,430 --> 00:04:44,129
+very complicated. Functions are just
+
+72
+00:04:44,129 --> 00:04:48,159
+values like lists an integers, there's
+nothing special about this.
+
+73
+00:04:48,159 --> 00:04:52,330
+The thing where it becomes confusing is
+that
+
+74
+00:04:52,330 --> 00:04:55,729
+in Haskell you don't have to write these
+arrows here,
+
+75
+00:04:55,729 --> 00:04:59,539
+because this is so common,
+
+76
+00:04:59,539 --> 00:05:02,990
+the arrow associates to the right,
+
+77
+00:05:02,990 --> 00:05:06,080
+which means that you can write this
+type as
+
+78
+00:05:06,080 --> 00:05:11,370
+Int -> Int -> Int and that's where it
+becomes confusing for beginners.
+
+79
+00:05:11,370 --> 00:05:15,710
+You have to really know
+when you read these types where to
+
+80
+00:05:15,710 --> 00:05:16,520
+put the parentheses.
+
+81
+00:05:16,520 --> 00:05:20,599
+For now there's nothing special here
+
+82
+00:05:20,599 --> 00:05:25,460
+add is a function that takes an integer
+and returns another function that takes
+
+83
+00:05:25,460 --> 00:05:29,529
+an integer and then returns an integer.
+
+84
+00:05:29,529 --> 00:05:32,639
+Notice that both add
+
+85
+00:05:32,639 --> 00:05:36,889
+and add' return the same result,
+
+86
+00:05:36,889 --> 00:05:39,919
+but the normal add takes
+
+87
+00:05:39,919 --> 00:05:44,180
+a tuple so it
+takes both arguments at the same time
+
+88
+00:05:44,180 --> 00:05:48,159
+whereas add' takes the arguments
+
+89
+00:05:48,159 --> 00:05:51,199
+one by one.
+
+90
+00:05:51,199 --> 00:05:54,860
+Functions that take their arguments one by
+one are called
+
+91
+00:05:54,860 --> 00:05:58,300
+curried functions.
+
+92
+00:05:58,300 --> 00:06:02,009
+The person that invented
+
+93
+00:06:02,009 --> 00:06:07,150
+this way of dealing with functions,
+where the functions take the arguments
+
+94
+00:06:07,150 --> 00:06:08,050
+one by one,
+
+95
+00:06:08,050 --> 00:06:11,449
+was Haskell B. Curry and Haskell
+
+96
+00:06:11,449 --> 00:06:17,439
+is named after him. That's where Haskell
+comes from, just like Pascal
+
+97
+00:06:17,439 --> 00:06:20,990
+was named after Blaise Pascal,
+
+98
+00:06:20,990 --> 00:06:24,509
+Haskell is named after Haskell B. Curry,
+
+99
+00:06:24,509 --> 00:06:30,420
+the person that invented currying of
+functions.
+
+100
+00:06:30,420 --> 00:06:32,800
+Every function that takes two arguments
+
+101
+00:06:32,800 --> 00:06:38,360
+can be turned into a function that takes
+these arguments one by one.
+
+102
+00:06:38,360 --> 00:06:42,780
+For example here's a function mult that
+takes three
+
+103
+00:06:42,780 --> 00:06:46,530
+parameters x, y and z and multiplies them.
+
+104
+00:06:46,530 --> 00:06:49,620
+mult x y z is x times y times z
+
+105
+00:06:49,620 --> 00:06:53,870
+One way to write this function would be
+to take a tuple of
+
+106
+00:06:53,870 --> 00:06:57,300
+three values x, y and z and then
+multiply them.
+
+107
+00:06:57,300 --> 00:07:02,190
+The Haskell way of doing this is to
+take these arguments one by one:
+
+108
+00:07:02,190 --> 00:07:06,190
+mult x returns a function
+
+109
+00:07:06,190 --> 00:07:10,000
+that takes another argument y and then
+
+110
+00:07:10,000 --> 00:07:13,070
+its returns a function that takes
+another argument z
+
+111
+00:07:13,070 --> 00:07:17,180
+and then when you have all these three
+arguments, you can multiply them
+
+112
+00:07:17,180 --> 00:07:20,380
+to return the final Int.
+
+113
+00:07:20,380 --> 00:07:24,050
+So mult takes an integer,
+
+114
+00:07:24,050 --> 00:07:28,240
+returns a function mult x that takes
+an integer y
+
+115
+00:07:28,240 --> 00:07:33,440
+that returns a new function mult x y
+that takes an integer z
+
+116
+00:07:33,440 --> 00:07:36,570
+and returns the result x, y and z.
+
+117
+00:07:36,570 --> 00:07:39,730
+What we see here is that
+
+118
+00:07:39,730 --> 00:07:44,770
+in the type we still write the parentheses,
+so the parentheses in the type
+
+119
+00:07:44,770 --> 00:07:48,930
+go left to right so the
+function arrow
+
+120
+00:07:48,930 --> 00:07:52,150
+binds to the right but
+
+121
+00:07:52,150 --> 00:07:58,350
+when we write here mult x y
+
+122
+00:07:58,350 --> 00:08:01,419
+we don't put parentheses.
+
+123
+00:08:01,419 --> 00:08:05,320
+if we would put the parentheses there
+we would write
+
+124
+00:08:05,320 --> 00:08:10,130
+(mult x) and then parentheses around that.
+There the parentheses
+
+125
+00:08:10,130 --> 00:08:14,080
+associate to the left. For application
+
+126
+00:08:14,080 --> 00:08:18,620
+the parentheses associate to the left,
+for the function arrow
+
+127
+00:08:18,620 --> 00:08:24,100
+they associate to the right and that
+matches up perfectly,
+
+128
+00:08:24,100 --> 00:08:27,260
+so in practice we don't have to write any
+parentheses.
+
+129
+00:08:27,260 --> 00:08:30,710
+Now you can ask yourself
+
+130
+00:08:30,710 --> 00:08:33,729
+why is this currying useful?
+
+131
+00:08:33,729 --> 00:08:36,830
+Why are we just like in other languages
+
+132
+00:08:36,830 --> 00:08:38,340
+why don't we just
+
+133
+00:08:38,340 --> 00:08:43,300
+have functions that take a whole list of
+parameters or
+
+134
+00:08:43,300 --> 00:08:46,980
+like tuple of parameters to be precise in
+one go?
+
+135
+00:08:46,980 --> 00:08:51,920
+why do we do this complicated thing of
+taking one argument and then
+
+136
+00:08:51,920 --> 00:08:54,240
+returning a function that takes the
+other
+
+137
+00:08:54,240 --> 00:08:58,200
+parameter etcetera? Well the reason is
+
+138
+00:08:58,200 --> 00:09:01,290
+that we can partially apply a function.
+
+139
+00:09:01,290 --> 00:09:05,570
+For example if we have this function add'
+
+140
+00:09:05,570 --> 00:09:10,280
+that was defined in a curried way, we can
+define a function that
+
+141
+00:09:10,280 --> 00:09:15,220
+increments a value with 1 by
+partially applying
+
+142
+00:09:15,220 --> 00:09:19,390
+add' to one. If we look at that
+type there
+
+143
+00:09:19,390 --> 00:09:23,720
+add' 1 is a function that takes
+an integer
+
+144
+00:09:23,720 --> 00:09:28,960
+and returns another integer. When we
+will talk lists
+
+145
+00:09:28,960 --> 00:09:33,890
+in a future lecture, we'll see that
+there's many functions
+
+146
+00:09:33,890 --> 00:09:37,940
+that transform lists into other lists
+
+147
+00:09:37,940 --> 00:09:42,260
+and most of these functions are also defined
+in the curried form.
+
+148
+00:09:42,260 --> 00:09:45,830
+For example the function take here, take 5:
+
+149
+00:09:45,830 --> 00:09:50,530
+take is defined as a curried function
+
+150
+00:09:50,530 --> 00:09:54,970
+that takes an integer, returns a function
+from list to list,
+
+151
+00:09:54,970 --> 00:09:58,220
+which means that we can partially
+apply
+
+152
+00:09:58,220 --> 00:10:01,740
+take 5 to yield a function
+
+153
+00:10:01,740 --> 00:10:04,960
+that takes a list of integers to another
+list of integers
+
+154
+00:10:04,960 --> 00:10:08,540
+which just takes the first five
+elements
+
+155
+00:10:08,540 --> 00:10:12,790
+of the input list. Similarly the function
+drop
+
+156
+00:10:12,790 --> 00:10:16,960
+takes an integer and returns a function
+from list to list
+
+157
+00:10:16,960 --> 00:10:20,720
+and what we see here is that we can now
+define drop 5:
+
+158
+00:10:20,720 --> 00:10:25,570
+we can partially apply drop 5 and it
+will return a function
+
+159
+00:10:25,570 --> 00:10:29,200
+that will take a list, drop the first
+five elements
+
+160
+00:10:29,200 --> 00:10:32,260
+and then return the list. This is super
+convenient
+
+161
+00:10:32,260 --> 00:10:35,650
+
+
+162
+00:10:35,650 --> 00:10:39,350
+and in Haskell it's very lightweight. The
+syntax in Haskell
+
+163
+00:10:39,350 --> 00:10:42,610
+is optimized to have curried functions
+
+164
+00:10:42,610 --> 00:10:47,370
+and in that respect Haskell is very very
+different from
+
+165
+00:10:47,370 --> 00:10:51,950
+most other languages that are optimized
+for functions that take
+
+166
+00:10:51,950 --> 00:10:57,830
+tuples of arguments. I already mentioned a
+couple of times
+
+167
+00:10:57,830 --> 00:11:02,140
+the way we do the parentheses on
+
+168
+00:11:02,140 --> 00:11:05,790
+expressions with function parameters.
+
+169
+00:11:05,790 --> 00:11:08,860
+The arrow associates to the right: if we
+have the
+
+170
+00:11:08,860 --> 00:11:11,970
+type
+
+171
+00:11:11,970 --> 00:11:15,880
+on the bottom here Int -> Int -> Int -> Int
+
+172
+00:11:15,880 --> 00:11:19,760
+the parentheses are
+
+173
+00:11:19,760 --> 00:11:24,220
+associated to the right. Since we don't
+like to write parentheses
+
+174
+00:11:24,220 --> 00:11:28,360
+we can write this thing as Int -> Int -> Int -> Int.
+
+175
+00:11:28,360 --> 00:11:32,310
+But if we put all the parentheses in there
+
+176
+00:11:32,310 --> 00:11:36,760
+we get the term here at the bottom, but
+this is what we write
+
+177
+00:11:36,760 --> 00:11:40,750
+because we don't want to write
+
+178
+00:11:40,750 --> 00:11:45,950
+unnecessary parentheses and as I said
+also
+
+179
+00:11:45,950 --> 00:11:49,710
+when we do function application the
+
+180
+00:11:49,710 --> 00:11:53,270
+and parentheses associate to the left.
+
+181
+00:11:53,270 --> 00:11:58,430
+When we partially apply a function
+you can write parentheses around that
+
+182
+00:11:58,430 --> 00:12:02,250
+but we don't have to. When you
+write mult x y z
+
+183
+00:12:02,250 --> 00:12:06,230
+that really means mult x applied
+
+184
+00:12:06,230 --> 00:12:10,300
+to y applied to z.
+
+185
+00:12:10,300 --> 00:12:14,450
+
+
+186
+00:12:14,450 --> 00:12:17,450
+Unless you're using explicit
+
+187
+00:12:17,450 --> 00:12:22,110
+tuples, all functions in Haskell are
+normally defined
+
+188
+00:12:22,110 --> 00:12:26,250
+in curried form. In most languages
+
+189
+00:12:26,250 --> 00:12:29,470
+all functions are defined in
+
+190
+00:12:29,470 --> 00:12:33,500
+the uncurried form.
+
+191
+00:12:33,500 --> 00:12:37,690
+This is part 2 about functions.
+There will be
+
+192
+00:12:37,690 --> 00:12:44,440
+a lot of exercises to drill this idea of
+where to put the parentheses
+
+193
+00:12:44,440 --> 00:12:48,270
+in the function type
+
+194
+00:12:48,270 --> 00:12:51,580
+and where to put the parentheses in the
+expressions,
+
+195
+00:12:51,580 --> 00:12:56,090
+so this become second nature. This is
+something you really have to
+
+196
+00:12:56,090 --> 00:13:00,580
+keep doing until you don't think
+about it anymore.
+
+197
+00:13:00,580 --> 00:13:04,620
+Alright, please do your exercises
+
+198
+00:13:04,620 --> 00:13:08,490
+and see you later in the last part
+
+199
+00:13:08,490 --> 00:13:09,510
+of Chapter 2.
+

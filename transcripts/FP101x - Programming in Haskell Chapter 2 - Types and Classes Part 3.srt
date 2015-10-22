@@ -1,0 +1,1150 @@
+1
+00:00:01,010 --> 00:00:07,609
+Welcome back! I hope you had some fun with
+currying and tuples and function types.
+
+2
+00:00:07,609 --> 00:00:10,740
+What we're going to talk about now is
+
+3
+00:00:10,740 --> 00:00:14,839
+type classes and polymorphic functions.
+
+4
+00:00:14,839 --> 00:00:18,180
+Polymorphic functions
+
+5
+00:00:18,180 --> 00:00:21,960
+are functions that are not defined
+
+6
+00:00:21,960 --> 00:00:26,269
+on concrete types but that are defined
+using type variables.
+
+7
+00:00:26,269 --> 00:00:33,180
+Here is a very polymorphic
+example of a polymorphic function:
+
+8
+00:00:33,180 --> 00:00:36,280
+the function length. If I want to
+calculate
+
+9
+00:00:36,280 --> 00:00:40,270
+the length of a list, it really doesn't
+matter at all
+
+10
+00:00:40,270 --> 00:00:43,700
+what the type of the elements of the
+list is.
+
+11
+00:00:43,700 --> 00:00:47,530
+If I have the list [1, 2, 3] or the list
+
+12
+00:00:47,530 --> 00:00:51,129
+with 3 characters ['a', 'b', 'c'],
+
+13
+00:00:51,129 --> 00:00:54,640
+in both cases the length of this
+list is three.
+
+14
+00:00:54,640 --> 00:00:58,620
+The type of the elements doesn't
+matter
+
+15
+00:00:58,620 --> 00:01:02,960
+when I want to calculate the length of
+a list. When we look at the type of
+
+16
+00:01:02,960 --> 00:01:03,949
+length here
+
+17
+00:01:03,949 --> 00:01:08,470
+we see it length has type
+
+18
+00:01:08,470 --> 00:01:13,049
+[a] -> Int and that a is a type variable
+
+19
+00:01:13,049 --> 00:01:16,229
+and in Haskell that is called ... you can see that
+
+20
+00:01:16,229 --> 00:01:19,409
+types start with an upper case
+
+21
+00:01:19,409 --> 00:01:24,159
+letter here: Int is
+a concrete type, because it starts with
+
+22
+00:01:24,159 --> 00:01:27,210
+an upper case I and the a here,
+
+23
+00:01:27,210 --> 00:01:30,680
+the lower case a that's a type variable.
+
+24
+00:01:30,680 --> 00:01:34,040
+Really what this type says is that
+
+25
+00:01:34,040 --> 00:01:37,060
+length has type for all types a
+
+26
+00:01:37,060 --> 00:01:40,600
+list a to Int.
+
+27
+00:01:40,600 --> 00:01:45,020
+If you're used to Java generics or
+C# generics
+
+28
+00:01:45,020 --> 00:01:49,049
+typically the
+
+29
+00:01:49,049 --> 00:01:52,759
+type variable is declared explicitly
+
+30
+00:01:52,759 --> 00:01:56,000
+in the type of the function.
+
+31
+00:01:56,000 --> 00:02:00,030
+For example in C# you would define
+length of t
+
+32
+00:02:00,030 --> 00:02:03,090
+and then it would have an argument
+list of t
+
+33
+00:02:03,090 --> 00:02:06,640
+and return an Int. But in Haskell this
+
+34
+00:02:06,640 --> 00:02:09,940
+a here is (since it's a type variable)
+
+35
+00:02:09,940 --> 00:02:13,520
+its implicitly quantified. You
+don't have to
+
+36
+00:02:13,520 --> 00:02:16,530
+put it in angle brackets or anything.
+
+37
+00:02:16,530 --> 00:02:20,860
+Haskell is optimized for this case
+
+38
+00:02:20,860 --> 00:02:25,070
+but the price that you pay is that type
+variables start with a
+
+39
+00:02:25,070 --> 00:02:28,140
+lower case and types start with an
+upper case.
+
+40
+00:02:28,140 --> 00:02:31,930
+If we look at this type here, length
+
+41
+00:02:31,930 --> 00:02:37,630
+has type for any type a length takes a
+list of values of type a
+
+42
+00:02:37,630 --> 00:02:41,730
+and returns an integer. This is
+what you expect
+
+43
+00:02:41,730 --> 00:02:45,570
+and it doesn't matter what the type of the
+
+44
+00:02:45,570 --> 00:02:48,670
+elements is of the list, your only
+interested
+
+45
+00:02:48,670 --> 00:02:51,870
+in counting how many there are.
+You're not
+
+46
+00:02:51,870 --> 00:02:55,000
+interested what these values
+actually are.
+
+47
+00:02:55,000 --> 00:03:00,100
+Let's look here: the length of
+[False True]
+
+48
+00:03:00,100 --> 00:03:03,380
+then in this case a has type Bool
+
+49
+00:03:03,380 --> 00:03:06,510
+is 2 and here we have a list of
+
+50
+00:03:06,510 --> 00:03:10,190
+integers, so a would be in that case Int
+
+51
+00:03:10,190 --> 00:03:14,240
+but the length here is 4.
+
+52
+00:03:14,240 --> 00:03:17,950
+In both cases we can use a length
+
+53
+00:03:17,950 --> 00:03:21,060
+of type for all a to Int
+
+54
+00:03:21,060 --> 00:03:24,660
+and in the first case a is Bool and in
+the second case
+
+55
+00:03:24,660 --> 00:03:27,810
+a is Int. As I said
+
+56
+00:03:27,810 --> 00:03:31,920
+the price we pay for not having to
+declare
+
+57
+00:03:31,920 --> 00:03:36,010
+on what type length is
+polymorphic
+
+58
+00:03:36,010 --> 00:03:39,170
+is that we differentiate the namespaces
+
+59
+00:03:39,170 --> 00:03:42,470
+of types and type variables and in Haskell
+
+60
+00:03:42,470 --> 00:03:46,730
+type variables must begin with a lower
+case letter.
+
+61
+00:03:46,730 --> 00:03:50,330
+By convention we use
+
+62
+00:03:50,330 --> 00:03:53,630
+a, b, c, etcetera for types variables,
+
+63
+00:03:53,630 --> 00:03:57,020
+whereas in languages like Java or C#
+
+64
+00:03:57,020 --> 00:04:00,120
+typically we use S and T and R
+
+65
+00:04:00,120 --> 00:04:03,959
+for type variables.
+
+66
+00:04:03,959 --> 00:04:07,560
+In Haskell its lower case a, b and c
+
+67
+00:04:07,560 --> 00:04:11,140
+where in C# you would write List<T>
+
+68
+00:04:11,140 --> 00:04:14,239
+in Haskell you would write [a].
+
+69
+00:04:14,239 --> 00:04:17,620
+Okay, here are
+
+70
+00:04:17,620 --> 00:04:22,419
+a number of polymorphic functions from
+the Haskell standard prelude.
+
+71
+00:04:22,419 --> 00:04:27,069
+The standard prelude is the Haskell SDK
+or the Haskell BCL,
+
+72
+00:04:27,069 --> 00:04:31,189
+the standard library like every
+language comes with the standard library
+
+73
+00:04:31,189 --> 00:04:35,710
+and the types of these functions
+
+74
+00:04:35,710 --> 00:04:40,169
+reveal quite a lot about their
+implementation. For example let's
+
+75
+00:04:40,169 --> 00:04:41,180
+look at the first one:
+
+76
+00:04:41,180 --> 00:04:44,530
+first takes a tuple of
+
+77
+00:04:44,530 --> 00:04:48,289
+a and b and returns a value of type a.
+
+78
+00:04:48,289 --> 00:04:51,539
+What can this function do?
+
+79
+00:04:51,539 --> 00:04:56,780
+It takes a tuple and it
+returns a value of type a
+
+80
+00:04:56,780 --> 00:05:00,039
+so really it's quite obvious from that
+type
+
+81
+00:05:00,039 --> 00:05:04,500
+that what this function does is it
+returns the first
+
+82
+00:05:04,500 --> 00:05:10,389
+element of the tuple. Now let's look
+at the type of head.
+
+83
+00:05:10,389 --> 00:05:13,770
+head takes a list of a for any type a
+
+84
+00:05:13,770 --> 00:05:17,189
+and returns an a. In this case
+
+85
+00:05:17,189 --> 00:05:21,069
+you have more choice: 
+given a list of type a
+
+86
+00:05:21,069 --> 00:05:24,779
+if I have to return a value of type a I
+can pick
+
+87
+00:05:24,779 --> 00:05:29,580
+any value in that list and head gives
+you the first one.
+
+88
+00:05:29,580 --> 00:05:34,259
+One of the interesting things here's
+what happens
+
+89
+00:05:34,259 --> 00:05:37,949
+when you give head the empty
+list.
+
+90
+00:05:37,949 --> 00:05:41,460
+In that case this function will return
+
+91
+00:05:41,460 --> 00:05:44,699
+undefined or will throw an exception.
+
+92
+00:05:44,699 --> 00:05:48,029
+That is not given in this types:
+the types says that
+
+93
+00:05:48,029 --> 00:05:51,289
+for all lists of type a
+
+94
+00:05:51,289 --> 00:05:54,479
+it will return a value of type a
+
+95
+00:05:54,479 --> 00:05:58,669
+but that's not really true because when
+I give it the empty list
+
+96
+00:05:58,669 --> 00:06:02,639
+it will fail and not really give me
+
+97
+00:06:02,639 --> 00:06:06,330
+a value. The third example here take
+
+98
+00:06:06,330 --> 00:06:10,169
+takes an integer and returns a function
+
+99
+00:06:10,169 --> 00:06:14,180
+that takes a list and returns a list.
+
+100
+00:06:14,180 --> 00:06:17,449
+Remember, when we have a type with arrows the
+
+101
+00:06:17,449 --> 00:06:20,740
+parentheses associate to the right.
+
+102
+00:06:20,740 --> 00:06:24,460
+take, if we put in the parentheses, would be
+
+103
+00:06:24,460 --> 00:06:27,789
+Int -> ([a] -> [a])
+
+104
+00:06:27,789 --> 00:06:31,500
+take takes a number and
+
+105
+00:06:31,500 --> 00:06:38,500
+a list, takes the first n elements from
+the list and returns that list.
+
+106
+00:06:38,510 --> 00:06:40,260
+Now the next function here: zip
+
+107
+00:06:40,260 --> 00:06:44,770
+is a nice one. It takes two lists
+
+108
+00:06:44,770 --> 00:06:47,930
+and returns a list of pairs
+
+109
+00:06:47,930 --> 00:06:51,370
+and the way it works is it takes the two
+lists and
+
+110
+00:06:51,370 --> 00:06:54,630
+takes each element of these two lists and
+combines them
+
+111
+00:06:54,630 --> 00:06:58,050
+into a tuple. Now I think
+
+112
+00:06:58,050 --> 00:07:01,580
+the type of zip looks a little bit nicer
+
+113
+00:07:01,580 --> 00:07:06,120
+when you don't write that in curried form.
+When you would write the type list
+
+114
+00:07:06,120 --> 00:07:10,199
+using tuples it would have type
+
+115
+00:07:10,199 --> 00:07:13,220
+([a], [b]) -> [(a, b)]
+
+116
+00:07:13,220 --> 00:07:18,030
+There you can really see in the type
+
+117
+00:07:18,030 --> 00:07:21,729
+that zip
+
+118
+00:07:21,729 --> 00:07:26,550
+twists the lists around.
+Then the last function here,
+
+119
+00:07:26,550 --> 00:07:32,010
+that's perhaps the simplest function
+you can imagine in Haskell:
+
+120
+00:07:32,010 --> 00:07:32,690
+the identity function
+
+121
+00:07:32,690 --> 00:07:37,050
+it takes at value of type a and returns a
+value of type a
+
+122
+00:07:37,050 --> 00:07:41,460
+for any a. If you think a
+little bit about that
+
+123
+00:07:41,460 --> 00:07:46,110
+the only thing this function can do is
+you know just return its value because
+
+124
+00:07:46,110 --> 00:07:46,900
+otherwise
+
+125
+00:07:46,900 --> 00:07:50,090
+it will be hard to work on any
+
+126
+00:07:50,090 --> 00:07:53,289
+type a.
+
+127
+00:07:53,289 --> 00:07:56,300
+The identity goes
+
+128
+00:07:56,300 --> 00:07:59,680
+for all a: a -> a.
+
+129
+00:07:59,680 --> 00:08:03,669
+The only thing really that it can do is it
+can take the argument
+
+130
+00:08:03,669 --> 00:08:07,380
+and immediately return that. If you're
+interested
+
+131
+00:08:07,380 --> 00:08:11,270
+in this thing where you look
+at the type and then you get the
+
+132
+00:08:11,270 --> 00:08:12,120
+property
+
+133
+00:08:12,120 --> 00:08:15,289
+about the implementation you should
+read
+
+134
+00:08:15,289 --> 00:08:18,539
+Phill Wadler's paper 'Theorems for Free' and
+
+135
+00:08:18,539 --> 00:08:21,889
+that paper will explain that
+
+136
+00:08:21,889 --> 00:08:26,190
+every polymorphic type gives you a theorem
+that holds
+
+137
+00:08:26,190 --> 00:08:29,410
+for that function.
+
+138
+00:08:29,410 --> 00:08:32,450
+That's a little bit advanced so
+
+139
+00:08:32,450 --> 00:08:36,490
+you can read that if you want and there will
+be a link to the paper
+
+140
+00:08:36,490 --> 00:08:40,560
+on the course website. The last topic
+
+141
+00:08:40,560 --> 00:08:44,620
+that we're going to do in the context
+of functions
+
+142
+00:08:44,620 --> 00:08:47,410
+are overloaded functions.
+
+143
+00:08:47,410 --> 00:08:51,040
+We all know overloaded function, most
+languages support them
+
+144
+00:08:51,040 --> 00:08:54,780
+for example in Java you can overload
+
+145
+00:08:54,780 --> 00:08:58,430
+functions with different parameter type.
+
+146
+00:08:58,430 --> 00:09:02,570
+I can define a function foo that
+takes and int
+
+147
+00:09:02,570 --> 00:09:07,230
+and then I can have an overload that takes
+a boolean and then I can have a number
+
+148
+00:09:07,230 --> 00:09:11,800
+another overload takes a List and the
+name
+
+149
+00:09:11,800 --> 00:09:15,930
+of that function is the same but the
+types of the parameters
+
+150
+00:09:15,930 --> 00:09:20,990
+are different. In Haskell overloaded is
+
+151
+00:09:20,990 --> 00:09:24,400
+done in a slightly different form.
+
+152
+00:09:24,400 --> 00:09:28,100
+It corresponds more to the notion of
+interfaces
+
+153
+00:09:28,100 --> 00:09:31,870
+in object-oriented languages.
+In Haskell
+
+154
+00:09:31,870 --> 00:09:35,740
+when you overload a function it really
+means
+
+155
+00:09:35,740 --> 00:09:39,970
+not overloading in the
+object-oriented sense,
+
+156
+00:09:39,970 --> 00:09:43,260
+it really means that you're restricting
+
+157
+00:09:43,260 --> 00:09:46,850
+
+
+158
+00:09:46,850 --> 00:09:51,060
+the types of the parameters. In this case
+when I want to sum
+
+159
+00:09:51,060 --> 00:09:55,420
+the elements of a list, I cannot say
+
+160
+00:09:55,420 --> 00:09:58,870
+that type sum has type [a] -> a
+
+161
+00:09:58,870 --> 00:10:02,430
+because what if I
+
+162
+00:10:02,430 --> 00:10:06,320
+have a list of characters I cannot
+
+163
+00:10:06,320 --> 00:10:12,460
+add characters together. Maybe you can
+say I can define to add characters
+
+164
+00:10:12,460 --> 00:10:13,670
+but let's say then
+
+165
+00:10:13,670 --> 00:10:17,150
+that we have a list of tuples...
+
+166
+00:10:17,150 --> 00:10:21,620
+Well, in that case sum of the list of tuples
+of type (a, b)
+
+167
+00:10:21,620 --> 00:10:26,240
+doesn't really return a tuple of (a, b).
+That doesn't make sense.
+
+168
+00:10:26,240 --> 00:10:29,870
+What we want to do is we want to
+restrict the type of
+
+169
+00:10:29,870 --> 00:10:33,580
+the elements in the list such that they
+can be summed.
+
+170
+00:10:33,580 --> 00:10:36,720
+That is what Haskell overloading
+
+171
+00:10:36,720 --> 00:10:40,380
+gives you. What you see here in this type
+sum has type
+
+172
+00:10:40,380 --> 00:10:43,620
+Num a =>
+
+173
+00:10:43,620 --> 00:10:47,960
+Num a => [a] -> a. What this means
+
+174
+00:10:47,960 --> 00:10:51,040
+is that sum doesn't take
+
+175
+00:10:51,040 --> 00:10:54,430
+a list of values of type a for any a
+
+176
+00:10:54,430 --> 00:10:57,459
+but only values of type a
+
+177
+00:10:57,459 --> 00:10:59,189
+that
+
+178
+00:10:59,189 --> 00:11:01,680
+are in this Num class
+
+179
+00:11:01,680 --> 00:11:04,730
+or in, if you think about
+
+180
+00:11:04,730 --> 00:11:08,999
+object orientation, it only takes a
+list of
+
+181
+00:11:08,999 --> 00:11:12,290
+values of type A that implement the
+
+182
+00:11:12,290 --> 00:11:16,529
+Num interface. When you see this
+notation here
+
+183
+00:11:16,529 --> 00:11:20,819
+Num a => roughly
+
+184
+00:11:20,819 --> 00:11:25,480
+If you are a Java or C# or PHP
+programmer
+
+185
+00:11:25,480 --> 00:11:28,959
+or a C++ programmer, think of this
+
+186
+00:11:28,959 --> 00:11:32,889
+as restricting the values
+
+187
+00:11:32,889 --> 00:11:36,339
+on which this can work. In Java you have the
+same thing: if you have a
+
+188
+00:11:36,339 --> 00:11:39,379
+generic function you can restrict
+
+189
+00:11:39,379 --> 00:11:42,540
+the values by requiring
+
+190
+00:11:42,540 --> 00:11:46,819
+that the types implement a certain
+interface. In C# you can do the same
+
+191
+00:11:46,819 --> 00:11:48,300
+thing...
+
+192
+00:11:48,300 --> 00:11:52,160
+most languages allow this and
+Haskell is no
+
+193
+00:11:52,160 --> 00:11:56,569
+exception. sum takes a list
+
+194
+00:11:56,569 --> 00:11:59,860
+and returns it into a value but it can
+
+195
+00:11:59,860 --> 00:12:03,189
+only do that when the values in the list
+
+196
+00:12:03,189 --> 00:12:06,509
+support the Num class or the Num interface.
+
+197
+00:12:06,509 --> 00:12:10,939
+
+
+198
+00:12:10,939 --> 00:12:14,100
+In this case we can do sum of
+integers
+
+199
+00:12:14,100 --> 00:12:18,069
+then in that case a = Int and we know
+
+200
+00:12:18,069 --> 00:12:21,639
+that integers are number,
+
+201
+00:12:21,639 --> 00:12:25,689
+so that's fine. We will see what this Num class
+is later. The Num class basically says
+
+202
+00:12:25,689 --> 00:12:28,439
+that you can do addition and
+multiplication and so on.
+
+203
+00:12:28,439 --> 00:12:32,860
+Second one here is a list of
+floating-point numbers.
+
+204
+00:12:32,860 --> 00:12:36,889
+I can sum them as well, but here
+
+205
+00:12:36,889 --> 00:12:40,079
+we get a type error. The last thing here we get
+a type error
+
+206
+00:12:40,079 --> 00:12:43,759
+because here we have a list of
+characters and
+
+207
+00:12:43,759 --> 00:12:47,300
+characters don't support the Num interface
+
+208
+00:12:47,300 --> 00:12:51,410
+Characters are not an
+instanceof the Num class
+
+209
+00:12:51,410 --> 00:12:55,699
+in Haskell speak. Haskel has
+
+210
+00:12:55,699 --> 00:13:00,379
+besides Num several type classes,
+you can define your own type classes,
+
+211
+00:13:00,379 --> 00:13:02,269
+we will see how to do that later
+
+212
+00:13:02,269 --> 00:13:04,160
+and in this case
+
+213
+00:13:04,160 --> 00:13:07,860
+the Num class says that you have
+
+214
+00:13:07,860 --> 00:13:11,029
+addition. What that means is that
+
+215
+00:13:11,029 --> 00:13:14,460
+the type of addition takes
+
+216
+00:13:14,460 --> 00:13:18,790
+a value of type a, returns a function that
+takes another value
+
+217
+00:13:18,790 --> 00:13:21,910
+of type a and then returns a value
+of type a
+
+218
+00:13:21,910 --> 00:13:26,290
+but it's not for all values of a,
+
+219
+00:13:26,290 --> 00:13:29,589
+only values in the Num class.
+Similarly,
+
+220
+00:13:29,589 --> 00:13:32,820
+when you want to compare two values for
+equality
+
+221
+00:13:32,820 --> 00:13:37,080
+they have to be in the Eq class.
+Here you see
+
+222
+00:13:37,080 --> 00:13:40,310
+that the equality operator has type
+
+223
+00:13:40,310 --> 00:13:43,820
+Eq a => a -> a -> Bool
+
+224
+00:13:43,820 --> 00:13:46,890
+and finally
+
+225
+00:13:46,890 --> 00:13:50,510
+there's the type of values that you can
+compare
+
+226
+00:13:50,510 --> 00:13:54,660
+so the order types and there less than
+has type
+
+227
+00:13:54,660 --> 00:13:57,959
+Ord a => a -> a -> Bool
+
+228
+00:13:57,959 --> 00:14:01,940
+Here are some
+
+229
+00:14:01,940 --> 00:14:05,510
+exercises. The exercises you
+
+230
+00:14:05,510 --> 00:14:09,800
+will do on the website so I won't
+give you
+
+231
+00:14:09,800 --> 00:14:12,880
+the answers right now but the
+
+232
+00:14:12,880 --> 00:14:17,400
+exercises will be on the website but
+I'll walk you through this exercise
+
+233
+00:14:17,400 --> 00:14:22,529
+to get you familiar. So the
+question is like what is the type
+
+234
+00:14:22,529 --> 00:14:28,070
+of the value of the list
+
+235
+00:14:28,070 --> 00:14:31,100
+with three characters a, b and c
+
+236
+00:14:31,100 --> 00:14:34,480
+and so on and so on.
+
+237
+00:14:34,480 --> 00:14:38,459
+Please do these exercises because they
+will make sure
+
+238
+00:14:38,459 --> 00:14:42,180
+that you understand the idea of types
+that we
+
+239
+00:14:42,180 --> 00:14:45,310
+explained in this lecture.
+
+240
+00:14:45,310 --> 00:14:49,190
+Then here are a couple of more
+
+241
+00:14:49,190 --> 00:14:52,529
+complicated exercises,
+
+242
+00:14:52,529 --> 00:14:56,380
+where you don't get a value and you have
+to compute the type
+
+243
+00:14:56,380 --> 00:14:59,410
+but you get a function and now you have
+to
+
+244
+00:14:59,410 --> 00:15:03,640
+compute the type of the function and the
+trick here
+
+245
+00:15:03,640 --> 00:15:07,320
+and this is what I'm going to...
+
+246
+00:15:07,320 --> 00:15:10,329
+the secret I'm going to reveal
+to you
+
+247
+00:15:10,329 --> 00:15:13,100
+is that you can use GHC
+
+248
+00:15:13,100 --> 00:15:17,380
+to check your answers. When you're doing
+the exercises don't go and
+
+249
+00:15:17,380 --> 00:15:20,420
+try them out randomly. What you do is
+
+250
+00:15:20,420 --> 00:15:23,800
+open up GHC and used the :type
+
+251
+00:15:23,800 --> 00:15:27,470
+functionality to do these exercises.
+
+252
+00:15:27,470 --> 00:15:30,480
+So you are
+
+253
+00:15:30,480 --> 00:15:34,750
+sure that you can score a hundred
+percent on every one of them.
+
+254
+00:15:34,750 --> 00:15:39,150
+Thank you and happy hacking. Use GHC
+
+255
+00:15:39,150 --> 00:15:43,990
+to do your exercises and if you
+don't use Haskell
+
+256
+00:15:43,990 --> 00:15:48,340
+but another language, make sure that
+you're also using
+
+257
+00:15:48,340 --> 00:15:51,840
+your compiler to check your types.
+
+258
+00:15:51,840 --> 00:15:55,600
+Because we as humans should not do this
+type checking.
+
+259
+00:15:55,600 --> 00:15:58,740
+That's why we have computers to do that
+for us.
+
+260
+00:15:58,740 --> 00:16:01,230
+Thank you very much and see you next
+week.
+

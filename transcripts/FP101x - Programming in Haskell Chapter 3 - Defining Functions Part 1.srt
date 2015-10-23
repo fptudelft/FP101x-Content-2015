@@ -1,0 +1,971 @@
+1
+00:00:01,750 --> 00:00:03,590
+Hi everybody! Welcome
+
+2
+00:00:03,590 --> 00:00:06,890
+to another episode of FP101x.
+
+3
+00:00:06,890 --> 00:00:11,179
+And what we're going to do today
+
+4
+00:00:11,179 --> 00:00:14,750
+is we're going to look how to define
+
+5
+00:00:14,750 --> 00:00:18,260
+functions in Haskell. Now
+
+6
+00:00:18,260 --> 00:00:21,660
+I think everybody of you that
+
+7
+00:00:21,660 --> 00:00:25,240
+has been to college in a different town
+
+8
+00:00:25,240 --> 00:00:28,420
+than where they grew up has had
+
+9
+00:00:28,420 --> 00:00:31,800
+this experience in one way or
+another.
+
+10
+00:00:31,800 --> 00:00:35,690
+You leave your hometown where you grew
+up, you went to
+
+11
+00:00:35,690 --> 00:00:40,420
+elementary school, you went to highschool,
+you go off for college
+
+12
+00:00:40,420 --> 00:00:43,570
+and then ten years later you come back
+
+13
+00:00:43,570 --> 00:00:46,980
+and things have changed slightly
+
+14
+00:00:46,980 --> 00:00:50,020
+but they're also a little bit the same.
+
+15
+00:00:50,020 --> 00:00:53,460
+And that can be a little bit
+disorientating because
+
+16
+00:00:53,460 --> 00:00:56,809
+in your memory things were
+
+17
+00:00:56,809 --> 00:01:00,500
+like they were, but in reality they have
+changed
+
+18
+00:01:00,500 --> 00:01:04,070
+slightly.
+
+19
+00:01:04,070 --> 00:01:07,720
+You will get the same experience when
+you look
+
+20
+00:01:07,720 --> 00:01:11,939
+at Haskell. Haskell looks very familiar
+
+21
+00:01:11,939 --> 00:01:16,229
+to other programming languages, but it
+differs in subtle ways.
+
+22
+00:01:16,229 --> 00:01:19,409
+And the goal of this lecture is to
+
+23
+00:01:19,409 --> 00:01:23,020
+walk through some of the syntax of Haskell
+
+24
+00:01:23,020 --> 00:01:26,119
+function definition and expressions
+
+25
+00:01:26,119 --> 00:01:29,759
+and compare and contrast these with
+
+26
+00:01:29,759 --> 00:01:33,979
+how you do these things in other
+programming languages.
+
+27
+00:01:33,979 --> 00:01:37,000
+And once you're aware of these
+differences
+
+28
+00:01:37,000 --> 00:01:40,650
+it will be fairly easy to adopt to them
+but
+
+29
+00:01:40,650 --> 00:01:45,070
+there are some things where Haskell is
+definitely a little bit
+
+30
+00:01:45,070 --> 00:01:49,600
+different than what
+
+31
+00:01:49,600 --> 00:01:52,740
+most people are used to in Java or
+
+32
+00:01:52,740 --> 00:01:58,159
+in PHP or whatever your favorite
+language is.
+
+33
+00:01:58,159 --> 00:02:01,530
+So
+
+34
+00:02:01,530 --> 00:02:06,370
+the first thing is conditional
+expressions. Every language has
+
+35
+00:02:06,370 --> 00:02:12,160
+conditional expressions. And often
+there's a difference between conditional
+
+36
+00:02:12,160 --> 00:02:13,170
+statements,
+
+37
+00:02:13,170 --> 00:02:18,080
+that are written using if then else,
+and conditional expressions,
+
+38
+00:02:18,080 --> 00:02:21,160
+ternary expressions, that are written
+with question mark
+
+39
+00:02:21,160 --> 00:02:26,300
+colon. Other languages do have if
+then else for expressions as well, for
+
+40
+00:02:26,300 --> 00:02:27,520
+example in Scala
+
+41
+00:02:27,520 --> 00:02:30,700
+but if you're using C# or
+
+42
+00:02:30,700 --> 00:02:34,970
+Java, there's the conditional
+statements
+
+43
+00:02:34,970 --> 00:02:38,570
+and then for conditional expressions
+there's
+
+44
+00:02:38,570 --> 00:02:42,540
+different syntax. In Haskell since
+there's no statements
+
+45
+00:02:42,540 --> 00:02:46,160
+when you want to write a conditional
+you write
+
+46
+00:02:46,160 --> 00:02:49,930
+if then else. In this
+
+47
+00:02:49,930 --> 00:02:53,580
+case we're defining a function that
+takes an integer
+
+48
+00:02:53,580 --> 00:02:57,250
+and returns another integer, and it's
+defined..
+
+49
+00:02:57,250 --> 00:03:00,470
+This is the absolute value. So it
+takes
+
+50
+00:03:00,470 --> 00:03:04,330
+a value and says that if that value is greater
+than 0
+
+51
+00:03:04,330 --> 00:03:07,989
+then you return n else you return -n.
+
+52
+00:03:07,989 --> 00:03:13,570
+You negate the value. So here you
+see that we're using the familiar
+
+53
+00:03:13,570 --> 00:03:20,370
+if then else as an expression form.
+
+54
+00:03:20,370 --> 00:03:23,880
+Of course, since it's just an expression
+
+55
+00:03:23,880 --> 00:03:27,000
+they can be nested as well.
+
+56
+00:03:27,000 --> 00:03:30,870
+And since conditionals are
+expressions
+
+57
+00:03:30,870 --> 00:03:34,160
+you always have to have a then and an else
+part.
+
+58
+00:03:34,160 --> 00:03:38,370
+So in this case you can define
+
+59
+00:03:38,370 --> 00:03:42,700
+the sign of a number, so if n is
+less than 0
+
+60
+00:03:42,700 --> 00:03:46,360
+it's -1, if n is zero
+
+61
+00:03:46,360 --> 00:03:52,130
+then the sign is 0 and else n is
+greater than zero, then the sign
+
+62
+00:03:52,130 --> 00:03:56,590
+is 1. So you always have to
+have both
+
+63
+00:03:56,590 --> 00:04:00,760
+a then and an else branch, just like in ternary
+expressions.
+
+64
+00:04:00,760 --> 00:04:04,340
+
+
+65
+00:04:04,340 --> 00:04:07,600
+Because Haskell people like brevity
+
+66
+00:04:07,600 --> 00:04:12,170
+they often don't use conditional
+expressions, but they use so-called
+
+67
+00:04:12,170 --> 00:04:14,069
+guarded equations.
+
+68
+00:04:14,069 --> 00:04:16,530
+And a guarded equation
+
+69
+00:04:16,530 --> 00:04:21,590
+captures a common pattern where a function
+starts with a conditional.
+
+70
+00:04:21,590 --> 00:04:26,620
+So, if the right hand side of a function
+definition immediately has a conditional
+
+71
+00:04:26,620 --> 00:04:32,030
+it's often nicer to use this form with
+guarded equations. So you write your
+
+72
+00:04:32,030 --> 00:04:34,090
+function definition on your left hand side
+
+73
+00:04:34,090 --> 00:04:37,370
+and then you write you're conditions
+here, so
+
+74
+00:04:37,370 --> 00:04:40,760
+the absolute value of n is
+
+75
+00:04:40,760 --> 00:04:44,750
+n when n is greater than or equal to 0
+
+76
+00:04:44,750 --> 00:04:49,840
+or it's -n otherwise. And otherwise is
+just
+
+77
+00:04:49,840 --> 00:04:53,300
+another alias for True. Now let's
+
+78
+00:04:53,300 --> 00:04:57,280
+go back to
+
+79
+00:04:57,280 --> 00:05:03,610
+the definition here, of the absolute value
+using a conditional.
+
+80
+00:05:03,610 --> 00:05:07,060
+And here you see what I said.
+This is a function
+
+81
+00:05:07,060 --> 00:05:10,630
+that is defined immediately using
+
+82
+00:05:10,630 --> 00:05:13,680
+a conditional.
+
+83
+00:05:13,680 --> 00:05:18,479
+And Haskell people prefer to write it
+like this. And now you see that the right hand
+
+84
+00:05:18,479 --> 00:05:19,110
+side
+
+85
+00:05:19,110 --> 00:05:22,330
+is simpler and the cases are
+
+86
+00:05:22,330 --> 00:05:26,020
+more distinguished. You can easily
+reason about this.
+
+87
+00:05:26,020 --> 00:05:29,150
+If it's greater than 0 or
+
+88
+00:05:29,150 --> 00:05:36,150
+if it's less than zero. And the other
+function, especially when you have nested
+
+89
+00:05:36,440 --> 00:05:37,380
+conditionals
+
+90
+00:05:37,380 --> 00:05:40,780
+this becomes even more worthwhile.
+
+91
+00:05:40,780 --> 00:05:44,919
+So in order to define the sign of a
+number: if it's less than zero
+
+92
+00:05:44,919 --> 00:05:48,160
+-1, if it's equal to zero 0
+
+93
+00:05:48,160 --> 00:05:52,160
+and otherwise it's one. Here you see
+
+94
+00:05:52,160 --> 00:05:55,770
+the kind of mathematical heritage of 
+Haskell
+
+95
+00:05:55,770 --> 00:05:58,970
+where we like to write things in a very
+
+96
+00:05:58,970 --> 00:06:02,970
+concise way. And these guarded equations
+
+97
+00:06:02,970 --> 00:06:06,020
+are something that are very
+
+98
+00:06:06,020 --> 00:06:09,729
+idiomatic Haskell. So typically you don't
+write
+
+99
+00:06:09,729 --> 00:06:12,770
+if then else, you write
+
+100
+00:06:12,770 --> 00:06:18,280
+these guarded equations.
+
+101
+00:06:18,280 --> 00:06:20,720
+Another thing that
+
+102
+00:06:20,720 --> 00:06:24,210
+is very heavily used in Haskell
+
+103
+00:06:24,210 --> 00:06:27,500
+and that few contemporary languages
+
+104
+00:06:27,500 --> 00:06:30,970
+have is pattern matching.
+
+105
+00:06:30,970 --> 00:06:34,310
+Scala for example has pattern
+matching
+
+106
+00:06:34,310 --> 00:06:38,520
+but there you have to use a case statement
+to do the pattern matching.
+
+107
+00:06:38,520 --> 00:06:42,650
+C# will get pattern matching.
+It uses the switch statement.
+
+108
+00:06:42,650 --> 00:06:46,420
+But in Haskell you can use pattern
+matching directly when you define
+
+109
+00:06:46,420 --> 00:06:48,750
+functions. So for example when we
+
+110
+00:06:48,750 --> 00:06:52,550
+want to define negation, function from
+Bool
+
+111
+00:06:52,550 --> 00:06:57,160
+to Bool, we can define it with pattern
+matching directly. We can say not of
+
+112
+00:06:57,160 --> 00:06:57,890
+False
+
+113
+00:06:57,890 --> 00:07:01,880
+equals True and not of True equals
+False.
+
+114
+00:07:01,880 --> 00:07:05,390
+That is a very very concise
+
+115
+00:07:05,390 --> 00:07:10,530
+definition of negation. Let's look at
+another example.
+
+116
+00:07:10,530 --> 00:07:13,800
+Say that we want to define &&
+
+117
+00:07:13,800 --> 00:07:18,100
+of two booleans, a function from
+Bool to Bool to Bool
+
+118
+00:07:18,100 --> 00:07:21,930
+and we just write down
+
+119
+00:07:21,930 --> 00:07:25,640
+the truth table for &&. So this is
+
+120
+00:07:25,640 --> 00:07:29,420
+exactly how you... if you look
+up the definition
+
+121
+00:07:29,420 --> 00:07:35,020
+of && in any book on digital logic, you
+will see the same truth table here.
+
+122
+00:07:35,020 --> 00:07:38,040
+We can write that down, but if you look at
+
+123
+00:07:38,040 --> 00:07:41,680
+all of this, you see that it can be
+written
+
+124
+00:07:41,680 --> 00:07:45,090
+even more compactly. Because the only
+case
+
+125
+00:07:45,090 --> 00:07:48,170
+where this thing is true is when
+
+126
+00:07:48,170 --> 00:07:52,150
+both arguments here are true.
+
+127
+00:07:52,150 --> 00:07:56,670
+And in all other cases it's false. So you
+can take
+
+128
+00:07:56,670 --> 00:07:59,910
+these four cases here and collapse them
+down to these two.
+
+129
+00:07:59,910 --> 00:08:03,460
+True && True equals True and
+otherwise
+
+130
+00:08:03,460 --> 00:08:07,260
+whatever and whatever equals False.
+
+131
+00:08:07,260 --> 00:08:11,220
+And this underscore here is used
+
+132
+00:08:11,220 --> 00:08:14,450
+very very often in Haskell and it means
+
+133
+00:08:14,450 --> 00:08:18,840
+this is a variable that I don't care about.
+It's just used as a placeholder
+
+134
+00:08:18,840 --> 00:08:24,230
+when doing pattern matching.
+
+135
+00:08:24,230 --> 00:08:28,450
+If you look at this definition
+
+136
+00:08:28,450 --> 00:08:31,960
+it will evaluate
+
+137
+00:08:31,960 --> 00:08:35,590
+both arguments
+
+138
+00:08:35,590 --> 00:08:39,029
+in order to do this match, because we're
+putting a pattern
+
+139
+00:08:39,029 --> 00:08:42,580
+on both sides of the &&.
+
+140
+00:08:42,580 --> 00:08:47,720
+Haskell people are very sensitive to
+this, because Haskell is a lazy language
+
+141
+00:08:47,720 --> 00:08:48,050
+and
+
+142
+00:08:48,050 --> 00:08:52,040
+you want to do as little
+evaluation as possible
+
+143
+00:08:52,040 --> 00:08:55,260
+in order to find
+
+144
+00:08:55,260 --> 00:08:58,320
+the answer to
+
+145
+00:08:58,320 --> 00:09:02,430
+this function call. A nicer
+definition
+
+146
+00:09:02,430 --> 00:09:05,740
+according to the Haskell idiom is the
+following:
+
+147
+00:09:05,740 --> 00:09:09,180
+If it's True then
+
+148
+00:09:09,180 --> 00:09:12,690
+True and something is the same as b
+
+149
+00:09:12,690 --> 00:09:16,570
+and False and whatever is False.
+
+150
+00:09:16,570 --> 00:09:20,170
+Let's see if this is true. True
+
+151
+00:09:20,170 --> 00:09:25,260
+and True equals True. True and
+False
+
+152
+00:09:25,260 --> 00:09:29,660
+equals False. So True and whatever
+is there
+
+153
+00:09:29,660 --> 00:09:32,760
+is whatever was there. And if it's
+
+154
+00:09:32,760 --> 00:09:37,250
+False on the left hand side, it doesn't
+matter what's here on the right hand side.
+
+155
+00:09:37,250 --> 00:09:37,680
+It's
+
+156
+00:09:37,680 --> 00:09:41,360
+always False. This is actually
+
+157
+00:09:41,360 --> 00:09:44,839
+the most
+
+158
+00:09:44,839 --> 00:09:47,920
+optimal definition of
+
+159
+00:09:47,920 --> 00:09:51,010
+&& because it only
+
+160
+00:09:51,010 --> 00:09:54,300
+evaluates the first argument
+
+161
+00:09:54,300 --> 00:09:58,430
+as necessary.
+
+162
+00:09:58,430 --> 00:10:01,340
+In Haskell patterns are matched in
+order.
+
+163
+00:10:01,340 --> 00:10:06,610
+They are matched top to bottom left
+to right, or left to right
+
+164
+00:10:06,610 --> 00:10:10,750
+top to bottom, if I'm really precise.
+
+165
+00:10:10,750 --> 00:10:14,110
+And so the compiler does not try to
+rearrange
+
+166
+00:10:14,110 --> 00:10:17,570
+the patterns necessarily to
+
+167
+00:10:17,570 --> 00:10:20,670
+make them more optimal, because the order
+
+168
+00:10:20,670 --> 00:10:25,370
+is important and you can intermix
+pattern matching
+
+169
+00:10:25,370 --> 00:10:29,700
+with guarded equations.
+
+170
+00:10:29,700 --> 00:10:33,850
+The easiest thing to think about is that
+patterns are always matched
+
+171
+00:10:33,850 --> 00:10:37,400
+left to right, top to bottom.
+
+172
+00:10:37,400 --> 00:10:40,650
+You cannot repeat variables, for example:
+
+173
+00:10:40,650 --> 00:10:44,270
+You cannot say b && b equals b
+
+174
+00:10:44,270 --> 00:10:47,960
+and assume that this is implicitly doing
+equality
+
+175
+00:10:47,960 --> 00:10:51,100
+over b. All the variables
+
+176
+00:10:51,100 --> 00:10:55,980
+inside a pattern must be unique.
+
+177
+00:10:55,980 --> 00:11:01,470
+One thing that we have seen: we have
+written lists using these square brackets.
+
+178
+00:11:01,470 --> 00:11:06,340
+And these square brackets really are just
+syntactic sugar for
+
+179
+00:11:06,340 --> 00:11:09,430
+writing the list using explicit
+
+180
+00:11:09,430 --> 00:11:13,160
+cons and empty list.
+
+181
+00:11:13,160 --> 00:11:17,020
+When a list
+
+182
+00:11:17,020 --> 00:11:20,200
+a constant list appears in some place
+
+183
+00:11:20,200 --> 00:11:24,340
+it will mean this, but inside pattern
+matching
+
+184
+00:11:24,340 --> 00:11:30,240
+we often have to write lists in this form.
+So for example when we want to define
+
+185
+00:11:30,240 --> 00:11:34,700
+the head of a list, we define it using
+pattern matching as follows:
+
+186
+00:11:34,700 --> 00:11:38,510
+We write the list in head
+
+187
+00:11:38,510 --> 00:11:42,540
+tail form. Let's call it like that.
+
+188
+00:11:42,540 --> 00:11:47,460
+The head of a list, with head x and
+tail
+
+189
+00:11:47,460 --> 00:11:51,210
+I don't care, is the head. And the tail
+
+190
+00:11:51,210 --> 00:11:54,790
+of a list, with a head that I don't care
+about, and tail xs
+
+191
+00:11:54,790 --> 00:11:58,340
+is xs. So again
+
+192
+00:11:58,340 --> 00:12:01,580
+very concise definitions. And just for
+fun
+
+193
+00:12:01,580 --> 00:12:05,270
+let's look at the types. Tail takes
+a list
+
+194
+00:12:05,270 --> 00:12:08,730
+and since the tail of a list
+is a list
+
+195
+00:12:08,730 --> 00:12:10,620
+the type is list
+
+196
+00:12:10,620 --> 00:12:13,610
+to list. Head takes a list
+
+197
+00:12:13,610 --> 00:12:16,699
+but the value of the head
+
+198
+00:12:16,699 --> 00:12:21,190
+is the element type of the list, so
+it's a, so this thing goes from list
+
+199
+00:12:21,190 --> 00:12:24,410
+of a to a. Of course
+
+200
+00:12:24,410 --> 00:12:29,130
+these are not total functions, because
+head and tail
+
+201
+00:12:29,130 --> 00:12:34,019
+are not defined on the empty list.
+When I apply head to the empty list
+
+202
+00:12:34,019 --> 00:12:35,779
+there's no pattern that matches
+
+203
+00:12:35,779 --> 00:12:39,500
+and so what you will get is
+an error. And the same for tail.
+
+204
+00:12:39,500 --> 00:12:46,500
+Another way to say that
+
+205
+00:12:46,899 --> 00:12:51,860
+is that a pattern like this
+x:xs only matches
+
+206
+00:12:51,860 --> 00:12:55,240
+a non-empty list. If you call head 
+with the empty list
+
+207
+00:12:55,240 --> 00:12:58,800
+this pattern here
+
+208
+00:12:58,800 --> 00:13:02,220
+doesn't match, because it's not of the form
+
+209
+00:13:02,220 --> 00:13:05,360
+x cons anything.
+
+210
+00:13:05,360 --> 00:13:09,649
+When you see head of empty list, there's no
+case that matches
+
+211
+00:13:09,649 --> 00:13:13,370
+you get an error. The other thing
+
+212
+00:13:13,370 --> 00:13:17,980
+is that you have to parenthesize
+these list
+
+213
+00:13:17,980 --> 00:13:22,290
+patterns, because application
+binds strongest.
+
+214
+00:13:22,290 --> 00:13:26,019
+This would mean head of x cons
+
+215
+00:13:26,019 --> 00:13:30,500
+anything, so you have to put
+parentheses
+
+216
+00:13:30,500 --> 00:13:34,540
+in these patterns to make it work.
+Alright.
+
+217
+00:13:34,540 --> 00:13:39,329
+That was our first part of defining
+functions in Haskell.
+
+218
+00:13:39,329 --> 00:13:40,550
+See you after the break.
+

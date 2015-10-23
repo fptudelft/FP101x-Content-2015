@@ -1,0 +1,710 @@
+1
+00:00:00,299 --> 00:00:04,140
+Hello everybody! Welcome back to the next
+Jam Session
+
+2
+00:00:04,140 --> 00:00:07,279
+for the FP101 course.
+
+3
+00:00:07,279 --> 00:00:11,230
+What we're going to do this time
+
+4
+00:00:11,230 --> 00:00:14,799
+is to look at functional programming in
+Dart.
+
+5
+00:00:14,799 --> 00:00:18,000
+Dart is a new language from Google
+
+6
+00:00:18,000 --> 00:00:21,810
+aimed at programming web applications.
+
+7
+00:00:21,810 --> 00:00:25,350
+And Dart has great support
+
+8
+00:00:25,350 --> 00:00:29,820
+for functional programming. If you come
+from Java or from C#
+
+9
+00:00:29,820 --> 00:00:33,440
+you will feel immediately familiar with
+the Dart syntax.
+
+10
+00:00:33,440 --> 00:00:36,940
+And if you followed the Haskell lectures
+
+11
+00:00:36,940 --> 00:00:40,110
+you will be able to take all the things
+you learned there
+
+12
+00:00:40,110 --> 00:00:44,280
+and immediately apply them to Dart.
+Let's open up the editor
+
+13
+00:00:44,280 --> 00:00:47,700
+and play around with Dart
+
+14
+00:00:47,700 --> 00:00:51,270
+a little bit and see how we can apply
+
+15
+00:00:51,270 --> 00:00:55,969
+what we learnt. One interesting
+aspect of Dart
+
+16
+00:00:55,969 --> 00:01:00,020
+is that Dart has optional typing. So it
+is not
+
+17
+00:01:00,020 --> 00:01:03,170
+statically typed, but you can
+
+18
+00:01:03,170 --> 00:01:06,710
+put in types as you want to.
+
+19
+00:01:06,710 --> 00:01:10,619
+It's not like JavaScript, where
+it's completely dynamically typed,
+
+20
+00:01:10,619 --> 00:01:12,030
+there's no way to put
+
+21
+00:01:12,030 --> 00:01:16,729
+type annotations, and I must say in
+practice
+
+22
+00:01:16,729 --> 00:01:23,729
+this works out very very well. The nice
+thing about Haskell
+
+23
+00:01:25,110 --> 00:01:29,770
+is that the Haskell type inference is
+very powerful
+
+24
+00:01:29,770 --> 00:01:35,140
+and so you never have to write any
+types yourselves and typically
+
+25
+00:01:35,140 --> 00:01:38,310
+the compiler will be able to infer
+things for you.
+
+26
+00:01:38,310 --> 00:01:41,810
+But the price you pay for that
+
+27
+00:01:41,810 --> 00:01:45,610
+is that you have to know there's a
+couple of things in Haskell.
+
+28
+00:01:45,610 --> 00:01:50,070
+Type names have to start with uppercase
+symbols. When you have type classes
+
+29
+00:01:50,070 --> 00:01:54,350
+you use a name in there. It's used
+forever. You cannot
+
+30
+00:01:54,350 --> 00:01:58,840
+have that in a different class.
+And in Dart
+
+31
+00:01:58,840 --> 00:02:02,820
+it's a little bit more
+
+32
+00:02:02,820 --> 00:02:06,210
+hackerish. And I like that, so let's
+
+33
+00:02:06,210 --> 00:02:09,429
+open up IntelliJ. I'm using the
+
+34
+00:02:09,429 --> 00:02:13,230
+Dart IntelliJ plugin. You can
+download
+
+35
+00:02:13,230 --> 00:02:17,560
+that plugin from the IntelliJ
+website. You download
+
+36
+00:02:17,560 --> 00:02:20,900
+the Dart SDK from the Dart website
+
+37
+00:02:20,900 --> 00:02:24,280
+and off you go.
+
+38
+00:02:24,280 --> 00:02:27,880
+Like most languages Dart also
+
+39
+00:02:27,880 --> 00:02:32,430
+uses a main method. So we see here the main
+method. We don't have to specify
+
+40
+00:02:32,430 --> 00:02:36,090
+whether it takes any arguments. And then
+here
+
+41
+00:02:36,090 --> 00:02:40,880
+we just print "hello". The next line here
+
+42
+00:02:40,880 --> 00:02:45,010
+shows a lambda expression in Dart.
+
+43
+00:02:45,010 --> 00:02:49,090
+I'm defining a variable f
+
+44
+00:02:49,090 --> 00:02:53,150
+and its value is a lambda expression
+lambda x
+
+45
+00:02:53,150 --> 00:02:56,940
+x+1. Here you see that this
+thing has
+
+46
+00:02:56,940 --> 00:03:00,239
+a function type. And let's
+
+47
+00:03:00,239 --> 00:03:04,170
+just try to say f+3.
+Let's see
+
+48
+00:03:04,170 --> 00:03:07,470
+what is does.
+
+49
+00:03:07,470 --> 00:03:11,560
+Now you see, you cannot see that
+
+50
+00:03:11,560 --> 00:03:15,890
+it's quite small, I
+don't know how to blow up
+
+51
+00:03:15,890 --> 00:03:19,350
+the type hints, but I will read it for you.
+
+52
+00:03:19,350 --> 00:03:22,730
+And it says: there is no such
+
+53
+00:03:22,730 --> 00:03:26,630
+operator + in function. So even though
+
+54
+00:03:26,630 --> 00:03:29,940
+I didn't put a type
+
+55
+00:03:29,940 --> 00:03:33,310
+on f, the compiler has inferred
+
+56
+00:03:33,310 --> 00:03:36,850
+that f has type function and that
+there's no
+
+57
+00:03:36,850 --> 00:03:40,239
+addition operator for function.
+
+58
+00:03:40,239 --> 00:03:43,680
+But it will just let me continue.
+
+59
+00:03:43,680 --> 00:03:47,720
+If I want to do this it will
+let me do it
+
+60
+00:03:47,720 --> 00:03:51,110
+because the typing is optional.
+
+61
+00:03:51,110 --> 00:03:55,489
+I'm not going to do this here, but that's
+a beautiful thing.
+
+62
+00:03:55,489 --> 00:04:00,160
+The type inference tracks the types, but
+nothing is forced on you.
+
+63
+00:04:00,160 --> 00:04:03,030
+The compiler will never slap you on your
+wrist and say
+
+64
+00:04:03,030 --> 00:04:09,410
+Erik, you cannot execute this program.
+Here we have our function and we can call it
+
+65
+00:04:09,410 --> 00:04:12,570
+with 3. Now let's define
+
+66
+00:04:12,570 --> 00:04:16,109
+another local function. That's another
+
+67
+00:04:16,109 --> 00:04:19,269
+nice thing of Dart. And we saw that in
+
+68
+00:04:19,269 --> 00:04:22,530
+other languages like Scala and
+Kotlin as well, is that
+
+69
+00:04:22,530 --> 00:04:26,710
+inside a function you can define a local
+function.
+
+70
+00:04:26,710 --> 00:04:30,289
+Here inside main I'm defining a local function g
+
+71
+00:04:30,289 --> 00:04:37,240
+and this g can refer to this outer
+variable f. So it closes over f.
+
+72
+00:04:37,240 --> 00:04:39,319
+What g does is it calls
+
+73
+00:04:39,319 --> 00:04:43,340
+f(x) and then multiplies it by 2.
+And then here I print g(4).
+
+74
+00:04:43,340 --> 00:04:46,759
+Now let's look at
+
+75
+00:04:46,759 --> 00:04:50,210
+a real higher-order function.
+
+76
+00:04:50,210 --> 00:04:53,210
+Our good friend twice.
+
+77
+00:04:53,210 --> 00:04:57,319
+Twice takes two parameters:
+
+78
+00:04:57,319 --> 00:05:00,340
+f and x, and I call f(f(x)).
+
+79
+00:05:00,340 --> 00:05:04,279
+You see, this looks just
+
+80
+00:05:04,279 --> 00:05:07,490
+like the lambda expression
+
+81
+00:05:07,490 --> 00:05:10,960
+in Haskell.
+
+82
+00:05:10,960 --> 00:05:14,659
+And if I wanted, we could also
+
+83
+00:05:14,659 --> 00:05:18,599
+define it like this. We could define
+var twice
+
+84
+00:05:18,599 --> 00:05:22,099
+equals... and now
+
+85
+00:05:22,099 --> 00:05:25,719
+it looks like the lambda expression form
+
+86
+00:05:25,719 --> 00:05:29,719
+in Haskell. And if we do it like this
+
+87
+00:05:29,719 --> 00:05:33,529
+it looks like the function definition
+
+88
+00:05:33,529 --> 00:05:37,199
+in Haskell, except that there is an arrow
+here. If you don't like the arrow
+
+89
+00:05:37,199 --> 00:05:40,479
+you can use what
+
+90
+00:05:40,479 --> 00:05:44,440
+we already did here. We can put the
+body..
+
+91
+00:05:44,440 --> 00:05:48,089
+
+
+92
+00:05:48,089 --> 00:05:51,599
+we take the body and we say return
+
+93
+00:05:51,599 --> 00:05:54,830
+of the expression. And then 
+
+94
+00:05:54,830 --> 00:05:59,319
+we can do other interesting things. So for
+example we can
+
+95
+00:05:59,319 --> 00:06:06,319
+print that we are executing f.
+
+96
+00:06:06,759 --> 00:06:09,909
+We can mix and match
+
+97
+00:06:09,909 --> 00:06:13,310
+imperative code with higher-order
+functions.
+
+98
+00:06:13,310 --> 00:06:16,750
+Good. Let's
+
+99
+00:06:16,750 --> 00:06:20,180
+run our program and see if everything
+
+100
+00:06:20,180 --> 00:06:23,819
+works as advertised.
+
+101
+00:06:23,819 --> 00:06:27,339
+Let's go from the top to the bottom.
+
+102
+00:06:27,339 --> 00:06:29,450
+Let's first run the program
+
+103
+00:06:29,450 --> 00:06:33,090
+and then check.. that's really quick.
+
+104
+00:06:33,090 --> 00:06:36,280
+The dart VM
+
+105
+00:06:36,280 --> 00:06:39,960
+is really fast and the implementation
+
+106
+00:06:39,960 --> 00:06:43,350
+in IntelliJ is extremely responsive. Here
+
+107
+00:06:43,350 --> 00:06:48,300
+we say print "hello". On the output we
+expect hello.
+
+108
+00:06:48,300 --> 00:06:52,140
+Then we defined our function f.
+We print f(3).
+
+109
+00:06:52,140 --> 00:06:55,420
+That should return 4 as expected
+
+110
+00:06:55,420 --> 00:06:58,650
+Then there is g(x) here, that
+
+111
+00:06:58,650 --> 00:07:01,990
+doubles f(x) so
+
+112
+00:07:01,990 --> 00:07:05,260
+that should be, if we call that with 4
+
+113
+00:07:05,260 --> 00:07:08,590
+g(4), calls f
+
+114
+00:07:08,590 --> 00:07:11,620
+that's 5, that should be 10.
+There we go.
+
+115
+00:07:11,620 --> 00:07:15,890
+And now here we see that we are inside
+twice. We print "..."
+
+116
+00:07:15,890 --> 00:07:18,940
+and then twice
+
+117
+00:07:18,940 --> 00:07:22,910
+of incrementing 3 twice gives us 5.
+
+118
+00:07:22,910 --> 00:07:26,000
+So that is
+
+119
+00:07:26,000 --> 00:07:30,840
+all as expected and there's a lot of
+things in Dart
+
+120
+00:07:30,840 --> 00:07:34,860
+that I didn't show.
+
+121
+00:07:34,860 --> 00:07:39,350
+One of the things is that Dart has
+classes.
+
+122
+00:07:39,350 --> 00:07:44,240
+And the nice thing is Dart doesn't
+have a separate notion of interfaces.
+
+123
+00:07:44,240 --> 00:07:47,700
+It's unified with abstract classes, so there
+is less
+
+124
+00:07:47,700 --> 00:07:52,150
+syntactic baggage. In languages like
+Java or C# there's
+
+125
+00:07:52,150 --> 00:07:55,190
+abstract base classes, interfaces
+whatever.
+
+126
+00:07:55,190 --> 00:07:59,250
+And in Dart that is
+
+127
+00:07:59,250 --> 00:08:02,560
+simplified. Let's go here.
+
+128
+00:08:02,560 --> 00:08:05,750
+The other beautiful thing of Dart:
+
+129
+00:08:05,750 --> 00:08:08,800
+If we go here and..
+
+130
+00:08:08,800 --> 00:08:15,800
+
+
+131
+00:08:23,270 --> 00:08:26,990
+Let's go here. If we go to the
+
+132
+00:08:26,990 --> 00:08:31,470
+Dart language specification.
+The Dart language specification
+
+133
+00:08:31,470 --> 00:08:36,960
+is written by Gilad Bracha, the
+same person that wrote the Java Language
+
+134
+00:08:36,960 --> 00:08:38,300
+Specification.
+
+135
+00:08:38,300 --> 00:08:42,640
+It's a very very thorough
+description of Dart.
+
+136
+00:08:42,640 --> 00:08:46,930
+It explains everything. And the beauty
+of Dart here
+
+137
+00:08:46,930 --> 00:08:51,180
+is that Dart now supports
+
+138
+00:08:51,180 --> 00:08:54,770
+new features: async and await
+
+139
+00:08:54,770 --> 00:08:57,830
+that we are familiar with from C#.
+
+140
+00:08:57,830 --> 00:09:01,600
+It also supports
+
+141
+00:09:01,600 --> 00:09:04,770
+so-called syncstar methods, which are
+
+142
+00:09:04,770 --> 00:09:07,980
+iterators, that we know from
+C# and python
+
+143
+00:09:07,980 --> 00:09:11,440
+and other languages.
+
+144
+00:09:11,440 --> 00:09:15,160
+PHP also supports iterators.
+
+145
+00:09:15,160 --> 00:09:20,380
+But the real nice thing here is that Dart
+also has support for streams
+
+146
+00:09:20,380 --> 00:09:22,000
+for asynchronous data streams
+
+147
+00:09:22,000 --> 00:09:25,870
+which is kind of a combination of
+async/await
+
+148
+00:09:25,870 --> 00:09:29,980
+and the iterator style
+
+149
+00:09:29,980 --> 00:09:34,260
+of programming. With these three
+features I think Dart
+
+150
+00:09:34,260 --> 00:09:37,740
+is ahead of the game
+
+151
+00:09:37,740 --> 00:09:40,980
+with respect to other programming
+languages.
+
+152
+00:09:40,980 --> 00:09:44,660
+Because it has full support for both
+
+153
+00:09:44,660 --> 00:09:48,800
+asynchronous methods, methods that
+return synchronous collections
+
+154
+00:09:48,800 --> 00:09:52,150
+and methods that return asynchronous
+collections.
+
+155
+00:09:52,150 --> 00:09:55,850
+I invite you to take a look at Dart.
+
+156
+00:09:55,850 --> 00:09:59,310
+There's also a Dart to JavaScript
+compiler, so
+
+157
+00:09:59,310 --> 00:10:02,570
+you can run Dart in a regular browser.
+You don't need
+
+158
+00:10:02,570 --> 00:10:06,960
+the Dart VM. And if you want to
+write web applications
+
+159
+00:10:06,960 --> 00:10:11,390
+and you come from a Java or C#
+background
+
+160
+00:10:11,390 --> 00:10:14,850
+I think Dart is a fantastic choice.
+
+161
+00:10:14,850 --> 00:10:18,290
+Thank you so much and see you next time.
+

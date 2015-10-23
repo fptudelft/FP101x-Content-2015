@@ -1,0 +1,923 @@
+1
+00:00:01,810 --> 00:00:03,399
+Welcome back everybody to
+
+2
+00:00:03,399 --> 00:00:06,629
+FP 101: Functional programming
+
+3
+00:00:06,629 --> 00:00:10,420
+and today we're going to talk about
+types and classes.
+
+4
+00:00:10,420 --> 00:00:15,059
+As developers we often work
+
+5
+00:00:15,059 --> 00:00:20,430
+all-nighters. We sit and hack, we get into
+a flow and we
+
+6
+00:00:20,430 --> 00:00:24,189
+lose track of time and so for developers
+
+7
+00:00:24,189 --> 00:00:27,990
+it's extremely important to watch our diet
+
+8
+00:00:27,990 --> 00:00:31,580
+to make sure that we eat well.
+
+9
+00:00:31,580 --> 00:00:34,950
+If you see the food pyramid here that
+
+10
+00:00:34,950 --> 00:00:38,239
+is shown in there, food
+
+11
+00:00:38,239 --> 00:00:44,290
+is grouped into categories. For example
+you see bread, rice and pasta
+
+12
+00:00:44,290 --> 00:00:48,190
+which are carbohydrates and then you see
+
+13
+00:00:48,190 --> 00:00:53,329
+other things like proteins, fruits
+and vegetables
+
+14
+00:00:53,329 --> 00:00:56,789
+etcetera. So all food
+
+15
+00:00:56,789 --> 00:01:00,340
+is put into groups
+
+16
+00:01:00,340 --> 00:01:04,729
+that have a common property and in some
+sense
+
+17
+00:01:04,729 --> 00:01:07,820
+these groups what we can say is that
+
+18
+00:01:07,820 --> 00:01:11,760
+the food here is typed
+
+19
+00:01:11,760 --> 00:01:15,780
+and that's what this lecture will be
+about: the lecture will be about
+
+20
+00:01:15,780 --> 00:01:19,530
+taking values (not food) but the values
+that we code with
+
+21
+00:01:19,530 --> 00:01:23,390
+and how to group these into categories
+
+22
+00:01:23,390 --> 00:01:27,860
+that have similar properties. So what is
+a type?
+
+23
+00:01:27,860 --> 00:01:31,560
+Well, a type is simply a name
+
+24
+00:01:31,560 --> 00:01:35,869
+for a collection of related values
+
+25
+00:01:35,869 --> 00:01:39,140
+just like a food group
+
+26
+00:01:39,140 --> 00:01:42,920
+is a name for a collection of
+
+27
+00:01:42,920 --> 00:01:46,009
+foods with related properties
+
+28
+00:01:46,009 --> 00:01:50,430
+and a type is a name for a collection of
+values that we code with
+
+29
+00:01:50,430 --> 00:01:55,640
+that have similar properties. For example,
+in Haskell the type Bool
+
+30
+00:01:55,640 --> 00:01:59,259
+is a name for a collection
+
+31
+00:01:59,259 --> 00:02:04,090
+that has two values: False and True. If we
+would be
+
+32
+00:02:04,090 --> 00:02:08,310
+really really pedantic in Haskell
+there would be a third
+
+33
+00:02:08,310 --> 00:02:11,450
+value Bottom and represents
+
+34
+00:02:11,450 --> 00:02:11,909
+
+
+35
+00:02:11,909 --> 00:02:15,739
+non terminating computation of type Bool
+
+36
+00:02:15,739 --> 00:02:19,709
+but in this course as since we're going
+to stick to the basics
+
+37
+00:02:19,709 --> 00:02:23,650
+we will ignore the more complicated
+features
+
+38
+00:02:23,650 --> 00:02:27,700
+like Bottom, so and for now
+
+39
+00:02:27,700 --> 00:02:30,950
+we'll just say Bool is a type
+
+40
+00:02:30,950 --> 00:02:34,760
+that names the set of values
+
+41
+00:02:34,760 --> 00:02:40,340
+True and False, the boolean
+values.
+
+42
+00:02:40,340 --> 00:02:46,220
+A type error is something where we are
+using a function
+
+43
+00:02:46,220 --> 00:02:49,239
+with a type that
+
+44
+00:02:49,239 --> 00:02:54,099
+the function does not expect. Let's look
+at the example here:
+
+45
+00:02:54,099 --> 00:02:58,750
+if we want to add 1 to False obviously
+
+46
+00:02:58,750 --> 00:03:02,000
+that's not going to work, because on the
+left
+
+47
+00:03:02,000 --> 00:03:05,629
+we have a number and on the right we
+have a boolean
+
+48
+00:03:05,629 --> 00:03:09,299
+and there's no way to add a number
+
+49
+00:03:09,299 --> 00:03:12,909
+to a boolean.
+
+50
+00:03:12,909 --> 00:03:17,000
+To go back to the example of diet
+
+51
+00:03:17,000 --> 00:03:20,049
+if you have a certain diet maybe
+
+52
+00:03:20,049 --> 00:03:23,260
+you're not allowed to mix meat
+
+53
+00:03:23,260 --> 00:03:26,470
+and dairy products, so that would be a
+type error
+
+54
+00:03:26,470 --> 00:03:29,730
+in the food world. In the
+programming world
+
+55
+00:03:29,730 --> 00:03:33,260
+we have the same kind of type errors.
+
+56
+00:03:33,260 --> 00:03:38,799
+The goal of static typing is that the
+compiler will catch these type errors
+
+57
+00:03:38,799 --> 00:03:41,959
+early on, before we run the program
+
+58
+00:03:41,959 --> 00:03:45,579
+but there's also dynamically typed
+languages where these type
+
+59
+00:03:45,579 --> 00:03:50,690
+errors are caught at runtime, so when
+you're actually trying to
+
+60
+00:03:50,690 --> 00:03:53,709
+add up the boolean
+
+61
+00:03:53,709 --> 00:03:56,859
+with the number and then there's
+
+62
+00:03:56,859 --> 00:04:00,690
+non typed languages where this will just
+take
+
+63
+00:04:00,690 --> 00:04:03,909
+however these two values are
+represented
+
+64
+00:04:03,909 --> 00:04:10,419
+and it will try to add them up. The notation,
+the syntax,
+
+65
+00:04:10,419 --> 00:04:14,150
+for writing down types in Haskell is
+
+66
+00:04:14,150 --> 00:04:18,070
+expression double colon type so if
+
+67
+00:04:18,070 --> 00:04:22,039
+evaluating the expression e will produce
+
+68
+00:04:22,039 --> 00:04:25,150
+a value of type t we write this
+
+69
+00:04:25,150 --> 00:04:29,690
+as e double colon t. Other languages
+
+70
+00:04:29,690 --> 00:04:33,930
+have different syntax, for example in Visual
+Basic you will write
+
+71
+00:04:33,930 --> 00:04:37,180
+e as t and in Java
+
+72
+00:04:37,180 --> 00:04:40,310
+you would write t e
+
+73
+00:04:40,310 --> 00:04:44,620
+but that's all syntax. The real
+thing is that we're
+
+74
+00:04:44,620 --> 00:04:47,840
+interested in the semantics of this
+which says that
+
+75
+00:04:47,840 --> 00:04:51,090
+the type of expression e is t.
+
+76
+00:04:51,090 --> 00:04:55,360
+Now every well-formed expression, every
+
+77
+00:04:55,360 --> 00:04:59,290
+syntactically well-formed expression
+has a type
+
+78
+00:04:59,290 --> 00:05:02,330
+and that type is calculated
+
+79
+00:05:02,330 --> 00:05:06,260
+by the compiler at compile-time
+
+80
+00:05:06,260 --> 00:05:09,580
+using a process called type inference.
+
+81
+00:05:09,580 --> 00:05:13,130
+Remember from the first lecture that
+
+82
+00:05:13,130 --> 00:05:17,450
+ML, the programming language ML
+was one of the first programming languages
+
+83
+00:05:17,450 --> 00:05:18,180
+
+
+84
+00:05:18,180 --> 00:05:23,610
+that had type inference. Type errors
+
+85
+00:05:23,610 --> 00:05:27,520
+are also in Haskell found at
+compile-time and
+
+86
+00:05:27,520 --> 00:05:31,190
+in most programming languages are found
+at compile-time and
+
+87
+00:05:31,190 --> 00:05:34,390
+
+
+88
+00:05:34,390 --> 00:05:39,240
+the opinions differ about whether
+you have to have static typing
+
+89
+00:05:39,240 --> 00:05:42,330
+or dynamic typing or optional typing
+
+90
+00:05:42,330 --> 00:05:46,170
+but for me, personally, I like it.
+
+91
+00:05:46,170 --> 00:05:50,000
+I'm lazy so I like it if the compiler
+catches the
+
+92
+00:05:50,000 --> 00:05:55,250
+type errors for me early. In the previous
+lecture we have played
+
+93
+00:05:55,250 --> 00:06:00,430
+around with GHC and GHC has a special command
+colon type
+
+94
+00:06:00,430 --> 00:06:04,720
+that allows you to ask the type of
+an expression so you can
+
+95
+00:06:04,720 --> 00:06:09,530
+ask GHC to calculate the type of an
+expression for you.
+
+96
+00:06:09,530 --> 00:06:15,250
+For example, if we type in not False
+GHC will calculate the value of that
+
+97
+00:06:15,250 --> 00:06:17,310
+not False equals True
+
+98
+00:06:17,310 --> 00:06:20,970
+but we can also ask for that type of not
+False
+
+99
+00:06:20,970 --> 00:06:25,100
+and in which case it will not evaluate
+that expression
+
+100
+00:06:25,100 --> 00:06:29,720
+but it will just calculate its type
+The type of not False
+
+101
+00:06:29,720 --> 00:06:31,090
+is Bool.
+
+102
+00:06:31,090 --> 00:06:34,480
+Now we see that the value of not
+False is True,
+
+103
+00:06:34,480 --> 00:06:37,690
+the type is Bool, so that's consistent.
+
+104
+00:06:37,690 --> 00:06:41,260
+GHC did a good job! It would be weird
+
+105
+00:06:41,260 --> 00:06:45,860
+and wrong if the type of not False would
+be Integer,
+
+106
+00:06:45,860 --> 00:06:50,380
+but the value would be True. That is
+called type soundness
+
+107
+00:06:50,380 --> 00:06:54,560
+which means that the type that the
+compiler calculates
+
+108
+00:06:54,560 --> 00:06:58,850
+corresponds with the value that this
+expression has
+
+109
+00:06:58,850 --> 00:07:03,850
+when you execute it at runtime. In Haskell
+
+110
+00:07:03,850 --> 00:07:07,960
+and most programming languages there are
+a number of base types.
+
+111
+00:07:07,960 --> 00:07:11,010
+These are types that are built into
+the language
+
+112
+00:07:11,010 --> 00:07:14,210
+and in Haskell there's a handful:
+
+113
+00:07:14,210 --> 00:07:17,340
+we have already seen Bool, the type
+
+114
+00:07:17,340 --> 00:07:23,330
+of a boolean value, True and False. Then
+there's the type of character.
+
+115
+00:07:23,330 --> 00:07:28,480
+Char is the name of a set of values that
+denote characters.
+
+116
+00:07:28,480 --> 00:07:32,840
+Char contains characters like
+a b c
+
+117
+00:07:32,840 --> 00:07:38,040
+etcetera, all Unicode characters.
+Then there's the type of String
+
+118
+00:07:38,040 --> 00:07:42,190
+which are strings of characters and we
+will see later that in Haskell
+
+119
+00:07:42,190 --> 00:07:45,810
+strings are really nothing more than
+lists of characters.
+
+120
+00:07:45,810 --> 00:07:51,170
+String, you could say is not
+really a base type
+
+121
+00:07:51,170 --> 00:07:55,690
+because it's defined in terms of two
+other base types: strings and characters.
+
+122
+00:07:55,690 --> 00:07:59,260
+Haskell is unique
+
+123
+00:07:59,260 --> 00:08:03,650
+or unique, Python has
+similar properties
+
+124
+00:08:03,650 --> 00:08:07,130
+in that it has both Int and Integers.
+
+125
+00:08:07,130 --> 00:08:12,990
+Ints are fixed precision integers:
+32-bit or 64-bit integers
+
+126
+00:08:12,990 --> 00:08:16,530
+and then Integer are arbitrary precision
+
+127
+00:08:16,530 --> 00:08:21,280
+integers. You can compute the factorial
+of 500.
+
+128
+00:08:21,280 --> 00:08:25,790
+If you use type Integer that will
+take a long time
+
+129
+00:08:25,790 --> 00:08:29,080
+but it will not overflow like
+
+130
+00:08:29,080 --> 00:08:32,440
+when you use Int. Then of course
+there's Float,
+
+131
+00:08:32,440 --> 00:08:36,399
+the floating point numbers.
+
+132
+00:08:36,399 --> 00:08:39,749
+I mentioned when we talked about
+characters I mentioned
+
+133
+00:08:39,749 --> 00:08:44,879
+that Strings really are lists of
+characters and the type of lists
+
+134
+00:08:44,879 --> 00:08:49,920
+is the first generic type or polymorphic
+type
+
+135
+00:08:49,920 --> 00:08:52,990
+that we will see in Haskell.
+
+136
+00:08:52,990 --> 00:08:58,189
+A List is a sequence of values where
+all the elements have the same type.
+
+137
+00:08:58,189 --> 00:09:01,959
+The first example here
+
+138
+00:09:01,959 --> 00:09:05,490
+is a list of three booleans: False True
+and False.
+
+139
+00:09:05,490 --> 00:09:10,990
+You see here that we denote to type
+with colon colon and then the type
+
+140
+00:09:10,990 --> 00:09:16,269
+is list of Bool. One of the nice
+features of Haskell
+
+141
+00:09:16,269 --> 00:09:19,819
+that the syntax of types, you see here
+the syntax
+
+142
+00:09:19,819 --> 00:09:23,009
+of types, sorry the syntax of values here
+
+143
+00:09:23,009 --> 00:09:27,899
+on the left, looks very similar to the
+syntax of types on the right.
+
+144
+00:09:27,899 --> 00:09:31,459
+We use the same square brackets to
+
+145
+00:09:31,459 --> 00:09:35,709
+indicate a list of values and we
+used the same
+
+146
+00:09:35,709 --> 00:09:38,759
+square brackets to indicate the type so
+
+147
+00:09:38,759 --> 00:09:42,360
+False True False has type Bool
+
+148
+00:09:42,360 --> 00:09:46,240
+The second example there has a type, has a
+list
+
+149
+00:09:46,240 --> 00:09:50,980
+of characters a b c d and its type is a
+list of character
+
+150
+00:09:50,980 --> 00:09:55,769
+and that's just the same as String.
+In general
+
+151
+00:09:55,769 --> 00:09:59,429
+the rule is that [t]
+
+152
+00:09:59,429 --> 00:10:02,709
+list of t denotes the type of lists
+
+153
+00:10:02,709 --> 00:10:07,360
+with elements of type t.
+
+154
+00:10:07,360 --> 00:10:12,040
+Note that the type of the list
+doesn't say anything about its length.
+
+155
+00:10:12,040 --> 00:10:16,620
+If we have the list False True it has type
+list of Bool
+
+156
+00:10:16,620 --> 00:10:20,699
+and if we have the value False
+True False
+
+157
+00:10:20,699 --> 00:10:23,980
+it also has type Bool
+
+158
+00:10:23,980 --> 00:10:27,429
+and also the types of these
+
+159
+00:10:27,429 --> 00:10:31,749
+elements can be arbitrary as long as they're
+all the same.
+
+160
+00:10:31,749 --> 00:10:34,769
+The last example down here
+
+161
+00:10:34,769 --> 00:10:38,600
+has a slightly more complicated type:
+It's a list
+
+162
+00:10:38,600 --> 00:10:42,249
+of lists of characters. That's what
+you see here:
+
+163
+00:10:42,249 --> 00:10:45,370
+list of list of characters and if you
+look at the value
+
+164
+00:10:45,370 --> 00:10:48,220
+you see that it contains two lists
+
+165
+00:10:48,220 --> 00:10:51,149
+of characters. The thing with the list is
+that
+
+166
+00:10:51,149 --> 00:10:54,940
+all the elements must have the same type
+but the length is
+
+167
+00:10:54,940 --> 00:10:58,579
+unrestricted. Compare and contrast that
+with tuples.
+
+168
+00:10:58,579 --> 00:11:02,279
+A tuple there
+
+169
+00:11:02,279 --> 00:11:07,610
+the type contains the length but the
+values the types of values can be
+
+170
+00:11:07,610 --> 00:11:08,300
+different
+
+171
+00:11:08,300 --> 00:11:11,730
+so the first example here that's a
+
+172
+00:11:11,730 --> 00:11:15,459
+tuple of two booleans, True and False.
+
+173
+00:11:15,459 --> 00:11:18,500
+There you see that the type is Bool, Bool.
+
+174
+00:11:18,500 --> 00:11:22,699
+It's not the list, if it would be a list, the type
+would be list of Bool,
+
+175
+00:11:22,699 --> 00:11:25,970
+but in this case it's a tuple of
+two booleans
+
+176
+00:11:25,970 --> 00:11:29,220
+True and False and the type is Bool, Bool.
+
+177
+00:11:29,220 --> 00:11:33,889
+Now the second example has type
+Bool, Char, Bool
+
+178
+00:11:33,889 --> 00:11:38,540
+and what you see here is that it
+contains three values
+
+179
+00:11:38,540 --> 00:11:41,810
+one is a boolean, the second one
+
+180
+00:11:41,810 --> 00:11:45,000
+is a character and the third one is
+a boolean again
+
+181
+00:11:45,000 --> 00:11:48,630
+and that's reflected in the type.
+In general
+
+182
+00:11:48,630 --> 00:11:52,600
+if we have a tuple of type t1 to
+tn
+
+183
+00:11:52,600 --> 00:11:56,750
+that's the type of a tuple that has
+n values
+
+184
+00:11:56,750 --> 00:12:00,600
+of each respective type t1 up to tn.
+
+185
+00:12:00,600 --> 00:12:04,819
+The type of a tuple
+
+186
+00:12:04,819 --> 00:12:08,300
+encodes its size so True False or
+
+187
+00:12:08,300 --> 00:12:14,120
+False True there has type Bool, Bool.
+You see there the length
+
+188
+00:12:14,120 --> 00:12:17,199
+of this tuple is reflected in the type.
+
+189
+00:12:17,199 --> 00:12:21,509
+Second on there there's three booleans
+so we see that the tuple has three
+
+190
+00:12:21,509 --> 00:12:25,970
+booleans and the type of the values
+
+191
+00:12:25,970 --> 00:12:30,110
+is unrestricted, so they can be mixed
+and matched. In this case we have a
+
+192
+00:12:30,110 --> 00:12:31,060
+tuple
+
+193
+00:12:31,060 --> 00:12:34,220
+that contains a character
+
+194
+00:12:34,220 --> 00:12:39,660
+and then as the second value a tuple
+that has a boolean and a character
+
+195
+00:12:39,660 --> 00:12:43,019
+and then the last example there is a tuple
+
+196
+00:12:43,019 --> 00:12:46,399
+that has a boolean and then a list of
+characters
+
+197
+00:12:46,399 --> 00:12:51,329
+You see, there is a boolean here, a boolean
+True
+
+198
+00:12:51,329 --> 00:12:55,069
+and a list of 'a', 'b' and we see that the type
+there
+
+199
+00:12:55,069 --> 00:12:59,850
+is Bool and a list of Char.
+This is the end of part one
+
+200
+00:12:59,850 --> 00:13:03,160
+about types and next we'll talk about
+
+201
+00:13:03,160 --> 00:13:06,680
+functions since we're dealing with the
+functional language
+
+202
+00:13:06,680 --> 00:13:10,770
+functions are very important so we'll
+spend
+
+203
+00:13:10,770 --> 00:13:14,279
+a little bit of time zooming into
+functions. Thank you
+
+204
+00:13:14,279 --> 00:13:15,690
+and see after the break
+

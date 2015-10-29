@@ -1,0 +1,651 @@
+1
+00:00:01,030 --> 00:00:04,990
+Welcome back to our lecture on list
+comprehensions.
+
+2
+00:00:04,990 --> 00:00:08,320
+What we're going to do 
+
+3
+00:00:08,320 --> 00:00:11,750
+in the second part is talk about
+
+4
+00:00:11,750 --> 00:00:15,650
+a function called zip that we can
+use
+
+5
+00:00:15,650 --> 00:00:18,910
+to combine two lists into
+
+6
+00:00:18,910 --> 00:00:23,640
+a single list. Here's the
+signature for zip.
+
+7
+00:00:23,640 --> 00:00:26,840
+Zip has type list of a to
+
+8
+00:00:26,840 --> 00:00:29,970
+list of b, to list of pairs
+
+9
+00:00:29,970 --> 00:00:34,739
+of a comma b. Here's an example
+of zipping two lists together.
+
+10
+00:00:34,739 --> 00:00:37,899
+There you can see why this
+
+11
+00:00:37,899 --> 00:00:41,210
+function is called zip. 
+It takes two lists and it takes
+
+12
+00:00:41,210 --> 00:00:44,980
+each value and combines them in a pair.
+
+13
+00:00:44,980 --> 00:00:48,570
+Zip of a b c, and 1, 2, 3, 4
+
+14
+00:00:48,570 --> 00:00:51,570
+is a 1, b 2, c 3.
+
+15
+00:00:51,570 --> 00:00:55,690
+And the zip stops as soon as one of the
+lists
+
+16
+00:00:55,690 --> 00:01:00,890
+is exhausted so in this case you see
+there's four elements on the right list
+
+17
+00:01:00,890 --> 00:01:05,850
+but only three elements on the left list
+and the resulting list
+
+18
+00:01:05,850 --> 00:01:10,670
+has three elements. As I mentioned in
+one of the earlier lectures
+
+19
+00:01:10,670 --> 00:01:13,860
+I think the signature of zip
+
+20
+00:01:13,860 --> 00:01:17,990
+would be a little bit nicer if it was
+not curried. If you would write
+
+21
+00:01:17,990 --> 00:01:21,140
+pair of list of a, list of b,
+
+22
+00:01:21,140 --> 00:01:24,240
+to list of pair of a comma b.
+
+23
+00:01:24,240 --> 00:01:27,299
+But this is just the way
+
+24
+00:01:27,299 --> 00:01:30,490
+zip is defined in the Haskell standard
+library.
+
+25
+00:01:30,490 --> 00:01:33,659
+Using zip
+
+26
+00:01:33,659 --> 00:01:37,880
+we can define the following
+function
+
+27
+00:01:37,880 --> 00:01:41,520
+that takes a list and creates pairs of
+
+28
+00:01:41,520 --> 00:01:46,229
+every adjacent value. Let's
+first look at the
+
+29
+00:01:46,229 --> 00:01:50,259
+example down here, before we look at
+the implementation because I think when
+
+30
+00:01:50,259 --> 00:01:52,460
+you see the example the implementation
+
+31
+00:01:52,460 --> 00:01:57,899
+is fairly obvious. What we want to do
+is given 1 2 3 4 we want to create a
+
+32
+00:01:57,899 --> 00:01:58,570
+chain
+
+33
+00:01:58,570 --> 00:02:02,159
+like a sliding window of pairs
+
+34
+00:02:02,159 --> 00:02:05,780
+1 2, 2 3, 3 4. You see that
+
+35
+00:02:05,780 --> 00:02:09,289
+the two is chained there.
+It's 1 2,
+
+36
+00:02:09,289 --> 00:02:14,010
+2 3, and then 2 3, 3 4. 
+How can we do that
+
+37
+00:02:14,010 --> 00:02:17,010
+and this function here is
+
+38
+00:02:17,010 --> 00:02:20,519
+I think a beautiful
+
+39
+00:02:20,519 --> 00:02:24,010
+example of using zip
+
+40
+00:02:24,010 --> 00:02:27,269
+to do this. What you do
+
+41
+00:02:27,269 --> 00:02:30,689
+is: I take that list 1 2 3 4
+
+42
+00:02:30,689 --> 00:02:34,620
+then I take the tail of this list
+
+43
+00:02:34,620 --> 00:02:38,650
+2 3 4 and then I zip those two together.
+
+44
+00:02:38,650 --> 00:02:43,349
+Now what we get is since we start 
+the first list is 1 2 3 4
+
+45
+00:02:43,349 --> 00:02:47,650
+and the second list is 2 3 4.
+Now when we zip it we get 2 3.
+
+46
+00:02:47,650 --> 00:02:52,109
+Then when we zip the next one we
+get.. Sorry we zip that we get 1 2,
+
+47
+00:02:52,109 --> 00:02:55,730
+the next is 2 3 and the next is 3 4.
+
+48
+00:02:55,730 --> 00:02:59,069
+If you would draw
+
+49
+00:02:59,069 --> 00:03:02,989
+the picture, you get the list, you drop
+the first element
+
+50
+00:03:02,989 --> 00:03:06,569
+shift that one up and then you zip the
+two and this
+
+51
+00:03:06,569 --> 00:03:11,040
+is exactly what you get.
+
+52
+00:03:11,040 --> 00:03:14,379
+Here's another function that
+
+53
+00:03:14,379 --> 00:03:18,220
+uses the function pairs
+
+54
+00:03:18,220 --> 00:03:22,299
+to check whether a list is sorted 
+so what we do is we
+
+55
+00:03:22,299 --> 00:03:25,970
+take all the adjacent pairs in
+the list.
+
+56
+00:03:25,970 --> 00:03:29,439
+That will give us x comma ys.
+
+57
+00:03:29,439 --> 00:03:34,000
+And then we check that the first value is
+smaller than the second.
+
+58
+00:03:34,000 --> 00:03:39,209
+A list is sorted if, if we look at
+every adjacent pair of elements
+
+59
+00:03:39,209 --> 00:03:43,819
+the first one is less than the second. 
+This is a super concise
+
+60
+00:03:43,819 --> 00:03:49,359
+way to check whether a list is sorted.
+Let's just look at some examples.
+
+61
+00:03:49,359 --> 00:03:53,120
+Is 1 2 3 4 sorted? Yes it is, because
+
+62
+00:03:53,120 --> 00:03:58,009
+one comma two, one is less that two.
+Then the next pair is two comma three.
+
+63
+00:03:58,009 --> 00:04:02,669
+Two is smaller than three. And the final pair
+is three comma four.
+
+64
+00:04:02,669 --> 00:04:05,909
+Where three is less than four so that list
+is sorted.
+
+65
+00:04:05,909 --> 00:04:10,180
+Is 1 3 2 4 sorted?
+
+66
+00:04:10,180 --> 00:04:13,319
+No, because the second pair in
+
+67
+00:04:13,319 --> 00:04:16,430
+pairs of this list is the pair
+
+68
+00:04:16,430 --> 00:04:19,459
+3 2 and there 3 is
+
+69
+00:04:19,459 --> 00:04:22,909
+greater than 2 so that will return false.
+
+70
+00:04:22,909 --> 00:04:27,240
+Using zip
+
+71
+00:04:27,240 --> 00:04:29,460
+we can also define
+
+72
+00:04:29,460 --> 00:04:33,450
+the positions of an element in a list.
+
+73
+00:04:33,450 --> 00:04:37,800
+As I mentioned before lists don't have
+
+74
+00:04:37,800 --> 00:04:41,140
+any position, unlike array's. 
+In an array you can
+
+75
+00:04:41,140 --> 00:04:46,810
+index into the array, but lists you
+cannot. With lists you can only access the
+
+76
+00:04:46,810 --> 00:04:47,580
+elements
+
+77
+00:04:47,580 --> 00:04:51,240
+from left to right so I can take the
+head
+
+78
+00:04:51,240 --> 00:04:54,640
+and then the head of the tail and the head
+
+
+79
+00:04:54,640 --> 00:04:58,010
+of the tail of the tail et cetera.
+
+80
+00:04:58,010 --> 00:05:01,860
+But sometimes it's convenient to also
+have the position
+
+81
+00:05:01,860 --> 00:05:05,650
+of each element in a list. 
+This is a fairly common
+
+82
+00:05:05,650 --> 00:05:09,680
+operation, and the way we do that is
+using zip.
+
+83
+00:05:09,680 --> 00:05:13,290
+What we do is, we take the list xs.
+
+84
+00:05:13,290 --> 00:05:17,500
+We take the list from zero to n
+
+85
+00:05:17,500 --> 00:05:20,570
+where n is the length of this list.
+But this
+
+86
+00:05:20,570 --> 00:05:24,670
+really can be the infinite less starting
+at zero. 
+
+87
+00:05:24,670 --> 00:05:27,990
+And then we just zip the
+
+88
+00:05:27,990 --> 00:05:31,110
+the list 
+
+89
+00:05:31,110 --> 00:05:34,790
+with the positions to get
+
+90
+00:05:34,790 --> 00:05:37,950
+every element here.
+
+91
+00:05:37,950 --> 00:05:41,490
+If we look at the
+
+92
+00:05:41,490 --> 00:05:44,520
+positions here,
+
+93
+00:05:44,520 --> 00:05:47,930
+we get the positions of 0, well
+
+94
+00:05:47,930 --> 00:05:53,270
+those are these these these and these.
+So what we did is we first zipped
+
+95
+00:05:53,270 --> 00:05:59,080
+every element with its position and then
+we filter out only the values
+
+96
+00:05:59,080 --> 00:06:02,330
+that we were looking for because here
+were only
+
+97
+00:06:02,330 --> 00:06:05,570
+interested in the positions of zero.
+
+98
+00:06:05,570 --> 00:06:12,130
+This thing goes in two steps, we first
+
+99
+00:06:12,130 --> 00:06:15,310
+pair every element with its position
+
+100
+00:06:15,310 --> 00:06:19,840
+and then we filter out only the
+values that we were looking for
+
+101
+00:06:19,840 --> 00:06:26,840
+up there. In Haskell strings are
+nothing more than syntactic sugar for
+
+102
+00:06:28,030 --> 00:06:29,310
+list of characters
+
+103
+00:06:29,310 --> 00:06:33,680
+which means that you can use
+comprehensions
+
+104
+00:06:33,680 --> 00:06:36,890
+over lists as well. For example here's
+the string
+
+105
+00:06:36,890 --> 00:06:39,600
+abc which
+
+106
+00:06:39,600 --> 00:06:42,600
+is really nothing more than the list of
+characters
+
+107
+00:06:42,600 --> 00:06:47,020
+a b and c, and hence all operations on
+lists
+
+108
+00:06:47,020 --> 00:06:50,040
+including comprehensions but also map,
+filter
+
+109
+00:06:50,040 --> 00:06:54,060
+foldr, all the list operations that
+we'll see
+
+110
+00:06:54,060 --> 00:06:58,560
+will work over strings.
+
+111
+00:06:58,560 --> 00:07:02,180
+For example the length of abcd is five.
+
+112
+00:07:02,180 --> 00:07:05,640
+And why is that? Because that string is
+just a list
+
+113
+00:07:05,640 --> 00:07:09,360
+of five characters, so this uses 
+
+114
+00:07:09,360 --> 00:07:13,290
+the length function over list. We can take
+the first three
+
+115
+00:07:13,290 --> 00:07:18,780
+characters of a list by using
+take 3. We get abc.
+
+116
+00:07:18,780 --> 00:07:22,930
+And we can zip a list, sorry a String,
+
+117
+00:07:22,930 --> 00:07:27,050
+with a list in this way. For
+example if we zip
+
+118
+00:07:27,050 --> 00:07:30,890
+abc with 1234 we get the list of pairs
+
+119
+00:07:30,890 --> 00:07:34,240
+with the character a one, character b
+two
+
+120
+00:07:34,240 --> 00:07:39,160
+character c with three. Many
+other languages
+
+121
+00:07:39,160 --> 00:07:42,340
+also have Strings implement
+
+122
+00:07:42,340 --> 00:07:45,840
+Iterable or Enumerator so you can do
+
+123
+00:07:45,840 --> 00:07:49,180
+the same thing. But in Haskell really
+
+124
+00:07:49,180 --> 00:07:52,260
+there is no special type for list, it's
+
+125
+00:07:52,260 --> 00:07:56,650
+defined as a list of characters and the
+only thing is that
+
+126
+00:07:56,650 --> 00:08:00,240
+there's a special literal syntax just
+like
+
+127
+00:08:00,240 --> 00:08:04,520
+the syntax for lists really, as we have
+seen, means one
+
+128
+00:08:04,520 --> 00:08:08,610
+cons two cons three cons four cons on the
+empty list.
+
+129
+00:08:08,610 --> 00:08:12,750
+Here's an example
+
+130
+00:08:12,750 --> 00:08:16,490
+where we can count
+
+131
+00:08:16,490 --> 00:08:20,920
+the number of lower case characters
+
+132
+00:08:20,920 --> 00:08:24,390
+in a string. What we do is we say:
+
+133
+00:08:24,390 --> 00:08:28,320
+give me all the characters x in a
+string xs,
+
+134
+00:08:28,320 --> 00:08:31,430
+filter out all the ones that are lower
+case
+
+135
+00:08:31,430 --> 00:08:34,680
+and then compute the length.
+
+136
+00:08:34,680 --> 00:08:39,110
+For example if we count the number
+of lower case characters
+
+137
+00:08:39,110 --> 00:08:42,500
+in the string Haskell we see that there
+are six.
+
+138
+00:08:42,500 --> 00:08:46,110
+Two four six, and then
+
+139
+00:08:46,110 --> 00:08:49,680
+the first character is an uppercase
+symbol
+
+140
+00:08:49,680 --> 00:08:52,300
+Alright, hopefully 
+
+141
+00:08:52,300 --> 00:08:55,890
+you've got a little bit of a feeling of
+
+142
+00:08:55,890 --> 00:08:59,160
+list comprehensions, zip
+
+143
+00:08:59,160 --> 00:09:02,230
+and the fact that strings are lists 
+
+144
+00:09:02,230 --> 00:09:05,690
+and in the exercises there will be plenty
+of opportunity
+
+145
+00:09:05,690 --> 00:09:09,650
+to practice with that. See you next week.
+
+146
+00:09:09,650 --> 00:09:10,960
+Bye bye. Happy hacking.
+

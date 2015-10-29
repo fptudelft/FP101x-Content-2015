@@ -1,0 +1,702 @@
+1
+00:00:00,849 --> 00:00:03,070
+Hey, welcome everybody 
+
+2
+00:00:03,070 --> 00:00:06,350
+in yet another jam session
+
+3
+00:00:06,350 --> 00:00:10,210
+for the functional programming 101x
+course.
+
+4
+00:00:10,210 --> 00:00:14,160
+In this one we're going to
+
+5
+00:00:14,160 --> 00:00:17,170
+do a quick run
+
+6
+00:00:17,170 --> 00:00:21,750
+over Facebook's extensions to PHP
+
+7
+00:00:21,750 --> 00:00:25,840
+called Hack. Hack
+
+8
+00:00:25,840 --> 00:00:30,300
+really is, one way to look at it, its
+PHP
+
+9
+00:00:30,300 --> 00:00:34,219
+with optional typing just like in Dart
+
+10
+00:00:34,219 --> 00:00:37,760
+and then there's some quite 
+interesting
+
+11
+00:00:37,760 --> 00:00:41,719
+additional features that we have seen in
+C sharp
+
+12
+00:00:41,719 --> 00:00:44,829
+and in Dart as well such as
+
+13
+00:00:44,829 --> 00:00:48,450
+asynchronous functions and iterators.
+
+14
+00:00:48,450 --> 00:00:51,469
+The additions
+
+15
+00:00:51,469 --> 00:00:54,809
+that Hack brings to PHP are
+
+16
+00:00:54,809 --> 00:00:57,890
+optional static typing
+
+17
+00:00:57,890 --> 00:01:01,120
+here you can specify the
+types
+
+18
+00:01:01,120 --> 00:01:04,949
+and the other thing is
+lambda expressions. We will
+
+19
+00:01:04,949 --> 00:01:07,970
+walk through some examples there as
+well.
+
+20
+00:01:07,970 --> 00:01:11,939
+The examples will all be taken here from
+the Hack
+
+21
+00:01:11,939 --> 00:01:15,210
+website. And I
+
+22
+00:01:15,210 --> 00:01:19,159
+invite you to have a look at it
+and install Hack
+
+23
+00:01:19,159 --> 00:01:23,320
+on your computer if you're a PHP
+programmer.
+
+24
+00:01:23,320 --> 00:01:26,320
+I think this is definitely a step
+
+25
+00:01:26,320 --> 00:01:29,890
+up. let's look first
+
+26
+00:01:29,890 --> 00:01:34,240
+at the
+
+27
+00:01:34,240 --> 00:01:37,350
+way
+
+28
+00:01:37,350 --> 00:01:42,299
+you use anonymous functions in PHP
+
+29
+00:01:42,299 --> 00:01:46,600
+In PHP, maybe I can make this
+
+30
+00:01:46,600 --> 00:01:49,860
+a little bit larger to make it better
+readable.
+
+31
+00:01:49,860 --> 00:01:54,759
+In PHP, like in C++.
+C++
+
+32
+00:01:54,759 --> 00:02:00,590
+has lambdas as well. When you
+capture variables from the outer scope
+
+33
+00:02:00,590 --> 00:02:04,750
+you have to explicitly use them. 
+For example here,
+
+34
+00:02:04,750 --> 00:02:08,190
+there's a variable dollar x here.
+
+35
+00:02:08,190 --> 00:02:11,790
+In PHP variables 
+
+36
+00:02:11,790 --> 00:02:16,670
+always have this dollar sign in
+front so we have a variable $x
+
+37
+00:02:16,670 --> 00:02:19,710
+that's initialized to bar and here's an
+
+38
+00:02:19,710 --> 00:02:24,360
+anonymous function that we return. 
+The syntax is similar to Javascript where you
+
+39
+00:02:24,360 --> 00:02:25,680
+have to write function,
+
+40
+00:02:25,680 --> 00:02:29,450
+parameters, curly open, body, return.
+
+41
+00:02:29,450 --> 00:02:33,900
+That's already rather verbose, but the
+the thing here's that
+
+42
+00:02:33,900 --> 00:02:37,320
+you always have to say which
+
+43
+00:02:37,320 --> 00:02:41,680
+variables from the outer scope you're
+using. 
+
+44
+00:02:41,680 --> 00:02:44,790
+When you want to write
+
+45
+00:02:44,790 --> 00:02:48,540
+code in a higher-order style using
+
+46
+00:02:48,540 --> 00:02:52,850
+filter and map, those functions
+that we have seen
+
+47
+00:02:52,850 --> 00:02:56,610
+in the Haskell course. The syntax here
+
+48
+00:02:56,610 --> 00:02:59,800
+becomes very very heavyweight.
+
+49
+00:02:59,800 --> 00:03:03,420
+There's more noise
+
+50
+00:03:03,420 --> 00:03:08,170
+then really what you gain.
+One of the
+
+51
+00:03:08,170 --> 00:03:11,220
+very nice things in Hack is that Hack
+
+52
+00:03:11,220 --> 00:03:14,540
+supports lambda expressions which makes
+
+53
+00:03:14,540 --> 00:03:18,100
+the use of anonymous functions in PHP
+
+54
+00:03:18,100 --> 00:03:21,710
+much more concise. Let's look at
+
+55
+00:03:21,710 --> 00:03:25,460
+the example here:
+
+56
+00:03:25,460 --> 00:03:28,830
+here we have
+
+57
+00:03:28,830 --> 00:03:32,930
+a function that captures b
+
+58
+00:03:32,930 --> 00:03:36,010
+from the outer scope. So that's used b
+here,
+
+59
+00:03:36,010 --> 00:03:39,280
+but we don't have to say any use here.
+
+60
+00:03:39,280 --> 00:03:42,360
+And also this syntax is much more
+concise
+
+61
+00:03:42,360 --> 00:03:46,440
+we can just say dollar a, that's the
+parameter,
+
+62
+00:03:46,440 --> 00:03:50,470
+arrow and then triple arrow and the
+website
+
+63
+00:03:50,470 --> 00:03:55,040
+here gives a very interesting
+explanation of why
+
+64
+00:03:55,040 --> 00:03:58,300
+that syntax was used not single arrow or
+
+65
+00:03:58,300 --> 00:04:03,600
+single double arrow. But here you see
+that we don't have to write
+
+66
+00:04:03,600 --> 00:04:07,300
+all this
+
+67
+00:04:07,300 --> 00:04:11,370
+noise, we don't have to write functions
+we don't have to write
+
+68
+00:04:11,370 --> 00:04:16,040
+'use' and now suddenly writing
+higher-order functions like map,
+
+69
+00:04:16,040 --> 00:04:19,040
+filter, fold becomes rather
+
+70
+00:04:19,040 --> 00:04:22,020
+easy. That's 
+
+71
+00:04:22,020 --> 00:04:25,320
+a quite nice thing. 
+
+72
+00:04:25,320 --> 00:04:30,220
+Let's look at some other features of
+Hack that we have seen in Haskell.
+
+73
+00:04:30,220 --> 00:04:34,000
+Type aliases we have seen type aliases
+also
+
+74
+00:04:34,000 --> 00:04:37,400
+in Scala and Haskell if you want to give
+a name
+
+75
+00:04:37,400 --> 00:04:41,750
+a different name to some type you just
+define a
+
+76
+00:04:41,750 --> 00:04:45,090
+type alias and in Hack
+
+77
+00:04:45,090 --> 00:04:48,120
+you can do that here and there are
+
+78
+00:04:48,120 --> 00:04:52,650
+also newtype that's the same
+concept
+
+79
+00:04:52,650 --> 00:04:55,990
+as in Haskell and so on. 
+
+80
+00:04:55,990 --> 00:04:59,680
+Hack has a number of ways to define
+
+81
+00:04:59,680 --> 00:05:03,980
+type aliases and there you see here
+there's
+
+82
+00:05:03,980 --> 00:05:07,620
+OCaml is mentioned. 
+
+83
+00:05:07,620 --> 00:05:13,210
+Interestingly the Hack compiler itself is
+written in OCaml.
+
+84
+00:05:13,210 --> 00:05:16,440
+That's an example of a
+
+85
+00:05:16,440 --> 00:05:20,190
+very large piece of software written in
+a functional language,
+
+86
+00:05:20,190 --> 00:05:24,950
+that is used at a major internet company.
+
+87
+00:05:24,950 --> 00:05:28,180
+Many of the 
+
+88
+00:05:28,180 --> 00:05:31,320
+ideas in Hack have been
+
+89
+00:05:31,320 --> 00:05:35,270
+influenced by the OCaml language.
+
+90
+00:05:35,270 --> 00:05:38,420
+There you see another example where a
+functional language
+
+91
+00:05:38,420 --> 00:05:42,190
+OCaml is both used in the
+implementation
+
+92
+00:05:42,190 --> 00:05:45,370
+of this PHP
+
+93
+00:05:45,370 --> 00:05:48,620
+derivative but also the design
+
+94
+00:05:48,620 --> 00:05:51,660
+of Hack has been influenced by
+
+95
+00:05:51,660 --> 00:05:56,120
+a functional language, by OCaml.
+
+96
+00:05:56,120 --> 00:05:59,130
+That's very nice
+
+97
+00:05:59,130 --> 00:06:02,230
+we've seen lambda expressions, here are
+
+98
+00:06:02,230 --> 00:06:08,140
+generators and in C sharp there's
+yield return.
+
+99
+00:06:08,140 --> 00:06:14,340
+We've seen those in Dart as well with
+the sync* methods.
+
+100
+00:06:14,340 --> 00:06:18,610
+JavaScript, ECMAScript 6 will also
+support
+
+101
+00:06:18,610 --> 00:06:21,870
+yield and PHP
+
+102
+00:06:21,870 --> 00:06:25,370
+already 
+
+103
+00:06:25,370 --> 00:06:28,480
+supports generators here. You can
+
+104
+00:06:28,480 --> 00:06:32,110
+write inside the function body, you
+can
+
+105
+00:06:32,110 --> 00:06:35,319
+use yield and then the result of this
+
+106
+00:06:35,319 --> 00:06:38,720
+will be an iterable.
+
+107
+00:06:38,720 --> 00:06:42,220
+The nice thing about this is that if
+you use these
+
+108
+00:06:42,220 --> 00:06:47,050
+iterators and I haven't shown them
+in C sharp, in C sharp
+
+109
+00:06:47,050 --> 00:06:50,229
+I've shown only the linq
+comprehensions.
+
+110
+00:06:50,229 --> 00:06:53,630
+But with iterators its kind of the
+imperative
+
+111
+00:06:53,630 --> 00:06:57,919
+equivalent of comprehensions because
+sometimes
+
+112
+00:06:57,919 --> 00:07:01,479
+you want to generate a collection
+
+113
+00:07:01,479 --> 00:07:06,500
+but you want to maintain some state and
+you want to use regular control flow
+
+114
+00:07:06,500 --> 00:07:09,690
+like try catch and for loops and
+
+115
+00:07:09,690 --> 00:07:12,740
+while loops and in that case the
+
+116
+00:07:12,740 --> 00:07:16,380
+iterators
+
+117
+00:07:16,380 --> 00:07:20,310
+or generators as they're sometimes called
+are super convenient because
+
+118
+00:07:20,310 --> 00:07:25,060
+it just allows you to write the same
+code that you write in normal
+
+119
+00:07:25,060 --> 00:07:28,470
+function bodies but now you can
+
+120
+00:07:28,470 --> 00:07:32,259
+temporarily suspend the function body
+when you want to yield a
+
+121
+00:07:32,259 --> 00:07:35,370
+value and then when the consumer calls
+moveNext
+
+122
+00:07:35,370 --> 00:07:40,220
+execution continues here. 
+The other thing that
+
+123
+00:07:40,220 --> 00:07:43,560
+is in Hack, that is
+
+124
+00:07:43,560 --> 00:07:46,729
+quite nice and that's also in C sharp
+
+125
+00:07:46,729 --> 00:07:49,820
+and as we've seen also in dart are
+
+126
+00:07:49,820 --> 00:07:53,219
+asynchronous functions, 
+
+127
+00:07:53,219 --> 00:07:56,610
+if you define a function and you say that
+it's
+
+128
+00:07:56,610 --> 00:08:00,330
+asynchronous then inside that function
+
+129
+00:08:00,330 --> 00:08:04,740
+you can call await on another
+asynchronous function
+
+130
+00:08:04,740 --> 00:08:08,030
+and this asynchronous function 
+returns an
+
+131
+00:08:08,030 --> 00:08:11,150
+Awaitable of some value.
+
+132
+00:08:11,150 --> 00:08:14,389
+An awaitable say roughly is
+
+133
+00:08:14,389 --> 00:08:19,479
+what corresponds to a task in C sharp
+or a Future in Java
+
+134
+00:08:19,479 --> 00:08:23,570
+or a Future in Dart and
+
+135
+00:08:23,570 --> 00:08:27,320
+so this await takes on the right hand
+side
+
+136
+00:08:27,320 --> 00:08:30,849
+a awaitable of T and then
+
+137
+00:08:30,849 --> 00:08:34,190
+turns that into a T. 
+
+138
+00:08:34,190 --> 00:08:37,490
+Under the covers the compiler will
+create
+
+139
+00:08:37,490 --> 00:08:41,510
+a state machine that will take the
+continuation
+
+140
+00:08:41,510 --> 00:08:43,520
+of this program here, so the
+
+141
+00:08:43,520 --> 00:08:46,750
+rest of the computation it's basically
+
+142
+00:08:46,750 --> 00:08:50,330
+what's highlighted here and pass that as
+the callback
+
+143
+00:08:50,330 --> 00:08:53,540
+when that awaitable has terminated.
+
+144
+00:08:53,540 --> 00:08:57,990
+I think
+
+145
+00:08:57,990 --> 00:09:03,110
+that's about it for Hack. 
+If you go to the Hack website
+
+146
+00:09:03,110 --> 00:09:07,800
+it has fantastic documentation
+
+147
+00:09:07,800 --> 00:09:11,390
+there's a lot of samples, tutorials
+
+148
+00:09:11,390 --> 00:09:15,380
+and there's also
+
+149
+00:09:15,380 --> 00:09:19,440
+instructions how to install it on
+your own computer.
+
+150
+00:09:19,440 --> 00:09:22,660
+If you are a PHP programmer and
+
+151
+00:09:22,660 --> 00:09:26,010
+you're interested in using a much more
+
+152
+00:09:26,010 --> 00:09:30,130
+functional programming style I would
+definitely
+
+153
+00:09:30,130 --> 00:09:33,910
+advice you
+
+154
+00:09:33,910 --> 00:09:37,430
+to give Hack a try and as I
+mentioned
+
+155
+00:09:37,430 --> 00:09:41,800
+the Hack compiler is written in OCaml.
+
+156
+00:09:41,800 --> 00:09:46,540
+And so the influences of functional
+programming here
+
+157
+00:09:46,540 --> 00:09:50,050
+are very apparent, which is always
+
+158
+00:09:50,050 --> 00:09:53,080
+beautiful. Thank you very much and
+
+159
+00:09:53,080 --> 00:09:53,870
+happy hacking.
+

@@ -1,0 +1,839 @@
+1
+00:00:01,480 --> 00:00:04,240
+Welcome back. I hope that your
+
+2
+00:00:04,240 --> 00:00:08,620
+mental stack has not overflown
+because of all the recursion.
+
+3
+00:00:08,620 --> 00:00:13,070
+In this second part we'll keep it
+very light
+
+4
+00:00:13,070 --> 00:00:17,240
+and in particular I will help you
+
+5
+00:00:17,240 --> 00:00:20,810
+with some of the exercises that
+
+6
+00:00:20,810 --> 00:00:24,410
+are on the website for this chapter.
+
+7
+00:00:24,410 --> 00:00:28,730
+In the very first lecture we showed
+
+8
+00:00:28,730 --> 00:00:33,680
+very quickly an implementation of
+quicksort
+
+9
+00:00:33,680 --> 00:00:37,620
+in Haskell and what we will do now is
+we will
+
+10
+00:00:37,620 --> 00:00:40,680
+look in a little bit more detail
+
+11
+00:00:40,680 --> 00:00:44,940
+at quicksort in Haskell.
+
+12
+00:00:44,940 --> 00:00:49,440
+The idea of quicksort is to sort a list
+
+13
+00:00:49,440 --> 00:00:53,590
+recursively by decomposing the list
+somehow
+
+14
+00:00:53,590 --> 00:00:57,120
+recursively sorting those lists
+
+15
+00:00:57,120 --> 00:01:01,690
+and then combining the results together.
+If we
+
+16
+00:01:01,690 --> 00:01:04,909
+think about that for a little bit, 
+we can say:
+
+17
+00:01:04,909 --> 00:01:08,700
+if I have the empty list it's already
+sorted.
+
+18
+00:01:08,700 --> 00:01:11,939
+Now how do we
+
+19
+00:01:11,939 --> 00:01:16,200
+recurse how do we break up that
+list
+
+20
+00:01:16,200 --> 00:01:19,759
+into two parts that we can recursively
+sort
+
+21
+00:01:19,759 --> 00:01:23,860
+and then easily combine the results to
+get a sorted list?
+
+22
+00:01:23,860 --> 00:01:28,619
+Well what we do is if we can take a look
+at the head of the list
+
+23
+00:01:28,619 --> 00:01:32,990
+and break this list in two, one with all
+the values that are
+
+24
+00:01:32,990 --> 00:01:38,740
+less or equal than the head. One with all
+the values that are greater than the head.
+
+25
+00:01:38,740 --> 00:01:42,119
+Then we can just recursively sort
+
+26
+00:01:42,119 --> 00:01:45,310
+those two lists and inject the head
+
+27
+00:01:45,310 --> 00:01:48,479
+in the middle and we're done. That's
+
+28
+00:01:48,479 --> 00:01:51,590
+the algorithmic essence
+
+29
+00:01:51,590 --> 00:01:55,159
+of quicksort but as I already
+warned you
+
+30
+00:01:55,159 --> 00:01:58,610
+in the real implementation you're not
+creating new lists
+
+31
+00:01:58,610 --> 00:02:00,600
+you're really mutating
+
+32
+00:02:00,600 --> 00:02:03,650
+the data structure in place to swap
+
+33
+00:02:03,650 --> 00:02:07,750
+the elements and that's an aspect that
+this version of quicksort
+
+34
+00:02:07,750 --> 00:02:12,360
+doesn't show but it does show this
+recursive
+
+35
+00:02:12,360 --> 00:02:15,650
+structure. Alright, here's the
+
+36
+00:02:15,650 --> 00:02:19,130
+implementation of quicksort
+
+37
+00:02:19,130 --> 00:02:22,160
+similar to the very first lecture
+
+38
+00:02:22,160 --> 00:02:25,550
+and only now it's called quicksort
+instead of f.
+
+39
+00:02:25,550 --> 00:02:30,440
+What we do when we have the
+empty list:
+
+40
+00:02:30,440 --> 00:02:34,170
+it's already sorted. When we want to sort
+a list
+
+41
+00:02:34,170 --> 00:02:37,300
+x cons xs
+
+42
+00:02:37,300 --> 00:02:42,300
+we create a list with all the elements
+that are smaller
+
+43
+00:02:42,300 --> 00:02:48,250
+or equal than x, and for
+that
+
+44
+00:02:48,250 --> 00:02:52,680
+we use a list comprehension. We create
+a list of all the elements that are
+
+45
+00:02:52,680 --> 00:02:54,069
+larger than x.
+
+46
+00:02:54,069 --> 00:02:58,030
+We sort both of those and we put
+
+47
+00:02:58,030 --> 00:03:02,930
+x in the middle. This
+
+48
+00:03:02,930 --> 00:03:06,590
+is a very simple implementation of
+quicksort
+
+49
+00:03:06,590 --> 00:03:10,320
+but again it's also a very simplistic
+
+50
+00:03:10,320 --> 00:03:14,790
+implementation of quicksort. But if you
+want to understand the structure
+
+51
+00:03:14,790 --> 00:03:18,079
+this is probably a very good
+illustration.
+
+52
+00:03:18,079 --> 00:03:21,620
+If we want to
+
+53
+00:03:21,620 --> 00:03:26,470
+illustrate how this works, let's
+abbreviate quicksort as q
+
+54
+00:03:26,470 --> 00:03:31,170
+such that the slide doesn't
+overflow. We want to sort
+
+55
+00:03:31,170 --> 00:03:35,430
+the list 3 2 4 1 5. What we're going to
+do is we're
+
+56
+00:03:35,430 --> 00:03:39,519
+taking the head three and we're going to
+break up the rest of the list
+
+57
+00:03:39,519 --> 00:03:44,030
+into the elements that are less than
+equal to 3 and the ones that are
+
+58
+00:03:44,030 --> 00:03:47,410
+larger than three. 
+
+59
+00:03:47,410 --> 00:03:50,579
+The elements that are less in this list
+are two
+
+60
+00:03:50,579 --> 00:03:53,620
+and one. And the ones that are larger
+are four
+
+61
+00:03:53,620 --> 00:03:57,609
+and five. That's what you see, 
+we recursively sort
+
+62
+00:03:57,609 --> 00:04:02,540
+those and we inject three in the
+middle.
+
+63
+00:04:02,540 --> 00:04:05,980
+If we sort the list
+
+64
+00:04:05,980 --> 00:04:09,079
+2 1, we take the head, we split
+
+65
+00:04:09,079 --> 00:04:13,260
+the remaining list, which is just
+one, into the values that are smaller
+
+66
+00:04:13,260 --> 00:04:16,350
+and the values that are larger. 
+The ones that are larger that's the
+
+67
+00:04:16,350 --> 00:04:17,150
+empty list.
+
+68
+00:04:17,150 --> 00:04:20,590
+The ones that are smaller that's one and
+then
+
+69
+00:04:20,590 --> 00:04:23,820
+we drop two
+
+70
+00:04:23,820 --> 00:04:27,199
+in the Middle. Same on the right
+hand side,
+
+71
+00:04:27,199 --> 00:04:30,250
+we take the first element
+
+72
+00:04:30,250 --> 00:04:33,280
+and we split the remainder of the list
+which is just 5
+
+73
+00:04:33,280 --> 00:04:37,210
+in the elements that are larger than four
+so that's the list 5
+
+74
+00:04:37,210 --> 00:04:41,030
+and the elements that are smaller which
+is the empty list
+
+75
+00:04:41,030 --> 00:04:44,070
+and we inject four there
+
+76
+00:04:44,070 --> 00:04:47,530
+in the middle. 
+
+77
+00:04:47,530 --> 00:04:50,919
+The empty lists here and here
+
+78
+00:04:50,919 --> 00:04:54,400
+are already sorted so nothing to do
+there.
+
+79
+00:04:54,400 --> 00:04:58,010
+We just have to short the list
+of one
+
+80
+00:04:58,010 --> 00:05:02,840
+element and you can verify that when you
+sort the list of one element it returns
+
+81
+00:05:02,840 --> 00:05:07,449
+that list itself. If we
+
+82
+00:05:07,449 --> 00:05:11,229
+make those recursive calls there
+
+83
+00:05:11,229 --> 00:05:15,300
+we get this list and now you see
+
+84
+00:05:15,300 --> 00:05:18,599
+that the result is one two
+
+85
+00:05:18,599 --> 00:05:22,070
+three four five.
+
+86
+00:05:22,070 --> 00:05:25,370
+You just walk that three
+
+87
+00:05:25,370 --> 00:05:29,900
+to get the results.
+
+88
+00:05:29,900 --> 00:05:33,169
+That was quicksort.
+
+89
+00:05:33,169 --> 00:05:38,150
+The exercises for this week there's a
+lot of exercises to define
+
+90
+00:05:38,150 --> 00:05:42,570
+functions recursively but I'm going
+to
+
+91
+00:05:42,570 --> 00:05:46,620
+do just a couple of them here
+
+92
+00:05:46,620 --> 00:05:50,560
+with you. Let's look at the first one
+here. It says
+
+93
+00:05:50,560 --> 00:05:55,210
+produce a list with n identical
+elements so
+
+94
+00:05:55,210 --> 00:05:58,840
+that's a function that takes an integer
+which is
+
+95
+00:05:58,840 --> 00:06:02,520
+the n and then it takes a value
+
+96
+00:06:02,520 --> 00:06:06,229
+a and it should return a
+
+97
+00:06:06,229 --> 00:06:09,680
+list of n copies of
+
+98
+00:06:09,680 --> 00:06:14,530
+that value a. How do we do that?
+
+99
+00:06:14,530 --> 00:06:19,610
+Well we do that by not recursing,
+well we don't recurse
+
+100
+00:06:19,610 --> 00:06:22,969
+over this a, and we have to build the
+list,
+
+101
+00:06:22,969 --> 00:06:26,849
+so what we have to do is we have to
+define this
+
+102
+00:06:26,849 --> 00:06:29,439
+recursively over the structure of
+this
+
+103
+00:06:29,439 --> 00:06:32,520
+integer so again we have two cases.
+
+104
+00:06:32,520 --> 00:06:37,990
+n equals 0, if I replicate an
+element 0 time,
+
+105
+00:06:37,990 --> 00:06:42,389
+I get the empty list so that case
+is easy.
+
+106
+00:06:42,389 --> 00:06:45,610
+If I want to replicate a value
+
+107
+00:06:45,610 --> 00:06:49,750
+n times, what do I do? I first
+replicate it
+
+108
+00:06:49,750 --> 00:06:53,409
+n minus one times, so I get the list
+
+109
+00:06:53,409 --> 00:06:57,270
+of n minus one times as, and
+then I cons
+
+110
+00:06:57,270 --> 00:07:01,060
+a on top. That one is easy
+
+111
+00:07:01,060 --> 00:07:04,340
+but again you have to look a little bit
+
+112
+00:07:04,340 --> 00:07:07,560
+and them you see: I'm doing recursion
+
+113
+00:07:07,560 --> 00:07:12,009
+over that guy, there's two cases 
+just
+
+114
+00:07:12,009 --> 00:07:16,849
+write them down and everything drops out.
+Here is
+
+115
+00:07:16,849 --> 00:07:21,629
+another friend of us that we've
+seen in previous lectures
+
+116
+00:07:21,629 --> 00:07:24,939
+and there I warned you that in Haskell
+
+117
+00:07:24,939 --> 00:07:28,400
+lists don't have constant access. 
+
+118
+00:07:28,400 --> 00:07:32,219
+When we implement this function that
+will be very clear.
+
+119
+00:07:32,219 --> 00:07:36,520
+What we have to do is we have to take
+a list and a number
+
+120
+00:07:36,520 --> 00:07:41,009
+and then return the element in that
+list
+
+121
+00:07:41,009 --> 00:07:46,039
+at that position. Of course we can do
+this
+
+122
+00:07:46,039 --> 00:07:51,289
+using a take or drop or other
+functions but the goal here is to
+
+123
+00:07:51,289 --> 00:07:52,089
+define it
+
+124
+00:07:52,089 --> 00:07:55,819
+using recursion. Since we have here
+
+125
+00:07:55,819 --> 00:07:58,870
+two recursive structures, the list
+
+126
+00:07:58,870 --> 00:08:02,039
+and the integer, we're going to
+
+127
+00:08:02,039 --> 00:08:05,629
+define this by recursing
+
+128
+00:08:05,629 --> 00:08:09,610
+over both. How
+
+129
+00:08:09,610 --> 00:08:14,849
+would that look, well first thing is if
+we want to have the zero'th element
+
+130
+00:08:14,849 --> 00:08:18,400
+of the list, well that is the head of the
+list.
+
+131
+00:08:18,400 --> 00:08:22,060
+If I have a list x cons xs
+
+132
+00:08:22,060 --> 00:08:25,270
+and this one is zero then that's
+
+133
+00:08:25,270 --> 00:08:28,909
+the element. For the first element of
+the list
+
+134
+00:08:28,909 --> 00:08:33,469
+is the element at index 0. 
+That's a simple one.
+
+135
+00:08:33,469 --> 00:08:37,310
+If the list here is
+
+136
+00:08:37,310 --> 00:08:40,260
+empty,
+
+137
+00:08:40,260 --> 00:08:41,919
+well what do we.
+
+138
+00:08:41,919 --> 00:08:45,770
+That's a good question, probably if
+I want to index the
+
+139
+00:08:45,770 --> 00:08:49,200
+nth element of the empty list
+
+140
+00:08:49,200 --> 00:08:52,920
+that's going to give an error.
+Let's not worry about that, we're going
+
+141
+00:08:52,920 --> 00:08:54,830
+to put that as the last clause.
+
+142
+00:08:54,830 --> 00:08:58,060
+Now we can assume that
+
+143
+00:08:58,060 --> 00:09:01,640
+this one is not zero and this one is not
+empty.
+
+144
+00:09:01,640 --> 00:09:06,150
+If that one was zero we're done, if that one
+was empty
+
+145
+00:09:06,150 --> 00:09:11,100
+and this one is not zero then we have an
+error. Now they're both non-zero so
+
+146
+00:09:11,100 --> 00:09:11,840
+what we do
+
+147
+00:09:11,840 --> 00:09:15,050
+is we say: okay if this is
+
+148
+00:09:15,050 --> 00:09:19,420
+x cons xs and this is n what we do
+
+149
+00:09:19,420 --> 00:09:23,340
+is we take the index of the tail of the
+list
+
+150
+00:09:23,340 --> 00:09:27,240
+and the n-1 index.
+
+151
+00:09:27,240 --> 00:09:31,910
+Simple recursion too, it's just that we
+have to be a little careful
+
+152
+00:09:31,910 --> 00:09:37,910
+about the base cases. The last
+function we're going to define
+
+153
+00:09:37,910 --> 00:09:41,630
+using recursion here, decides
+
+154
+00:09:41,630 --> 00:09:45,330
+if a given value is a member
+
+155
+00:09:45,330 --> 00:09:48,980
+of a list. Of course
+
+156
+00:09:48,980 --> 00:09:52,590
+we could cheat here and not use
+recursion. We can
+
+157
+00:09:52,590 --> 00:09:55,820
+easily use filter or list comprehension
+
+158
+00:09:55,820 --> 00:09:59,740
+or something, but the goal here is
+to define this
+
+159
+00:09:59,740 --> 00:10:03,570
+function using recursion. In this
+case
+
+160
+00:10:03,570 --> 00:10:07,070
+there's an obvious candidate to do
+the recursion
+
+161
+00:10:07,070 --> 00:10:11,430
+over, that's this list. If we're 
+looking for an element a
+
+162
+00:10:11,430 --> 00:10:14,540
+in the empty list, that's false.
+
+163
+00:10:14,540 --> 00:10:19,070
+That element is not in the list. 
+If we're looking
+
+164
+00:10:19,070 --> 00:10:23,870
+for an element a in the list x cons xs,
+
+165
+00:10:23,870 --> 00:10:27,070
+well we have to check whether the head
+of the list
+
+166
+00:10:27,070 --> 00:10:30,360
+is equal to the value that we're
+looking for.
+
+167
+00:10:30,360 --> 00:10:35,350
+If that's the case we return true. 
+If that's not the case
+
+168
+00:10:35,350 --> 00:10:39,480
+then we just search for that element in
+the tail of the list.
+
+169
+00:10:39,480 --> 00:10:43,180
+Eventually the tail of the list 
+will be empty
+
+170
+00:10:43,180 --> 00:10:48,170
+so we will hit the base case and we're done.
+Now you see here that since we're
+
+171
+00:10:48,170 --> 00:10:51,550
+checking equality of this element
+
+172
+00:10:51,550 --> 00:10:55,010
+each head of the list until we find it
+
+173
+00:10:55,010 --> 00:10:58,190
+the type a must support
+
+174
+00:10:58,190 --> 00:11:01,269
+equality and that's what you see here in
+the type. So
+
+175
+00:11:01,269 --> 00:11:04,839
+we can only search for a value in a list
+
+176
+00:11:04,839 --> 00:11:08,899
+if the types of the list support equality
+
+177
+00:11:08,899 --> 00:11:13,100
+and that's why we get this constraint
+here so a must be
+
+178
+00:11:13,100 --> 00:11:16,130
+a member of the type class Eq of a.
+
+179
+00:11:16,130 --> 00:11:19,690
+Great, I hope that this
+
+180
+00:11:19,690 --> 00:11:23,070
+helped, these small exercises
+
+181
+00:11:23,070 --> 00:11:26,570
+and as I said: on the website
+
+182
+00:11:26,570 --> 00:11:30,029
+there's a lot of exercises where you 
+will do
+
+183
+00:11:30,029 --> 00:11:34,279
+recursion and if you get stuck
+
+184
+00:11:34,279 --> 00:11:38,490
+try eating a banana and maybe it helps.
+
+185
+00:11:38,490 --> 00:11:42,269
+Or maybe you can two eat bananas,
+
+186
+00:11:42,269 --> 00:11:45,170
+and that will work even better. 
+See you next week.
+

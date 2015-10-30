@@ -611,12 +611,12 @@ three to three, so that is the last value is just
 
 138
 00:08:35,860 --> 00:08:39,360
-(3,3). But again your
+(3,3). But again you’re
 
 139
 00:08:39,360 --> 00:08:44,720
 totally familiar with this because this
-is the same how nested loops work
+is the same as how nested loops work
 
 140
 00:08:44,720 --> 00:08:48,310
@@ -853,7 +853,7 @@ number are exactly the list [1,n].
 
 192
 00:12:02,230 --> 00:12:05,589
-For example, five is not a prime
+For example, fifteen is not a prime
 
 193
 00:12:05,589 --> 00:12:09,510

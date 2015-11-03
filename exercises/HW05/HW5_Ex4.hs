@@ -36,7 +36,7 @@ and :: [Bool] -> Bool
 and [] = True
 and (b : bs)
    | b == False = False
-   | otherwise and bs
+   | otherwise = and bs
 -}
 
 {-

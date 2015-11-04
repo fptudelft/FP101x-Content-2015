@@ -7,7 +7,6 @@ halvea xs = (take n xs, drop n xs)
 {-
 -- answer b
 halveb xs = splitAt (length xs `div` 2) xs
-   where n = length xs
 -}
 
 {-

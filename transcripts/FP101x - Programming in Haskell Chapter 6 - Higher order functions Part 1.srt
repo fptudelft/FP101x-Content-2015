@@ -1,0 +1,807 @@
+1
+00:00:14,280 --> 00:00:15,510
+Oh, oh, oh, wait!
+
+2
+00:00:15,510 --> 00:00:18,939
+Camera was already running. Sorry.
+Sorry, guys.
+
+3
+00:00:18,939 --> 00:00:25,939
+
+4
+00:00:26,289 --> 00:00:29,659
+Functional programming with bananas
+
+5
+00:00:29,659 --> 00:00:32,829
+lenses, the barbed wire
+
+6
+00:00:32,829 --> 00:00:36,200
+I left at home and envelopes
+
+7
+00:00:36,200 --> 00:00:40,320
+is not something for hipsters.
+
+8
+00:00:40,320 --> 00:00:43,480
+It is actually a style of functional programming
+
+9
+00:00:43,480 --> 00:00:47,020
+where we leverage higher-order functions.
+
+10
+00:00:47,020 --> 00:00:50,780
+And that will be the topic of today's
+lecture.
+
+11
+00:00:50,780 --> 00:00:55,790
+We have seen several higher-order
+
+12
+00:00:55,790 --> 00:00:59,250
+functions already, but we never actually
+
+13
+00:00:59,250 --> 00:01:03,739
+named them specifically. A higher-order
+function
+
+14
+00:01:03,739 --> 00:01:08,740
+is a function that takes a function
+as an argument
+
+15
+00:01:08,740 --> 00:01:12,409
+or returns a function as a result.
+
+16
+00:01:12,409 --> 00:01:16,829
+Let's look at this function twice. Twice
+
+17
+00:01:16,829 --> 00:01:20,670
+is defined as follows: twice of f and x
+calls
+
+18
+00:01:20,670 --> 00:01:25,600
+f of f of x. If we look at the type
+of twice
+
+19
+00:01:25,600 --> 00:01:30,450
+and again remember the syntax, twice
+double colon means twice has type,
+
+20
+00:01:30,450 --> 00:01:35,509
+then on the right we see that it takes
+as the first parameter a function
+
+21
+00:01:35,509 --> 00:01:39,319
+from a to a and it returns a function
+
+22
+00:01:39,319 --> 00:01:44,270
+from a to a. And if we look at the
+definition again with that type in mind
+
+23
+00:01:44,270 --> 00:01:47,319
+we see that that type makes sense. Twice
+
+24
+00:01:47,319 --> 00:01:50,779
+takes a function, that function goes from
+a to a
+
+25
+00:01:50,779 --> 00:01:53,850
+then it takes an argument of type a
+
+26
+00:01:53,850 --> 00:01:58,549
+that's x and then it returns a value of
+type a. How does it do that?
+
+27
+00:01:58,549 --> 00:01:59,909
+It applies f once
+
+28
+00:01:59,909 --> 00:02:04,109
+which takes an a and transforms that
+into another a
+
+29
+00:02:04,109 --> 00:02:08,360
+so the argument to the second
+application of f will also be of
+
+30
+00:02:08,360 --> 00:02:09,099
+type a
+
+31
+00:02:09,099 --> 00:02:12,200
+and you apply f a second time to
+return
+
+32
+00:02:12,200 --> 00:02:15,190
+a value of type a.
+
+33
+00:02:15,190 --> 00:02:17,920
+So twice is a higher-order function
+
+34
+00:02:17,920 --> 00:02:21,560
+because it takes a function as its first
+argument.
+
+35
+00:02:21,560 --> 00:02:25,290
+Also notice how the parentheses are
+
+36
+00:02:25,290 --> 00:02:28,560
+used. The parentheses on the first
+argument
+
+37
+00:02:28,560 --> 00:02:32,569
+are explicit, because it's a function
+from a to a and the
+
+38
+00:02:32,569 --> 00:02:37,750
+brackets for function types associate to
+the right. So we have to put
+
+39
+00:02:37,750 --> 00:02:41,260
+the parentheses there, but we don't have
+to put them
+
+40
+00:02:41,260 --> 00:02:45,010
+on the right hand side. But if we would
+put all the parentheses there
+
+41
+00:02:45,010 --> 00:02:48,530
+the type would look (a -> a) ->
+
+42
+00:02:48,530 --> 00:02:53,459
+(a -> a). Why are
+
+43
+00:02:53,459 --> 00:02:57,790
+higher-order functions useful? Well,
+there is this
+
+44
+00:02:57,790 --> 00:03:01,519
+thing that programmers love to do, and
+that is not to repeat yourself.
+
+45
+00:03:01,519 --> 00:03:05,060
+Don't repeat yourself. And with higher
+order functions
+
+46
+00:03:05,060 --> 00:03:09,859
+we allow this thing to be encoded in the
+language, because whenever we see
+
+47
+00:03:09,859 --> 00:03:10,920
+repetition
+
+48
+00:03:10,920 --> 00:03:14,489
+we abstract that pattern into a
+higher-order function
+
+49
+00:03:14,489 --> 00:03:18,140
+and then we can apply that
+higher-order function
+
+50
+00:03:18,140 --> 00:03:23,579
+with various arguments to specify
+what is different between
+
+51
+00:03:23,579 --> 00:03:26,599
+all the common uses of this
+common pattern.
+
+52
+00:03:26,599 --> 00:03:31,700
+So common programming idioms can be
+encoded as functions
+
+53
+00:03:31,700 --> 00:03:34,989
+within the language itself. And
+laziness here plays
+
+54
+00:03:34,989 --> 00:03:39,290
+an important role, because if you don't
+have lazy evaluation
+
+55
+00:03:39,290 --> 00:03:43,000
+arguments might be evaluated prematurely
+
+56
+00:03:43,000 --> 00:03:46,560
+and then the effect is not the same as
+the
+
+57
+00:03:46,560 --> 00:03:50,389
+pattern where you instantiate the
+arguments
+
+58
+00:03:50,389 --> 00:03:53,940
+for the parameters. Another
+
+59
+00:03:53,940 --> 00:03:57,180
+way to look at this is that we can
+define
+
+60
+00:03:57,180 --> 00:04:02,280
+domain-specific languages as a collection
+of higher-order functions. In Haskell
+
+61
+00:04:02,280 --> 00:04:06,440
+people often talk about domain-specific
+languages where they mean
+
+62
+00:04:06,440 --> 00:04:09,930
+API's. Another way to say that
+
+63
+00:04:09,930 --> 00:04:13,190
+is these are embedded domain-specific
+languages.
+
+64
+00:04:13,190 --> 00:04:16,209
+And then the third
+
+65
+00:04:16,209 --> 00:04:20,269
+advantage of higher-order functions is
+that
+
+66
+00:04:20,269 --> 00:04:23,520
+these higher-order functions have
+algebraic properties
+
+67
+00:04:23,520 --> 00:04:27,000
+that we can use to reason about
+programs. And these
+
+68
+00:04:27,000 --> 00:04:27,900
+properties
+
+69
+00:04:27,900 --> 00:04:31,639
+of higher-order functions, these
+algebraic properties,
+
+70
+00:04:31,639 --> 00:04:35,370
+they hold irrespective of
+
+71
+00:04:35,370 --> 00:04:39,030
+which parameters you pass to them. So
+you can
+
+72
+00:04:39,030 --> 00:04:43,020
+define properties of these programs
+in a general way
+
+73
+00:04:43,020 --> 00:04:46,470
+and then use them all along. And we
+will see
+
+74
+00:04:46,470 --> 00:04:51,770
+several of these examples as we go. Twice
+
+75
+00:04:51,770 --> 00:04:56,009
+may look a little weird, it's
+maybe a little bit
+
+76
+00:04:56,009 --> 00:04:56,880
+syntactic
+
+77
+00:04:56,880 --> 00:05:01,100
+but here is another higher-order
+function, that we use all the time.
+
+78
+00:05:01,100 --> 00:05:04,460
+And this is the map function. Map
+
+79
+00:05:04,460 --> 00:05:07,479
+takes a function and
+
+80
+00:05:07,479 --> 00:05:11,380
+then takes a list and then applies that
+function to
+
+81
+00:05:11,380 --> 00:05:16,800
+every element of the list. If you look at
+the type of map: a arrow b
+
+82
+00:05:16,800 --> 00:05:19,800
+arrow list of a arrow list of b
+
+83
+00:05:19,800 --> 00:05:24,340
+you have very little choice than to
+apply that function
+
+84
+00:05:24,340 --> 00:05:28,820
+to every element of the list, because
+the type
+
+85
+00:05:28,820 --> 00:05:31,949
+really strongly suggests that
+implementation.
+
+86
+00:05:31,949 --> 00:05:35,590
+You have a function of type a to b, you
+have a
+
+87
+00:05:35,590 --> 00:05:39,789
+list with values of type a, and what
+you require
+
+88
+00:05:39,789 --> 00:05:43,180
+is a list with values of type b. Well,
+what can you do?
+
+89
+00:05:43,180 --> 00:05:46,659
+You just transform every element in
+the input list
+
+90
+00:05:46,659 --> 00:05:50,130
+using that function to get the
+required output list.
+
+91
+00:05:50,130 --> 00:05:53,630
+That is exactly how map is defined.
+
+92
+00:05:53,630 --> 00:05:57,139
+Let's look at an application of map.
+
+93
+00:05:57,139 --> 00:06:00,990
+We map the sectioned plus
+
+94
+00:06:00,990 --> 00:06:04,870
+function (+1), remember the lecture
+
+95
+00:06:04,870 --> 00:06:08,260
+we had about sections. So this is a
+function that
+
+96
+00:06:08,260 --> 00:06:12,220
+implicitly defined to be lambda x
+x+1
+
+97
+00:06:12,220 --> 00:06:15,960
+and we map that function over the list
+1,3,5,7.
+
+98
+00:06:15,960 --> 00:06:20,500
+So this function will just add 1 to
+every element of the list
+
+99
+00:06:20,500 --> 00:06:24,870
+and that's what you see there: we get the
+result list 2,4,6,8.
+
+100
+00:06:24,870 --> 00:06:27,960
+
+101
+00:06:27,960 --> 00:06:31,690
+We can define the map function using
+list comprehensions
+
+102
+00:06:31,690 --> 00:06:35,699
+very easily. In some sense you can say list
+comprehensions
+
+103
+00:06:35,699 --> 00:06:38,810
+are designed to define
+
+104
+00:06:38,810 --> 00:06:42,370
+map. Map applies the function f
+
+105
+00:06:42,370 --> 00:06:46,570
+to every element in the list. There
+is the list comprehension.
+
+106
+00:06:46,570 --> 00:06:48,040
+It is exactly
+
+107
+00:06:48,040 --> 00:06:51,720
+what I said.
+
+108
+00:06:51,720 --> 00:06:54,970
+Take every element x out of the list xs
+
+109
+00:06:54,970 --> 00:06:58,310
+apply f to it and return the list.
+
+110
+00:06:58,310 --> 00:07:01,340
+That's what map is.
+
+111
+00:07:01,340 --> 00:07:05,260
+But we can also define map recursively.
+
+112
+00:07:05,260 --> 00:07:10,600
+And in some sense I prefer myself the
+recursive definition.
+
+113
+00:07:10,600 --> 00:07:14,820
+Why do I prefer the recursive
+definition? Well, we will see later
+
+114
+00:07:14,820 --> 00:07:18,010
+that when we define map recursively
+
+115
+00:07:18,010 --> 00:07:21,350
+and we define other higher-order functions
+recursively
+
+116
+00:07:21,350 --> 00:07:24,550
+we see a pattern that we can abstract
+
+117
+00:07:24,550 --> 00:07:29,740
+again. So we can abstract map into a
+super higher-order function.
+
+118
+00:07:29,740 --> 00:07:34,120
+And that will be the fold function. But
+for now let's look at the recursive
+
+119
+00:07:34,120 --> 00:07:35,800
+definition of just map.
+
+120
+00:07:35,800 --> 00:07:39,260
+Map of the empty list is the empty list.
+
+121
+00:07:39,260 --> 00:07:42,669
+And map of the list x:xs
+
+122
+00:07:42,669 --> 00:07:46,169
+what we do is we
+
+123
+00:07:46,169 --> 00:07:50,320
+first recursively map f over xs
+
+124
+00:07:50,320 --> 00:07:54,550
+so we map f over the rest of the list
+and then we
+
+125
+00:07:54,550 --> 00:07:58,460
+concatenate f of x to the front.
+
+126
+00:07:58,460 --> 00:08:02,930
+This is a recursive definition that is
+inductive over the structure of the list.
+
+127
+00:08:02,930 --> 00:08:03,510
+We have
+
+128
+00:08:03,510 --> 00:08:06,789
+either the empty list or we have the case
+where the list
+
+129
+00:08:06,789 --> 00:08:10,130
+is build using x cons xs.
+
+130
+00:08:10,130 --> 00:08:13,600
+We recursively map f over the rest of
+the list
+
+131
+00:08:13,600 --> 00:08:18,580
+and then cons f of x on top.
+Here is another
+
+132
+00:08:18,580 --> 00:08:22,680
+higher-order function: filter.
+Filter takes
+
+133
+00:08:22,680 --> 00:08:25,690
+a predicate, a function from a to Bool
+
+134
+00:08:25,690 --> 00:08:29,460
+then takes a list and returns
+another list, a new list
+
+135
+00:08:29,460 --> 00:08:32,789
+where all the elements, for which that
+predicate
+
+136
+00:08:32,789 --> 00:08:35,849
+does not hold, are removed.
+
+137
+00:08:35,849 --> 00:08:39,080
+That's why it is called filter. All
+these elements are filtered away.
+
+138
+00:08:39,080 --> 00:08:43,020
+For instance: if we want to filter
+
+139
+00:08:43,020 --> 00:08:47,180
+all the even numbers from the list
+of values from 1 to 10
+
+140
+00:08:47,180 --> 00:08:51,420
+we get all the even values 2,4,6
+
+141
+00:08:51,420 --> 00:08:54,420
+8 and 10. Again
+
+142
+00:08:54,420 --> 00:08:57,990
+filter can be defined in two ways.
+First one
+
+143
+00:08:57,990 --> 00:09:01,019
+is with list comprehensions.
+
+144
+00:09:01,019 --> 00:09:04,550
+Fairly simple. What we do is we say
+take every
+
+145
+00:09:04,550 --> 00:09:08,139
+element x out of xs and if
+
+146
+00:09:08,139 --> 00:09:12,290
+p of x is true, then you put x in the
+result list
+
+147
+00:09:12,290 --> 00:09:18,300
+and that's it. So the definition of
+filter using list comprehensions
+
+148
+00:09:18,300 --> 00:09:21,760
+looks very simple, but again I prefer
+
+149
+00:09:21,760 --> 00:09:25,690
+the recursive definition. And the
+recursive definition has a
+
+150
+00:09:25,690 --> 00:09:29,980
+very very similar structure to the map
+function.
+
+151
+00:09:29,980 --> 00:09:34,529
+It's defined inductively on the structure
+of the list.
+
+152
+00:09:34,529 --> 00:09:38,410
+We have two cases: either we have the
+empty list
+
+153
+00:09:38,410 --> 00:09:41,480
+or we have the list x cons xs.
+
+154
+00:09:41,480 --> 00:09:47,149
+When we filter all the values for which
+this predicate does not hold from the
+
+155
+00:09:47,149 --> 00:09:48,199
+empty list
+
+156
+00:09:48,199 --> 00:09:52,300
+the only thing we can do is return the
+empty list.
+
+157
+00:09:52,300 --> 00:09:56,279
+If we filter out all the values
+
+158
+00:09:56,279 --> 00:09:59,339
+for which p does not hold from the list
+x cons xs
+
+159
+00:09:59,339 --> 00:10:02,949
+there are two cases. First
+
+160
+00:10:02,949 --> 00:10:07,010
+p of x can be true, so that's this case
+and then
+
+161
+00:10:07,010 --> 00:10:10,370
+this is the second case, when p of x is
+false.
+
+162
+00:10:10,370 --> 00:10:13,640
+If p of x is true, we filter
+
+163
+00:10:13,640 --> 00:10:16,740
+recursively the rest of the list and
+then we
+
+164
+00:10:16,740 --> 00:10:21,199
+concatenate x on top. And otherwise we
+just forget about x
+
+165
+00:10:21,199 --> 00:10:24,490
+and filter the rest of the list.
+Here you see
+
+166
+00:10:24,490 --> 00:10:28,510
+it is as simple as the
+
+167
+00:10:28,510 --> 00:10:32,130
+list comprehension definition, but the
+important thing
+
+168
+00:10:32,130 --> 00:10:37,480
+is that this definition here follows
+exactly the same structure of map.
+
+169
+00:10:37,480 --> 00:10:40,850
+And in the context of saying
+
+170
+00:10:40,850 --> 00:10:44,980
+don't repeat ourselves, we should be able
+to abstract
+
+171
+00:10:44,980 --> 00:10:49,889
+that commonality between filter and map.
+
+172
+00:10:49,889 --> 00:10:53,819
+They are both recursively defined over
+
+173
+00:10:53,819 --> 00:10:56,920
+lists. We should be able to factor
+that out
+
+174
+00:10:56,920 --> 00:11:00,410
+into another higher-order function. And
+that higher-order
+
+175
+00:11:00,410 --> 00:11:03,930
+function is foldr. And that will be
+the topic
+
+176
+00:11:03,930 --> 00:11:05,220
+of the next
+
+177
+00:11:05,220 --> 00:11:07,420
+section. Thank you and see you soon.
+

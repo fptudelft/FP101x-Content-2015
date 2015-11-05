@@ -1,0 +1,1122 @@
+1
+00:00:01,350 --> 00:00:03,629
+Welcome back! In the previous section
+
+2
+00:00:03,629 --> 00:00:07,629
+we talked about higher-order functions.
+Functions that take
+
+3
+00:00:07,629 --> 00:00:11,059
+functions as arguments or return functions
+as results.
+
+4
+00:00:11,059 --> 00:00:15,719
+In particular we looked at two
+higher-order functions over lists:
+
+5
+00:00:15,719 --> 00:00:18,800
+filter and map. And we
+
+6
+00:00:18,800 --> 00:00:23,039
+indicated that these two functions had a
+very similar structure.
+
+7
+00:00:23,039 --> 00:00:26,800
+They were both defined inductively over
+the structure
+
+8
+00:00:26,800 --> 00:00:30,880
+of the list. And since we are lazy
+programmers
+
+9
+00:00:30,880 --> 00:00:35,770
+we want to capture that pattern into yet
+another higher-order function, that we
+
+10
+00:00:35,770 --> 00:00:36,780
+can then use
+
+11
+00:00:36,780 --> 00:00:42,730
+to define filter and map, or in fact as
+many functions over lists as possible.
+
+12
+00:00:42,730 --> 00:00:47,050
+That function that captures recursively
+
+13
+00:00:47,050 --> 00:00:50,160
+descending over the structure of a list
+is called
+
+14
+00:00:50,160 --> 00:00:54,760
+foldr. There is also a function foldl.
+
+15
+00:00:54,760 --> 00:00:58,920
+What does this l and r mean?
+
+16
+00:00:58,920 --> 00:01:03,710
+Foldr means fold from the right. And just
+like when we say that the
+
+17
+00:01:03,710 --> 00:01:07,610
+northern wind comes from the north, fold
+right
+
+18
+00:01:07,610 --> 00:01:11,229
+is a fold that comes from the right.
+
+19
+00:01:11,229 --> 00:01:15,680
+So it comes from the right, it starts
+with the empty list and then folds
+
+20
+00:01:15,680 --> 00:01:18,820
+from there on. Here
+
+21
+00:01:18,820 --> 00:01:22,049
+is the definition of foldr.
+
+22
+00:01:22,049 --> 00:01:25,770
+As I said foldr captures the essence
+
+23
+00:01:25,770 --> 00:01:29,090
+of recursing over a list.
+
+24
+00:01:29,090 --> 00:01:32,479
+What is recursing over a list? Well,
+we have two cases.
+
+25
+00:01:32,479 --> 00:01:36,259
+One when the list is empty and
+one when the list
+
+26
+00:01:36,259 --> 00:01:39,290
+is composed of a list with
+
+27
+00:01:39,290 --> 00:01:42,899
+a value in the front. So in case
+
+28
+00:01:42,899 --> 00:01:47,710
+we have an empty list, when we
+apply this recursive function
+
+29
+00:01:47,710 --> 00:01:50,990
+we have to pick a value for the empty list.
+
+30
+00:01:50,990 --> 00:01:54,750
+Let's say that value is v. So f of the
+empty list is v.
+
+31
+00:01:54,750 --> 00:01:58,850
+When we do f apply to x:xs
+
+32
+00:01:58,850 --> 00:02:02,939
+we recursively call f on xs.
+That was the whole goal.
+
+33
+00:02:02,939 --> 00:02:07,070
+And now we have to take the result of this
+recursive invocation
+
+34
+00:02:07,070 --> 00:02:10,979
+and combine it with the value on top. And
+we use
+
+35
+00:02:10,979 --> 00:02:13,560
+the operator plus for that.
+
+36
+00:02:13,560 --> 00:02:17,050
+So f maps the empty list to
+
+37
+00:02:17,050 --> 00:02:21,630
+some value v and it maps the
+non-empty list
+
+38
+00:02:21,630 --> 00:02:26,970
+to some function plus and applies that
+function plus to the head of the list x
+
+39
+00:02:26,970 --> 00:02:31,690
+and to the recursive call of the
+function to its tail.
+
+40
+00:02:31,690 --> 00:02:34,940
+In some sense you can see what this
+function f does
+
+41
+00:02:34,940 --> 00:02:40,270
+is it traverses the list and replaces
+the empty list with v
+
+42
+00:02:40,270 --> 00:02:44,380
+and that replaces every occurrence of cons
+with plus.
+
+43
+00:02:44,380 --> 00:02:48,590
+It remains the structure. So another
+way to say this is that
+
+44
+00:02:48,590 --> 00:02:54,020
+f is a homomorphism over list. It
+respects the structure of the list.
+
+45
+00:02:54,020 --> 00:02:59,680
+And that is what we are after here.
+Here are a couple of
+
+46
+00:02:59,680 --> 00:03:02,730
+examples of using
+
+47
+00:03:02,730 --> 00:03:07,020
+functions that are defined recursively
+
+48
+00:03:07,020 --> 00:03:10,760
+over lists, for example: sum takes
+
+49
+00:03:10,760 --> 00:03:14,070
+the empty list, returns 0
+
+50
+00:03:14,070 --> 00:03:17,650
+and when I sum the list x:xs, I
+
+51
+00:03:17,650 --> 00:03:21,210
+do x plus the sum of xs. The product
+
+52
+00:03:21,210 --> 00:03:24,740
+is very similar. Instead of 0 I have 1
+
+53
+00:03:24,740 --> 00:03:28,780
+and instead of plus we use star. And if
+we want to
+
+54
+00:03:28,780 --> 00:03:32,930
+and all the values of a list, then we
+replace the empty list by
+
+55
+00:03:32,930 --> 00:03:36,480
+True and the cons
+
+56
+00:03:36,480 --> 00:03:39,530
+by and. So here you see
+
+57
+00:03:39,530 --> 00:03:43,790
+very very similar structures and in
+particular we can
+
+58
+00:03:43,790 --> 00:03:47,240
+instantiate v and plus very simply.
+
+59
+00:03:47,240 --> 00:03:52,000
+In the first case the empty list v
+is replaced by 0.
+
+60
+00:03:52,000 --> 00:03:55,780
+And cons, that was the funny plus
+
+61
+00:03:55,780 --> 00:04:01,510
+is plus. In the second case here, we
+replace the empty list by 1, so v
+
+62
+00:04:01,510 --> 00:04:02,280
+equals 1.
+
+63
+00:04:02,280 --> 00:04:06,080
+We replace cons by multiplication, so
+
+64
+00:04:06,080 --> 00:04:09,710
+the funny plus is times. And in the
+last case
+
+65
+00:04:09,710 --> 00:04:13,820
+simple, we replace the empty list by True
+
+66
+00:04:13,820 --> 00:04:17,140
+so v is True, and we replace
+
+67
+00:04:17,140 --> 00:04:20,739
+cons by and, so funny plus
+
+68
+00:04:20,739 --> 00:04:25,860
+is and. Alright? So here we can define
+
+69
+00:04:25,860 --> 00:04:28,120
+sum, product, or and and
+
+70
+00:04:28,120 --> 00:04:32,140
+in terms of foldr simply as foldr of plus
+
+71
+00:04:32,140 --> 00:04:36,420
+and 0, product is foldr of times and 1
+
+72
+00:04:36,420 --> 00:04:40,920
+et cetera. Look what we have done.
+
+73
+00:04:40,920 --> 00:04:45,270
+We looked at these three functions and we
+see that these are just
+
+74
+00:04:45,270 --> 00:04:49,270
+instances of this foldr function with
+a particular v
+
+75
+00:04:49,270 --> 00:04:56,080
+and a particular plus.
+
+76
+00:04:56,080 --> 00:04:59,900
+How do we define
+
+77
+00:04:59,900 --> 00:05:02,990
+foldr?
+
+78
+00:05:02,990 --> 00:05:06,310
+Because
+
+79
+00:05:06,310 --> 00:05:09,670
+we defined this pattern here, so now we
+have to define this thing
+
+80
+00:05:09,670 --> 00:05:13,760
+itself as a higher-order function.
+So we have to have a function
+
+81
+00:05:13,760 --> 00:05:17,830
+that takes f and v as parameters and then
+
+82
+00:05:17,830 --> 00:05:21,930
+captures the recursion.
+Here is the definition of foldr as a
+
+83
+00:05:21,930 --> 00:05:23,400
+higher-order function.
+
+84
+00:05:23,400 --> 00:05:27,180
+It takes first an operation that
+replaces
+
+85
+00:05:27,180 --> 00:05:32,940
+cons, so that is a function of type
+a -> b -> b.
+
+86
+00:05:32,940 --> 00:05:36,170
+The second parameter is v. That is the
+
+87
+00:05:36,170 --> 00:05:39,960
+value that we are replacing
+
+88
+00:05:39,960 --> 00:05:43,000
+the empty list with.
+
+89
+00:05:43,000 --> 00:05:46,400
+And then we get a function from list
+of a to b.
+
+90
+00:05:46,400 --> 00:05:49,770
+The definition here is straightforward.
+
+91
+00:05:49,770 --> 00:05:53,250
+Foldr of f and v and the empty list,
+that was v
+
+92
+00:05:53,250 --> 00:05:57,720
+and foldr of f and v and x:xs
+
+93
+00:05:57,720 --> 00:06:02,150
+is the recursive invocation of foldr
+of f and v
+
+94
+00:06:02,150 --> 00:06:06,780
+and then we call f on x. So instead of
+the funny plus
+
+95
+00:06:06,780 --> 00:06:10,570
+we use f.
+
+96
+00:06:10,570 --> 00:06:15,080
+But even though you can look at
+this definition, this
+
+97
+00:06:15,080 --> 00:06:18,090
+recursive definition, the easiest way
+
+98
+00:06:18,090 --> 00:06:21,280
+to think about foldr
+
+99
+00:06:21,280 --> 00:06:25,130
+as I said, is a function that replaces
+everywhere
+
+100
+00:06:25,130 --> 00:06:28,330
+the empty list by v and
+
+101
+00:06:28,330 --> 00:06:32,280
+it replaces the cons
+
+102
+00:06:32,280 --> 00:06:35,210
+operator by f.
+
+103
+00:06:35,210 --> 00:06:38,350
+Everywhere where you see empty list
+
+104
+00:06:38,350 --> 00:06:41,759
+it becomes v, everywhere where you
+see cons
+
+105
+00:06:41,759 --> 00:06:44,889
+it becomes f. And then it
+
+106
+00:06:44,889 --> 00:06:48,520
+just goes recursively like that.
+
+107
+00:06:48,520 --> 00:06:52,470
+For example: we evaluate sum
+
+108
+00:06:52,470 --> 00:06:58,000
+of 1,2,3. Sum is defined as foldr of
+plus and 0
+
+109
+00:06:58,000 --> 00:07:02,990
+of 1,2,3. Now we expand the definition
+of lists. We know that
+
+110
+00:07:02,990 --> 00:07:06,800
+1,2,3 means 1 cons 2 cons 3
+
+111
+00:07:06,800 --> 00:07:10,210
+cons empty list. And now you see again
+
+112
+00:07:10,210 --> 00:07:14,620
+why the syntactic sugar for lists is so
+useful, because this would be very
+
+113
+00:07:14,620 --> 00:07:17,349
+tedious to write. We don't want to write
+this all the time.
+
+114
+00:07:17,349 --> 00:07:20,970
+I'm super happy that Haskell has a
+shorthand for lists
+
+115
+00:07:20,970 --> 00:07:24,820
+that expands into this. In this case we
+have to think about it
+
+116
+00:07:24,820 --> 00:07:28,650
+a little bit. And now what happens is that
+we are going to replace every occurrence
+
+117
+00:07:28,650 --> 00:07:29,690
+of cons
+
+118
+00:07:29,690 --> 00:07:34,710
+by plus and every occurrence, which is
+one occurrence, of the empty list
+
+119
+00:07:34,710 --> 00:07:39,300
+by 0. Let's do that.
+
+120
+00:07:39,300 --> 00:07:42,320
+So it becomes 1 + 2 + 3 + 0.
+
+121
+00:07:42,320 --> 00:07:48,760
+You see: the structure of the list is
+maintained. Foldr is a homomorphism
+
+122
+00:07:48,760 --> 00:07:49,669
+over lists.
+
+123
+00:07:49,669 --> 00:07:53,490
+The structure is still the same. It just
+replaces the constructors
+
+124
+00:07:53,490 --> 00:07:57,190
+by another function. If you are familiar
+
+125
+00:07:57,190 --> 00:08:02,530
+with the visitor pattern, foldr is really
+very similar to the visitor pattern.
+
+126
+00:08:02,530 --> 00:08:06,349
+It visits the list and for every
+constructor
+
+127
+00:08:06,349 --> 00:08:11,250
+it applies a function, and that function
+is passed as the parameters to foldr.
+
+128
+00:08:11,250 --> 00:08:11,520
+
+129
+00:08:11,520 --> 00:08:15,229
+If we evaluate 1 + 2 + 3 + 0
+
+130
+00:08:15,229 --> 00:08:18,370
+the result is 6.
+
+131
+00:08:18,370 --> 00:08:21,389
+
+132
+00:08:21,389 --> 00:08:24,699
+It is obvious what happens with
+product 1,2,3.
+
+133
+00:08:24,699 --> 00:08:28,699
+We go through the same derivation.
+Product was defined as
+
+134
+00:08:28,699 --> 00:08:31,770
+times, 1,
+
+135
+00:08:31,770 --> 00:08:35,820
+1,2,3. We expand the list. We replace
+
+136
+00:08:35,820 --> 00:08:39,839
+every occurrence of cons by times and
+every occurrence of the empty list by 1.
+
+137
+00:08:39,839 --> 00:08:40,599
+
+138
+00:08:40,599 --> 00:08:45,050
+We evaluate this expression
+
+139
+00:08:45,050 --> 00:08:49,050
+and the result is 6 again.
+
+140
+00:08:49,050 --> 00:08:52,910
+Good. Now let's look at some other
+
+141
+00:08:52,910 --> 00:08:57,730
+examples of foldr. For example the
+length of the list. We can define the
+
+142
+00:08:57,730 --> 00:08:58,790
+length of the list
+
+143
+00:08:58,790 --> 00:09:03,050
+a function that takes a list of a, for
+all types a, and returns an Int.
+
+144
+00:09:03,050 --> 00:09:07,510
+The length of the empty list is 0 and
+the length of the list
+
+145
+00:09:07,510 --> 00:09:10,899
+x:xs is 1 plus the length of xs.
+
+146
+00:09:10,899 --> 00:09:16,050
+Haskell programmers are lazy and
+since we are not using x
+
+147
+00:09:16,050 --> 00:09:19,329
+in the right hand side here, we just
+
+148
+00:09:19,329 --> 00:09:22,829
+use an underscore for x. So we don't have
+to think about the name.
+
+149
+00:09:22,829 --> 00:09:25,829
+We remember the underscore.
+
+150
+00:09:25,829 --> 00:09:30,120
+When we used that, it really just means
+this is a variable but we are not going
+
+151
+00:09:30,120 --> 00:09:32,020
+to use that in the right hand side.
+
+152
+00:09:32,020 --> 00:09:35,820
+It is obvious here that length
+
+153
+00:09:35,820 --> 00:09:40,649
+is another instance of foldr. We are
+replacing the empty list with 0
+
+154
+00:09:40,649 --> 00:09:44,459
+and we are replacing cons with
+
+155
+00:09:44,459 --> 00:09:47,520
+the function that throws away x
+
+156
+00:09:47,520 --> 00:09:50,899
+and then adds 1 to the recursive
+invocation
+
+157
+00:09:50,899 --> 00:09:54,790
+of foldr on the list.
+
+158
+00:09:54,790 --> 00:09:58,430
+Let's make this explicit. So we
+
+159
+00:09:58,430 --> 00:10:01,810
+do length of 1,2,3. That's the same
+as length
+
+160
+00:10:01,810 --> 00:10:04,930
+of 1 cons 2 cons 3 cons empty list.
+
+161
+00:10:04,930 --> 00:10:08,690
+That's the same as 1 + 1 +
+
+162
+00:10:08,690 --> 00:10:12,029
+1 + 0, which is 3.
+
+163
+00:10:12,029 --> 00:10:16,110
+So if we replace cons with a function
+
+164
+00:10:16,110 --> 00:10:19,750
+lambda underscore n -> 1 + n
+
+165
+00:10:19,750 --> 00:10:23,269
+and the empty list by 0, we get exactly
+
+166
+00:10:23,269 --> 00:10:27,180
+what we want. So cons is replaced
+
+167
+00:10:27,180 --> 00:10:31,690
+in this step here by the function
+
+168
+00:10:31,690 --> 00:10:34,420
+that throws away the first argument, so
+we don't write it
+
+169
+00:10:34,420 --> 00:10:37,920
+and then it takes a second argument
+and adds 1 to it.
+
+170
+00:10:37,920 --> 00:10:41,600
+You see exactly that is what happens in
+that step.
+
+171
+00:10:41,600 --> 00:10:46,700
+What we have found is that length can
+be defined
+
+172
+00:10:46,700 --> 00:10:50,200
+as foldr of lambda underscore n
+
+173
+00:10:50,200 --> 00:10:56,070
+1 + n and 0. Let's look at another
+example:
+
+174
+00:10:56,070 --> 00:10:59,470
+reverse. Reverse of the empty list
+
+175
+00:10:59,470 --> 00:11:03,730
+is the empty list and reverse of x:xs
+
+176
+00:11:03,730 --> 00:11:07,029
+is reverse of xs append
+
+177
+00:11:07,029 --> 00:11:11,010
+with the singleton list of x.
+
+178
+00:11:11,010 --> 00:11:14,160
+By now we should be trained to see this
+pattern.
+
+179
+00:11:14,160 --> 00:11:17,500
+We see two cases: the empty list
+
+180
+00:11:17,500 --> 00:11:22,079
+and the list x:xs and on the
+right hand side
+
+181
+00:11:22,079 --> 00:11:26,310
+we see that function reverse applied to
+the rest of the list
+
+182
+00:11:26,310 --> 00:11:32,000
+plus some function involving x
+
+183
+00:11:32,000 --> 00:11:35,630
+that we apply to the result of
+
+184
+00:11:35,630 --> 00:11:39,760
+this recursive invocation. And in
+this case
+
+185
+00:11:39,760 --> 00:11:42,910
+the reverse is a little bit tricky,
+because the
+
+186
+00:11:42,910 --> 00:11:46,110
+recursive call appears here on the left
+
+187
+00:11:46,110 --> 00:11:51,180
+instead of with length where it appeared,
+the recursive call
+
+188
+00:11:51,180 --> 00:11:55,490
+let's go back to length here, where the
+recursive call
+
+189
+00:11:55,490 --> 00:11:58,829
+appeared on the right.
+
+190
+00:11:58,829 --> 00:12:03,040
+But this won't fool us. That's just
+simple.
+
+191
+00:12:03,040 --> 00:12:08,040
+No worries. Let's look at reverse.
+Reverse 1,2,3.
+
+192
+00:12:08,040 --> 00:12:11,649
+Again that's the same as reverse 1 cons 2
+
+193
+00:12:11,649 --> 00:12:15,230
+cons 3 cons empty list
+
+194
+00:12:15,230 --> 00:12:18,990
+which is the same as empty list
+
+195
+00:12:18,990 --> 00:12:23,459
+concatenated to 3, concatenated to 2
+
+196
+00:12:23,459 --> 00:12:28,100
+concatenated to 1, which is 3,2,1.
+
+197
+00:12:28,100 --> 00:12:31,139
+What function are we
+
+198
+00:12:31,139 --> 00:12:34,889
+using to replace cons and what function
+
+199
+00:12:34,889 --> 00:12:38,600
+are we using to replace the empty list?
+
+200
+00:12:38,600 --> 00:12:42,250
+You see here that things are reversed, but
+
+201
+00:12:42,250 --> 00:12:44,310
+that shouldn't fool us, because we see here
+
+202
+00:12:44,310 --> 00:12:48,650
+that the parentheses are right. So we
+are doing something with 1
+
+203
+00:12:48,650 --> 00:12:52,420
+and the recursive call. The fact that
+this is reversed
+
+204
+00:12:52,420 --> 00:12:56,640
+that is not important. So if we replace
+
+205
+00:12:56,640 --> 00:13:00,210
+cons with the function
+
+206
+00:13:00,210 --> 00:13:03,240
+x xs goes to xs
+
+207
+00:13:03,240 --> 00:13:06,570
+cons x, so there you see that it's swapped
+
+208
+00:13:06,570 --> 00:13:10,980
+the x appears to the left here and
+to the right here
+
+209
+00:13:10,980 --> 00:13:15,430
+and we replace empty list with the
+empty list, then this all works out.
+
+210
+00:13:15,430 --> 00:13:18,750
+So we can define
+
+211
+00:13:18,750 --> 00:13:22,470
+reverse as foldr of
+
+212
+00:13:22,470 --> 00:13:25,970
+this function, where we replace cons by
+the function
+
+213
+00:13:25,970 --> 00:13:30,110
+cons, takes a value and something else,
+and we put
+
+214
+00:13:30,110 --> 00:13:33,279
+x to the right, because we are reversing
+the list.
+
+215
+00:13:33,279 --> 00:13:38,250
+And the empty list is already reversed.
+
+216
+00:13:38,250 --> 00:13:42,130
+Now if we write this
+
+217
+00:13:42,130 --> 00:13:45,960
+in pointfree style, we can write this
+
+218
+00:13:45,960 --> 00:13:49,030
+a little bit shorter and write it as:
+
+219
+00:13:49,030 --> 00:13:52,300
+appending ys
+
+220
+00:13:52,300 --> 00:13:56,080
+to the end is the same as folding
+
+221
+00:13:56,080 --> 00:13:59,190
+cons with ys.
+
+222
+00:13:59,190 --> 00:14:02,400
+
+223
+00:14:02,400 --> 00:14:06,760
+If I want to append a list, I'm just
+replacing the empty list by that list
+
+224
+00:14:06,760 --> 00:14:08,339
+and I'm leaving all the
+
+225
+00:14:08,339 --> 00:14:12,060
+cons alone.
+
+226
+00:14:12,060 --> 00:14:15,490
+So why is foldr useful?
+
+227
+00:14:15,490 --> 00:14:19,750
+Many recursive functions on lists such
+like sum
+
+228
+00:14:19,750 --> 00:14:23,480
+
+229
+00:14:23,480 --> 00:14:26,839
+product, and, or, are
+
+230
+00:14:26,839 --> 00:14:31,730
+quite simple to define using foldr. We
+have seen length, which was a little bit
+
+231
+00:14:31,730 --> 00:14:32,380
+harder
+
+232
+00:14:32,380 --> 00:14:35,490
+and reverse, which was even a little bit
+harder
+
+233
+00:14:35,490 --> 00:14:40,040
+but still very simple. In the exercises
+
+234
+00:14:40,040 --> 00:14:44,010
+you will have to define map and filter
+
+235
+00:14:44,010 --> 00:14:47,510
+in terms of foldr.
+
+236
+00:14:47,510 --> 00:14:51,430
+We leave that to the exercises, but
+since you have seen these examples
+
+237
+00:14:51,430 --> 00:14:52,910
+that should be easy.
+
+238
+00:14:52,910 --> 00:14:55,500
+But the nice thing is that we can define
+
+239
+00:14:55,500 --> 00:14:59,360
+properties of foldr
+
+240
+00:14:59,360 --> 00:15:02,460
+such as fusion and the banana split rule
+
+241
+00:15:02,460 --> 00:15:05,600
+that's why I was eating a banana
+
+242
+00:15:05,600 --> 00:15:08,980
+earlier on, and we can use these
+
+243
+00:15:08,980 --> 00:15:14,100
+properties to calculate more efficient
+programs. In particular fusion means
+
+244
+00:15:14,100 --> 00:15:18,060
+that I have two functions. One that uses
+foldr to
+
+245
+00:15:18,060 --> 00:15:22,480
+traverse one list and return another
+list. And if I do another foldr
+
+246
+00:15:22,480 --> 00:15:26,390
+on the result of that, I can fuse
+these two together, such that the
+
+247
+00:15:26,390 --> 00:15:28,180
+intermediate list is never
+
+248
+00:15:28,180 --> 00:15:32,700
+constructed. So programs can be
+optimized
+
+249
+00:15:32,700 --> 00:15:37,320
+if you write them in this higher-order
+pattern. Don't forget to do the
+
+250
+00:15:37,320 --> 00:15:38,300
+exercises.
+
+251
+00:15:38,300 --> 00:15:41,900
+Part of them will be to define
+
+252
+00:15:41,900 --> 00:15:45,070
+map and filter in terms of foldr
+
+253
+00:15:45,070 --> 00:15:49,130
+but by now that should be easy and you
+can do that
+
+254
+00:15:49,130 --> 00:15:52,650
+while you are enjoying a nice banana.
+Thank you
+
+255
+00:15:52,650 --> 00:15:54,320
+and see you next time.
+

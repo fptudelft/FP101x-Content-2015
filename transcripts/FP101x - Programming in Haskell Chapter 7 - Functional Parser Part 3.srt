@@ -1,0 +1,546 @@
+1
+00:00:00,719 --> 00:00:04,690
+Welcome back to part number 3
+
+2
+00:00:04,690 --> 00:00:08,250
+about parsers. We
+
+3
+00:00:08,250 --> 00:00:11,570
+have defined some very simple parsers.
+
+4
+00:00:11,570 --> 00:00:14,740
+Then we developed in the second part
+
+5
+00:00:14,740 --> 00:00:18,010
+a few parsers to use several
+
+6
+00:00:18,010 --> 00:00:21,320
+parsers in a row. And
+
+7
+00:00:21,320 --> 00:00:25,279
+even though the parsers that we have
+defined are very primitive
+
+8
+00:00:25,279 --> 00:00:29,160
+they are already powerful enough to parse
+
+9
+00:00:29,160 --> 00:00:32,920
+arithmetic expressions that have
+deep structure.
+
+10
+00:00:32,920 --> 00:00:36,390
+And that is what we are going to do
+in this last
+
+11
+00:00:36,390 --> 00:00:43,070
+part of this lecture on parsing. Here are
+the expressions that we are going to parse.
+
+12
+00:00:43,070 --> 00:00:46,890
+We want to have simple expressions that
+
+13
+00:00:46,890 --> 00:00:51,870
+are built from simple digits with
+addition and multiplication.
+
+14
+00:00:51,870 --> 00:00:55,030
+An expression can be parenthesized
+
+15
+00:00:55,030 --> 00:01:00,239
+and moreover we want * to bind stronger
+
+16
+00:01:00,239 --> 00:01:03,710
+than + and we want both of them to
+
+17
+00:01:03,710 --> 00:01:07,900
+associate to the right. What does
+that mean? If we have a+b+c
+
+18
+00:01:07,900 --> 00:01:12,729
+we want to parse that as a+(b+c)
+
+19
+00:01:12,729 --> 00:01:16,390
+and if we have a+b*c
+
+20
+00:01:16,390 --> 00:01:19,979
+we want to parse that as a+(b*c).
+
+21
+00:01:19,979 --> 00:01:24,310
+So this is fairly conventional
+
+22
+00:01:24,310 --> 00:01:28,259
+just arithmetic expressions. So how are
+we going to
+
+23
+00:01:28,259 --> 00:01:32,250
+implement this using those very very
+simple parsers
+
+24
+00:01:32,250 --> 00:01:35,420
+that we defined in the previous two
+sections?
+
+25
+00:01:35,420 --> 00:01:40,180
+Well, the first thing that we are going
+to do is we are going to write down
+
+26
+00:01:40,180 --> 00:01:44,140
+a grammar for these expressions.
+
+27
+00:01:44,140 --> 00:01:47,750
+If you have taken a
+
+28
+00:01:47,750 --> 00:01:52,159
+course in compilers or formal languages or
+
+29
+00:01:52,159 --> 00:01:55,270
+you look in any programming language
+
+30
+00:01:55,270 --> 00:01:59,659
+definition in the back, where the grammar
+of the language is defined
+
+31
+00:01:59,659 --> 00:02:04,060
+you will find a grammar that looks very
+similar to this. So
+
+32
+00:02:04,060 --> 00:02:07,820
+there's an expression, there's a term
+there's a factor
+
+33
+00:02:07,820 --> 00:02:11,500
+and these three productions are used to
+encode
+
+34
+00:02:11,500 --> 00:02:15,640
+the binding of the expressions.
+
+35
+00:02:15,640 --> 00:02:20,030
+The fact that these are defined like this
+in this recursive form
+
+36
+00:02:20,030 --> 00:02:24,610
+encodes
+
+37
+00:02:24,610 --> 00:02:29,420
+the associativity. An expression
+is a term plus an expression
+
+38
+00:02:29,420 --> 00:02:32,910
+or a term. A term is a factor times a term
+
+39
+00:02:32,910 --> 00:02:37,990
+or a factor. And a factor is a digit or
+a parenthesized expression.
+
+40
+00:02:37,990 --> 00:02:42,209
+And a digit is a digit. So that's where
+
+41
+00:02:42,209 --> 00:02:46,750
+the recursion bottoms out. But as I said
+
+42
+00:02:46,750 --> 00:02:50,200
+this is real standard encoding
+
+43
+00:02:50,200 --> 00:02:55,270
+of expressions in a grammar.
+
+44
+00:02:55,270 --> 00:02:58,580
+Now what we are going to do is we are
+going to massage
+
+45
+00:02:58,580 --> 00:03:01,709
+this grammar a little bit. And again
+
+46
+00:03:01,709 --> 00:03:05,280
+it's also very common. Every book
+
+47
+00:03:05,280 --> 00:03:08,470
+on compilers will do this and often
+
+48
+00:03:08,470 --> 00:03:13,270
+grammars are defined like this. The
+way we will do it is saying
+
+49
+00:03:13,270 --> 00:03:17,350
+an expression is a term followed by
+
+50
+00:03:17,350 --> 00:03:22,150
+plus and an expression or the empty string
+
+51
+00:03:22,150 --> 00:03:25,980
+or epsilon, this is the empty parser
+that doesn't recognize anything.
+
+52
+00:03:25,980 --> 00:03:29,450
+And then term is a factor
+
+53
+00:03:29,450 --> 00:03:33,269
+followed by * term or
+
+54
+00:03:33,269 --> 00:03:37,880
+again the parser that only recognizes
+
+55
+00:03:37,880 --> 00:03:41,400
+the empty input.
+
+56
+00:03:41,400 --> 00:03:44,590
+So if we take this, we can
+
+57
+00:03:44,590 --> 00:03:48,049
+now immediately translate
+
+58
+00:03:48,049 --> 00:03:51,959
+this definition here, which is recursive
+here:
+
+59
+00:03:51,959 --> 00:03:55,260
+an expression is defined in terms of an
+expression
+
+60
+00:03:55,260 --> 00:03:59,500
+but there's first the term and then it
+recognizes the plus.
+
+61
+00:03:59,500 --> 00:04:03,170
+Expression recognizes a term
+
+62
+00:04:03,170 --> 00:04:06,320
+then a plus and then an expression
+
+63
+00:04:06,320 --> 00:04:10,680
+and then it returns
+
+64
+00:04:10,680 --> 00:04:14,610
+the term plus the expression, and
+then this one
+
+65
+00:04:14,610 --> 00:04:18,440
+is the empty case.
+
+66
+00:04:18,440 --> 00:04:22,039
+So you will immediately
+
+67
+00:04:22,039 --> 00:04:24,090
+return the term.
+
+68
+00:04:24,090 --> 00:04:27,660
+And the same for term and the same
+
+69
+00:04:27,660 --> 00:04:32,680
+for factor. So in some sense that
+encoding of the grammar
+
+70
+00:04:32,680 --> 00:04:35,790
+has a one to one correspondence
+
+71
+00:04:35,790 --> 00:04:39,130
+with this recursive
+
+72
+00:04:39,130 --> 00:04:43,120
+expression here. And that's the nice
+thing.
+
+73
+00:04:43,120 --> 00:04:47,169
+In some sense these parser
+
+74
+00:04:47,169 --> 00:04:52,280
+combinators, as they are called, are like
+an internal DSL. So instead of writing a
+
+75
+00:04:52,280 --> 00:04:53,090
+grammar
+
+76
+00:04:53,090 --> 00:04:57,330
+in some externally defined language
+like Yacc and Lex.
+
+77
+00:04:57,330 --> 00:05:00,840
+compiling that into another language
+
+78
+00:05:00,840 --> 00:05:04,960
+we can do this all within Haskell and
+then use all the facilities
+
+79
+00:05:04,960 --> 00:05:08,030
+of Haskell to define helper functions
+and so on.
+
+80
+00:05:08,030 --> 00:05:11,520
+Parsers are one of, I think
+
+81
+00:05:11,520 --> 00:05:15,530
+the most elegant
+
+82
+00:05:15,530 --> 00:05:19,530
+internal DSLs that you can imagine.
+
+83
+00:05:19,530 --> 00:05:24,240
+And as I said, you can do very
+sophisticated parsers
+
+84
+00:05:24,240 --> 00:05:27,479
+and you can push this idea pretty far.
+
+85
+00:05:27,479 --> 00:05:30,570
+
+
+86
+00:05:30,570 --> 00:05:34,620
+The next thing is we are going to define
+an evaluator
+
+87
+00:05:34,620 --> 00:05:38,030
+that takes a string
+
+88
+00:05:38,030 --> 00:05:41,479
+tries to parse the string as an
+expression
+
+89
+00:05:41,479 --> 00:05:45,370
+and then returns the resulting value.
+
+90
+00:05:45,370 --> 00:05:49,210
+And if we go back here
+
+91
+00:05:49,210 --> 00:05:52,419
+you see that we are already
+
+92
+00:05:52,419 --> 00:05:55,669
+evaluating the expression
+
+93
+00:05:55,669 --> 00:05:59,000
+as we are parsing it, because we are
+parsing the plus
+
+94
+00:05:59,000 --> 00:06:02,320
+operator and then we are taking the term
+and we are
+
+95
+00:06:02,320 --> 00:06:05,479
+adding the result of parsing the
+expression.
+
+96
+00:06:05,479 --> 00:06:08,550
+The result of this is already a parser
+of Int.
+
+97
+00:06:08,550 --> 00:06:12,010
+So we are not even creating a parse tree.
+
+98
+00:06:12,010 --> 00:06:15,410
+We are immediately, as we are parsing,
+evaluating
+
+99
+00:06:15,410 --> 00:06:19,410
+the expression. So that's what you see
+here: we parse the expression
+
+100
+00:06:19,410 --> 00:06:22,729
+given the input, since this
+
+101
+00:06:22,729 --> 00:06:26,030
+returns either a
+
+102
+00:06:26,030 --> 00:06:31,000
+empty list or a singleton list. If it
+returns a singleton list we take the
+
+103
+00:06:31,000 --> 00:06:32,719
+head, so we take that value.
+
+104
+00:06:32,719 --> 00:06:36,550
+We take the first element, which was the
+number and then there's the rest
+
+105
+00:06:36,550 --> 00:06:40,780
+of the string. If this fails to parse the
+head will throw an error
+
+106
+00:06:40,780 --> 00:06:45,110
+and this whole thing will fail. So let's
+see here.
+
+107
+00:06:45,110 --> 00:06:48,190
+If we are parsing 2*3+4
+
+108
+00:06:48,190 --> 00:06:52,390
+that should return 2 times 3 is 6,
+plus 4
+
+109
+00:06:52,390 --> 00:06:55,850
+is 10, and guess what?
+
+110
+00:06:55,850 --> 00:07:01,000
+That's the value we get. And if we are
+evaluating
+
+111
+00:07:01,000 --> 00:07:04,060
+2*(3+4), what we should get
+
+112
+00:07:04,060 --> 00:07:07,770
+is 3 plus 4 is 7, times 2 is 14.
+
+113
+00:07:07,770 --> 00:07:10,840
+Guess what? It behaves as expected.
+
+114
+00:07:10,840 --> 00:07:16,410
+In the exercises you will do
+
+115
+00:07:16,410 --> 00:07:19,800
+several things with parsers.
+
+116
+00:07:19,800 --> 00:07:25,870
+And in particular, one of the things
+that you will do
+
+117
+00:07:25,870 --> 00:07:30,480
+is you will have to implement the
+sequencing operator
+
+118
+00:07:30,480 --> 00:07:34,490
+that we used, but didn't define.
+
+119
+00:07:34,490 --> 00:07:40,670
+We have defined various operators on
+parsers, but one of the essential ones
+
+120
+00:07:40,670 --> 00:07:44,510
+this sequential composition, we didn't
+define
+
+121
+00:07:44,510 --> 00:07:47,690
+and that's the main exercise of this week.
+
+122
+00:07:47,690 --> 00:07:51,110
+Happy hacking.
+
+123
+00:07:51,110 --> 00:07:54,830
+Make sure you do your homework and see
+you next week.
+
+124
+00:07:54,830 --> 00:07:55,530
+Bye bye.
+

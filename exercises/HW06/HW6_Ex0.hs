@@ -10,7 +10,7 @@ filter p (map f xs)
 
 {- 
 -- answer c
-map f (ﬁlter p xs)
+map f (filter p xs)
 -}
 
 {- 

@@ -1,0 +1,956 @@
+1
+00:00:00,950 --> 00:00:03,240
+Hey! Welcome back everybody
+
+2
+00:00:03,240 --> 00:00:06,670
+to the next episode of FP101x.
+
+3
+00:00:06,670 --> 00:00:10,700
+And today we're going to talk about
+recursive functions.
+
+4
+00:00:10,700 --> 00:00:13,900
+What is recursion? Well, I have here
+
+5
+00:00:13,900 --> 00:00:20,130
+a stack of trays and my favorite fruit.
+By now you all know that I love bananas.
+
+6
+00:00:20,130 --> 00:00:23,769
+And I need to eat this
+
+7
+00:00:23,769 --> 00:00:29,070
+whole bunch of bananas. And if we're
+going to do this recursively, so I'm
+
+8
+00:00:29,070 --> 00:00:32,910
+going to eat the first banana and then...
+oh but
+
+9
+00:00:32,910 --> 00:00:36,500
+before I do that, I need to eat the next
+banana.
+
+10
+00:00:36,500 --> 00:00:39,950
+Oh, so I have to put this one
+
+11
+00:00:39,950 --> 00:00:43,440
+on top of this tray and then...
+Oh, I have to eat
+
+12
+00:00:43,440 --> 00:00:49,390
+the next banana. My goodness, I'm eating a
+lot of bananas. And look at that stack
+
+13
+00:00:49,390 --> 00:00:52,520
+growing there. Next banana
+
+14
+00:00:52,520 --> 00:00:56,710
+and finally I have my last banana
+
+15
+00:00:56,710 --> 00:01:01,350
+and I can put it on the stack. And look
+it is a beautiful stack
+
+16
+00:01:01,350 --> 00:01:05,049
+of bananas. See if we can
+
+17
+00:01:05,049 --> 00:01:09,430
+see them. The problem is that what we
+have done here
+
+18
+00:01:09,430 --> 00:01:12,600
+is we have created a quite a large
+
+19
+00:01:12,600 --> 00:01:17,810
+stack of bananas. And if we would have a
+big bunch of bananas that stack
+
+20
+00:01:17,810 --> 00:01:20,900
+would overflow. So a better way
+
+21
+00:01:20,900 --> 00:01:24,240
+to eat the bananas is to not
+
+22
+00:01:24,240 --> 00:01:28,350
+start with the next banana until you've
+finished
+
+23
+00:01:28,350 --> 00:01:31,829
+the first one. And in that case
+
+24
+00:01:31,829 --> 00:01:34,869
+you only need one tray
+
+25
+00:01:34,869 --> 00:01:38,500
+to finish all your bananas.
+
+26
+00:01:38,500 --> 00:01:42,520
+And that is called tail call elimination.
+
+27
+00:01:42,520 --> 00:01:46,299
+And tail call elimination is
+
+28
+00:01:46,299 --> 00:01:50,520
+a very important concept when you're
+using recursion
+
+29
+00:01:50,520 --> 00:01:55,140
+to define control structures. And in
+imperative languages
+
+30
+00:01:55,140 --> 00:01:58,570
+typically you don't have tail call
+elimination
+
+31
+00:01:58,570 --> 00:02:03,070
+and therefore you have specialized
+control structures. But in Haskell
+
+32
+00:02:03,070 --> 00:02:06,100
+we can define
+
+33
+00:02:06,100 --> 00:02:08,320
+we can
+
+34
+00:02:08,320 --> 00:02:12,510
+safely define our control structures
+using recursive functions
+
+35
+00:02:12,510 --> 00:02:16,620
+because we will never have this giant
+stack
+
+36
+00:02:16,620 --> 00:02:21,620
+of uneaten bananas. Great, let's look at
+some code.
+
+37
+00:02:21,620 --> 00:02:26,190
+I think I have had enough
+bananas for the rest of the year.
+
+38
+00:02:26,190 --> 00:02:29,860
+The reason Haskell
+
+39
+00:02:29,860 --> 00:02:32,990
+folks love recursion is that it's
+
+40
+00:02:32,990 --> 00:02:36,610
+often a very natural way
+
+41
+00:02:36,610 --> 00:02:40,220
+to define functions. For example
+
+42
+00:02:40,220 --> 00:02:43,900
+here is a way to define
+
+43
+00:02:43,900 --> 00:02:48,290
+the factorial function.
+We have seen this one before, so
+
+44
+00:02:48,290 --> 00:02:49,500
+we take the list
+
+45
+00:02:49,500 --> 00:02:52,630
+of values between 1 to n and then
+
+46
+00:02:52,630 --> 00:02:59,210
+we multiply them all together.
+If we are going to evaluate
+
+47
+00:02:59,210 --> 00:03:03,620
+this factorial 4, we unfold
+the definition. That was
+
+48
+00:03:03,620 --> 00:03:10,620
+product 1 to 4. The list 1 to 4
+is the product 1,2,3,4
+
+49
+00:03:10,670 --> 00:03:13,680
+and the product was
+
+50
+00:03:13,680 --> 00:03:16,830
+just multiplying all the numbers.
+
+51
+00:03:16,830 --> 00:03:20,080
+So there you see the product of 1,2,3,4
+
+52
+00:03:20,080 --> 00:03:23,260
+is 1 x 2 x 3 x 4
+
+53
+00:03:23,260 --> 00:03:26,300
+which is 24.
+
+54
+00:03:26,300 --> 00:03:30,410
+Here is a way to define
+
+55
+00:03:30,410 --> 00:03:33,520
+factorial using recursion. And we
+have seen
+
+56
+00:03:33,520 --> 00:03:37,800
+how to define recursive functions
+over lists
+
+57
+00:03:37,800 --> 00:03:40,850
+by taking the list, checking whether
+it is the
+
+58
+00:03:40,850 --> 00:03:45,020
+empty list or whether it is the head
+followed by the tail.
+
+59
+00:03:45,020 --> 00:03:48,540
+And in some sense this kind of recursive
+function
+
+60
+00:03:48,540 --> 00:03:51,880
+over numbers is nothing different.
+
+61
+00:03:51,880 --> 00:03:56,620
+So we have two cases. We have the fact
+whether the number is 0
+
+62
+00:03:56,620 --> 00:03:59,840
+or in this case whether the number is n
+
+63
+00:03:59,840 --> 00:04:03,360
+and in that case the recursion will be
+on n-1.
+
+64
+00:04:03,360 --> 00:04:07,490
+
+65
+00:04:07,490 --> 00:04:10,740
+In a previous version of Haskell there
+were so-called
+
+66
+00:04:10,740 --> 00:04:14,340
+n+k patterns, where you could
+write the factorial of 0
+
+67
+00:04:14,340 --> 00:04:17,680
+and the factorial of n+1, but
+
+68
+00:04:17,680 --> 00:04:21,609
+n+k patterns have been
+deprecated, so now you
+
+69
+00:04:21,609 --> 00:04:25,189
+will have to write it in this form.
+
+70
+00:04:25,189 --> 00:04:30,229
+But apart from that minor detail, what you
+can see is that it is
+
+71
+00:04:30,229 --> 00:04:33,719
+very very similar to the way
+
+72
+00:04:33,719 --> 00:04:36,909
+you define recursion over lists.
+
+73
+00:04:36,909 --> 00:04:39,960
+There are two cases: 0
+
+74
+00:04:39,960 --> 00:04:43,949
+and n, and if it is 0 it's 1,
+and otherwise
+
+75
+00:04:43,949 --> 00:04:47,530
+you just take the factorial of
+(n-1) times n.
+
+76
+00:04:47,530 --> 00:04:52,020
+And if we evaluate
+
+77
+00:04:52,020 --> 00:04:56,430
+this form of factorial, you will see
+that stack
+
+78
+00:04:56,430 --> 00:05:01,050
+of bananas appearing, because 
+you see that
+
+79
+00:05:01,050 --> 00:05:04,759
+there's the factorial going to the
+right
+
+80
+00:05:04,759 --> 00:05:08,039
+until we have executed everything
+
+81
+00:05:08,039 --> 00:05:12,279
+and then we multiply going back
+
+82
+00:05:12,279 --> 00:05:15,509
+popping off the stack, to get back to 6.
+
+83
+00:05:15,509 --> 00:05:18,810
+Alright.
+
+84
+00:05:18,810 --> 00:05:21,870
+The recursive definition
+
+85
+00:05:21,870 --> 00:05:25,069
+that we have given, of course will
+
+86
+00:05:25,069 --> 00:05:30,810
+not terminate, or a fancy way to say
+that, is it will diverge
+
+87
+00:05:30,810 --> 00:05:33,860
+for numbers less than 0.
+
+88
+00:05:33,860 --> 00:05:37,930
+If we look here. Let's go back
+
+89
+00:05:37,930 --> 00:05:42,110
+a few slides. If n
+
+90
+00:05:42,110 --> 00:05:45,539
+is less than 0, then
+
+91
+00:05:45,539 --> 00:05:51,039
+this case doesn't apply, so we
+multiply n with the factorial
+
+92
+00:05:51,039 --> 00:05:52,099
+of (n-1)
+
+93
+00:05:52,099 --> 00:05:56,229
+which is even more less than zero, and
+so on, and so on. So this will never
+
+94
+00:05:56,229 --> 00:05:57,099
+terminate
+
+95
+00:05:57,099 --> 00:06:04,099
+and it will cause a stack overflow.
+
+96
+00:06:05,110 --> 00:06:09,060
+Some functions like factorial can be
+defined
+
+97
+00:06:09,060 --> 00:06:12,529
+either recursively or defined in terms
+
+98
+00:06:12,529 --> 00:06:15,740
+of other functions.
+
+99
+00:06:15,740 --> 00:06:19,379
+Whether you define something using
+recursion
+
+100
+00:06:19,379 --> 00:06:22,879
+or in terms of other functions, or you
+
+101
+00:06:22,879 --> 00:06:25,990
+take this recursion pattern
+
+102
+00:06:25,990 --> 00:06:28,710
+and abstract it as a higher-order
+function and
+
+103
+00:06:28,710 --> 00:06:32,570
+then use it to define the function, that's
+all a matter of taste.
+
+104
+00:06:32,570 --> 00:06:35,920
+In the end you decide as a developer
+
+105
+00:06:35,920 --> 00:06:38,960
+what is the most readable
+
+106
+00:06:38,960 --> 00:06:42,510
+for other developers. Alright?
+
+107
+00:06:42,510 --> 00:06:48,020
+So there is no strong answer when
+or not to use recursion.
+
+108
+00:06:48,020 --> 00:06:51,070
+The code just has to be as clear as
+possible.
+
+109
+00:06:51,070 --> 00:06:55,490
+But one advantage of recursion is that
+you can use
+
+110
+00:06:55,490 --> 00:06:58,990
+induction to prove properties
+
+111
+00:06:58,990 --> 00:07:03,130
+of your function. Let's
+
+112
+00:07:03,130 --> 00:07:06,890
+look at another example of defining a
+recursive function
+
+113
+00:07:06,890 --> 00:07:10,890
+where we are using this product
+function, that we
+
+114
+00:07:10,890 --> 00:07:14,540
+used in the earlier definition
+
+115
+00:07:14,540 --> 00:07:17,800
+of factorial, and let's define that
+
+116
+00:07:17,800 --> 00:07:23,310
+using recursion over lists. So in this
+case the structure is exactly the same.
+
+117
+00:07:23,310 --> 00:07:23,640
+There are
+
+118
+00:07:23,640 --> 00:07:26,720
+two cases. We either have the empty list
+
+119
+00:07:26,720 --> 00:07:29,960
+or we have a list of n cons ns.
+
+120
+00:07:29,960 --> 00:07:34,360
+We look at the recursive structure
+of lists
+
+121
+00:07:34,360 --> 00:07:39,180
+and then we define the function over
+that recursive structure.
+
+122
+00:07:39,180 --> 00:07:43,060
+And the same with numbers: we look at the
+recursive structure of numbers
+
+123
+00:07:43,060 --> 00:07:46,890
+and then we define the functions
+according to that structure.
+
+124
+00:07:46,890 --> 00:07:50,690
+In this case: if we have the product of
+the empty list
+
+125
+00:07:50,690 --> 00:07:54,860
+well, that is 1. If we want to
+
+126
+00:07:54,860 --> 00:07:59,290
+take the product of a value n on top of
+a list ns
+
+127
+00:07:59,290 --> 00:08:02,380
+what do we do? We take the product
+
+128
+00:08:02,380 --> 00:08:06,340
+of the rest of the list here and then we
+multiply that by n.
+
+129
+00:08:06,340 --> 00:08:09,910
+So this is a very easy way
+
+130
+00:08:09,910 --> 00:08:13,340
+to define this function using recursion.
+
+131
+00:08:13,340 --> 00:08:17,040
+And of course
+
+132
+00:08:17,040 --> 00:08:20,370
+as we will see, we can take this
+function and
+
+133
+00:08:20,370 --> 00:08:24,780
+abstract the pattern into a higher-order
+function, that just does the recursion
+
+134
+00:08:24,780 --> 00:08:26,200
+and then we can plug in
+
+135
+00:08:26,200 --> 00:08:31,080
+the times and the 1. But if we
+
+136
+00:08:31,080 --> 00:08:36,000
+execute this product, we unfold the
+definition.
+
+137
+00:08:36,000 --> 00:08:39,080
+So it's like 2 cons 3,4.
+
+138
+00:08:39,080 --> 00:08:41,860
+If we unfold that a couple of times
+you get 2
+
+139
+00:08:41,860 --> 00:08:45,490
+times the product of 3,4. We do that a
+couple of times
+
+140
+00:08:45,490 --> 00:08:49,160
+until we arrive here. And then
+
+141
+00:08:49,160 --> 00:08:53,220
+we pop the stack to get 24. Alright?
+
+142
+00:08:53,220 --> 00:08:57,220
+So you see that the answer is exactly
+the same
+
+143
+00:08:57,220 --> 00:09:00,850
+as the recursive definition of
+factorial.
+
+144
+00:09:00,850 --> 00:09:05,079
+The only thing is that in this case the
+recursion
+
+145
+00:09:05,079 --> 00:09:09,170
+is hidden in this product function.
+So if we take the product
+
+146
+00:09:09,170 --> 00:09:13,310
+of the numbers 1 to n, really we're
+defining
+
+147
+00:09:13,310 --> 00:09:17,329
+the function using recursion as well.
+And you can show that
+
+148
+00:09:17,329 --> 00:09:20,980
+when you fuse these two functions, the
+function that creates a list from 1 to n
+
+149
+00:09:20,980 --> 00:09:21,410
+
+150
+00:09:21,410 --> 00:09:24,980
+and the product function, that what you
+get is effectively
+
+151
+00:09:24,980 --> 00:09:30,170
+the recursive definition of factorial.
+
+152
+00:09:30,170 --> 00:09:34,360
+Let's look at another function, that we can
+define
+
+153
+00:09:34,360 --> 00:09:37,680
+recursively over lists.
+
+154
+00:09:37,680 --> 00:09:41,019
+And here you see again: we have this
+
+155
+00:09:41,019 --> 00:09:45,050
+recursive structure, so if the
+list is empty
+
+156
+00:09:45,050 --> 00:09:49,360
+the length of that empty list is 0 and
+
+157
+00:09:49,360 --> 00:09:52,449
+if the list is not empty, we don't care really
+
+158
+00:09:52,449 --> 00:09:57,370
+what the first element is. We compute
+the length of the rest of the list
+
+159
+00:09:57,370 --> 00:10:01,740
+and just add 1 to it. Super obvious.
+
+160
+00:10:01,740 --> 00:10:05,310
+Again, it follows the recursive structure
+
+161
+00:10:05,310 --> 00:10:08,480
+of the list. So it is kind of defined by
+induction
+
+162
+00:10:08,480 --> 00:10:14,079
+on the structure of the list.
+So length of 1,2,3
+
+163
+00:10:14,079 --> 00:10:18,480
+1 + length of 2,3, unfold, unfold,
+unfold
+
+164
+00:10:18,480 --> 00:10:21,600
+until here and then we add them up
+
+165
+00:10:21,600 --> 00:10:27,610
+and we get the answer that we expect:
+three. Here is another function:
+
+166
+00:10:27,610 --> 00:10:30,800
+reverse. Empty list.
+
+167
+00:10:30,800 --> 00:10:33,870
+Reverse of the empty list is empty list.
+
+168
+00:10:33,870 --> 00:10:38,920
+And if we want to reverse x:xs
+
+169
+00:10:38,920 --> 00:10:42,199
+we just add x on the other side.
+
+170
+00:10:42,199 --> 00:10:45,890
+If we execute it like this, you see
+
+171
+00:10:45,890 --> 00:10:49,180
+that we are appending the elements
+
+172
+00:10:49,180 --> 00:10:53,380
+from right to left
+
+173
+00:10:53,380 --> 00:10:56,450
+and then the list gets reversed.
+
+174
+00:10:56,450 --> 00:10:59,630
+So 1,2,3 turns into 3,2,1.
+
+175
+00:10:59,630 --> 00:11:02,950
+Of course
+
+176
+00:11:02,950 --> 00:11:06,140
+we can also define recursive functions
+that
+
+177
+00:11:06,140 --> 00:11:09,990
+don't recurse over just one argument,
+but over several.
+
+178
+00:11:09,990 --> 00:11:13,050
+We have seen in the previous chapter the
+function zip.
+
+179
+00:11:13,050 --> 00:11:16,980
+How do we define zip? Zip took two lists
+
+180
+00:11:16,980 --> 00:11:21,470
+and it would take every element of the
+two lists and combine them into a pair.
+
+181
+00:11:21,470 --> 00:11:27,240
+The easiest thing here is to look at the
+last
+
+182
+00:11:27,240 --> 00:11:30,450
+clause here. If we have two non-empty
+lists
+
+183
+00:11:30,450 --> 00:11:34,760
+we take the head of both, put that in a
+pair
+
+184
+00:11:34,760 --> 00:11:39,370
+and recursively zip the rest.
+When do we stop? Well, we stop
+
+185
+00:11:39,370 --> 00:11:43,070
+when either of the two lists is
+exhausted
+
+186
+00:11:43,070 --> 00:11:46,080
+in which case we return the empty list.
+
+187
+00:11:46,080 --> 00:11:49,460
+And of course we have to put
+
+188
+00:11:49,460 --> 00:11:53,340
+these cases first here, because there is
+a wildcard
+
+189
+00:11:53,340 --> 00:11:57,360
+pattern here, that would otherwise not
+work.
+
+190
+00:11:57,360 --> 00:12:00,370
+Good!
+
+191
+00:12:00,370 --> 00:12:04,160
+A few more functions.
+
+192
+00:12:04,160 --> 00:12:07,850
+Drop takes an integer and a list
+
+193
+00:12:07,850 --> 00:12:13,160
+and returns a list. And what this thing
+is doing, it's recursing over
+
+194
+00:12:13,160 --> 00:12:16,360
+both
+
+195
+00:12:16,360 --> 00:12:20,180
+the integer and the list. So in this case
+
+196
+00:12:20,180 --> 00:12:24,460
+when we say we want to drop zero
+elements from a list
+
+197
+00:12:24,460 --> 00:12:29,320
+well, that's the same list. If we have
+the empty list
+
+198
+00:12:29,320 --> 00:12:32,370
+we can drop whatever we want, but
+we won't get
+
+199
+00:12:32,370 --> 00:12:36,250
+very far, so we just return the empty
+list. And otherwise
+
+200
+00:12:36,250 --> 00:12:40,200
+we recurse both over the list and over
+the number.
+
+201
+00:12:40,200 --> 00:12:45,070
+And again, since we don't have n+k
+patterns, we have to use n-1 here
+
+202
+00:12:45,070 --> 00:12:47,290
+on the right hand side, so drop of n
+
+203
+00:12:47,290 --> 00:12:51,200
+and whatever cons xs is drop of
+
+204
+00:12:51,200 --> 00:12:55,040
+(n-1) and xs. So here we
+recurse
+
+205
+00:12:55,040 --> 00:12:58,600
+over the structure of the number and the
+structure
+
+206
+00:12:58,600 --> 00:13:00,860
+of the list.
+
+207
+00:13:00,860 --> 00:13:03,910
+The last example here on the slide
+
+208
+00:13:03,910 --> 00:13:07,040
+appends two lists. If I want to
+
+209
+00:13:07,040 --> 00:13:11,480
+append the empty list to another list,
+that is the other list.
+
+210
+00:13:11,480 --> 00:13:15,590
+And then, if I want to append a
+list x:xs
+
+211
+00:13:15,590 --> 00:13:19,990
+to a list ys, I first append xs to ys
+
+212
+00:13:19,990 --> 00:13:24,190
+and then cons x on top. Super
+obvious.
+
+213
+00:13:24,190 --> 00:13:27,960
+Thank you so much and see you
+
+214
+00:13:27,960 --> 00:13:28,610
+in part 2.
+

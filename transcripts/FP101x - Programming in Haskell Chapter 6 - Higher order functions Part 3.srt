@@ -1,0 +1,754 @@
+1
+00:00:01,240 --> 00:00:04,529
+Welcome back to the lectures on
+higher-order functions.
+
+2
+00:00:04,529 --> 00:00:07,899
+We just looked at the
+
+3
+00:00:07,899 --> 00:00:11,889
+mother of all higher-order functions
+over lists: foldr.
+
+4
+00:00:11,889 --> 00:00:15,460
+And we will end this section
+
+5
+00:00:15,460 --> 00:00:19,880
+with a few other standard higher-order
+functions that are available
+
+6
+00:00:19,880 --> 00:00:23,279
+in the Haskell library.
+
+7
+00:00:23,279 --> 00:00:28,519
+One of those functions is function
+composition. And function composition is
+
+8
+00:00:28,519 --> 00:00:30,699
+another fundamental operation
+
+9
+00:00:30,699 --> 00:00:34,890
+in functional programming. Functional
+programming is programming with
+
+10
+00:00:34,890 --> 00:00:35,630
+functions
+
+11
+00:00:35,630 --> 00:00:38,660
+and if we have functions, we want to
+
+12
+00:00:38,660 --> 00:00:41,730
+combine two functions into another
+function.
+
+13
+00:00:41,730 --> 00:00:46,530
+Just like addition takes two numbers and
+gives us a new number
+
+14
+00:00:46,530 --> 00:00:50,200
+we want to have a similar operator that
+takes two functions
+
+15
+00:00:50,200 --> 00:00:53,980
+and combines them into a new function.
+
+16
+00:00:53,980 --> 00:00:57,559
+Here is the definition of that operator
+
+17
+00:00:57,559 --> 00:01:01,559
+and it is written as dot in Haskell.
+So unlike
+
+18
+00:01:01,559 --> 00:01:06,119
+object-oriented programming, where dot
+means invoking a method
+
+19
+00:01:06,119 --> 00:01:09,930
+in Haskell, dot means composing two
+functions. So
+
+20
+00:01:09,930 --> 00:01:13,470
+in both cases the dot is used for the
+most
+
+21
+00:01:13,470 --> 00:01:17,360
+fundamental operation on the objects
+
+22
+00:01:17,360 --> 00:01:20,990
+that the language supports. In an
+object-oriented language
+
+23
+00:01:20,990 --> 00:01:25,229
+we have objects and we can call methods
+on them. In Haskell
+
+24
+00:01:25,229 --> 00:01:28,710
+we have functions that we can compose.
+
+25
+00:01:28,710 --> 00:01:32,700
+And here is the type. Function
+composition dot
+
+26
+00:01:32,700 --> 00:01:37,570
+takes a function from b to c. There is
+the function from b to c.
+
+27
+00:01:37,570 --> 00:01:41,950
+Then it takes a function from a to b, and
+it returns a function from
+
+28
+00:01:41,950 --> 00:01:45,229
+a to c. When you look at this
+
+29
+00:01:45,229 --> 00:01:48,450
+type, it can be a little bit confusing.
+
+30
+00:01:48,450 --> 00:01:51,820
+Because there is a b here as the output
+
+31
+00:01:51,820 --> 00:01:56,460
+and the b is here as the input.
+
+32
+00:01:56,460 --> 00:02:00,630
+It seems to be that things are in the wrong
+order. But that has
+
+33
+00:02:00,630 --> 00:02:03,680
+everything to do with the fact that
+
+34
+00:02:03,680 --> 00:02:07,899
+function application associates. Here is
+the definition
+
+35
+00:02:07,899 --> 00:02:10,950
+of composition. What we do is we
+
+36
+00:02:10,950 --> 00:02:12,720
+have two functions and then
+
+37
+00:02:12,720 --> 00:02:16,050
+we first apply g to x
+
+38
+00:02:16,050 --> 00:02:19,650
+and then we apply f to the result.
+
+39
+00:02:19,650 --> 00:02:22,900
+Let's now see
+
+40
+00:02:22,900 --> 00:02:26,209
+if those types make sense to us.
+
+41
+00:02:26,209 --> 00:02:29,280
+The type of f here
+
+42
+00:02:29,280 --> 00:02:32,819
+is a function from b to c. The type of
+
+43
+00:02:32,819 --> 00:02:36,940
+g is a function from a to b.
+
+44
+00:02:36,940 --> 00:02:40,680
+Then in that case x must be a value of
+type a.
+
+45
+00:02:40,680 --> 00:02:44,230
+So if we apply g
+
+46
+00:02:44,230 --> 00:02:50,239
+to x, we are applying this function,
+that takes an a into a b.
+
+47
+00:02:50,239 --> 00:02:53,640
+So the result of applying g to x is b.
+
+48
+00:02:53,640 --> 00:02:58,000
+And that fits into here and we get a c.
+
+49
+00:02:58,000 --> 00:03:01,150
+Let's look at the
+
+50
+00:03:01,150 --> 00:03:04,250
+return type here. We get a value of
+type a
+
+51
+00:03:04,250 --> 00:03:07,610
+and we return a value of type c.
+
+52
+00:03:07,610 --> 00:03:13,530
+At first that type might look
+a little bit confusing
+
+53
+00:03:13,530 --> 00:03:17,829
+but once we figure it out and we
+use the fact that
+
+54
+00:03:17,829 --> 00:03:21,090
+function application here associates to
+the right
+
+55
+00:03:21,090 --> 00:03:24,459
+everything falls into place.
+
+56
+00:03:24,459 --> 00:03:28,230
+And here is an example of using function
+composition.
+
+57
+00:03:28,230 --> 00:03:31,780
+Suppose we want to define the function
+odd, that
+
+58
+00:03:31,780 --> 00:03:34,959
+checks whether an integer is odd.
+
+59
+00:03:34,959 --> 00:03:38,040
+Odd is defined as not even.
+
+60
+00:03:38,040 --> 00:03:41,250
+Well, there we go. The definition, it says
+
+61
+00:03:41,250 --> 00:03:44,989
+first check whether it's even and then
+
+62
+00:03:44,989 --> 00:03:49,989
+invert the result. And this definition here
+
+63
+00:03:49,989 --> 00:03:53,030
+this is what people often call pointfree
+style.
+
+64
+00:03:53,030 --> 00:03:56,380
+Because the other way we could write
+
+65
+00:03:56,380 --> 00:04:01,280
+odd would be: lambda x, even of x
+
+66
+00:04:01,280 --> 00:04:05,980
+not of that. But now we have a lambda and
+parentheses, so that is a
+
+67
+00:04:05,980 --> 00:04:07,070
+little bit verbose.
+
+68
+00:04:07,070 --> 00:04:11,010
+A lot of functional programmers
+prefer to use function
+
+69
+00:04:11,010 --> 00:04:12,079
+composition
+
+70
+00:04:12,079 --> 00:04:17,519
+to remove all the lambdas and the
+parentheses. But I have to warn you.
+
+71
+00:04:17,519 --> 00:04:20,989
+And I'm guilty of this too.
+
+72
+00:04:20,989 --> 00:04:25,470
+When you just start using function
+composition
+
+73
+00:04:25,470 --> 00:04:29,280
+you are trying to use it everywhere.
+And it becomes a sport
+
+74
+00:04:29,280 --> 00:04:32,990
+to write things in pointfree style, write
+them very compactly.
+
+75
+00:04:32,990 --> 00:04:37,780
+The price you pay is that it becomes very
+hard to read. So now the people that
+
+76
+00:04:37,780 --> 00:04:38,900
+read your code
+
+77
+00:04:38,900 --> 00:04:42,540
+have to undo all this function composition
+
+78
+00:04:42,540 --> 00:04:45,780
+in order to understand what's going on.
+And typically
+
+79
+00:04:45,780 --> 00:04:49,430
+when they understand what's going on, the
+light bulb goes on, and they say
+
+80
+00:04:49,430 --> 00:04:53,450
+ah okay, but I think it is better to use
+
+81
+00:04:53,450 --> 00:04:56,820
+function composition sparingly
+
+82
+00:04:56,820 --> 00:05:00,640
+because you always have to write code
+for others to read.
+
+83
+00:05:00,640 --> 00:05:05,430
+You don't write code to look
+cool yourself and say: oh look, I can do
+
+84
+00:05:05,430 --> 00:05:06,790
+this pointfree style.
+
+85
+00:05:06,790 --> 00:05:11,690
+Plus there are automatic programs
+that make things pointfree for you, so
+
+86
+00:05:11,690 --> 00:05:13,390
+you are not as cool as you think.
+
+87
+00:05:13,390 --> 00:05:17,060
+So use function composition
+sparingly
+
+88
+00:05:17,060 --> 00:05:21,169
+and don't go bananas with function
+composition.
+
+89
+00:05:21,169 --> 00:05:26,330
+Okay.
+
+90
+00:05:26,330 --> 00:05:29,960
+Here are a couple of other functions
+
+91
+00:05:29,960 --> 00:05:33,890
+that are in the standard library,
+higher-order functions.
+
+92
+00:05:33,890 --> 00:05:37,890
+Most of them are defined
+
+93
+00:05:37,890 --> 00:05:42,000
+using foldr or using
+
+94
+00:05:42,000 --> 00:05:46,620
+comprehensions. These are all
+interchangeable.
+
+95
+00:05:46,620 --> 00:05:49,770
+I prefer using foldr.
+
+96
+00:05:49,770 --> 00:05:53,750
+Some people prefer
+
+97
+00:05:53,750 --> 00:05:57,760
+list comprehensions. The reason I
+prefer foldr, is that
+
+98
+00:05:57,760 --> 00:06:02,510
+foldr, this concept of folding over
+
+99
+00:06:02,510 --> 00:06:06,280
+a data type, works for any recursive data
+type
+
+100
+00:06:06,280 --> 00:06:11,790
+whereas list comprehensions only work
+for lists.
+
+101
+00:06:11,790 --> 00:06:16,350
+We can use general comprehensions, but
+it gets all a little bit tedious.
+
+102
+00:06:16,350 --> 00:06:19,370
+So at some point it's just easier to
+
+103
+00:06:19,370 --> 00:06:22,380
+define a fold function and then define
+
+104
+00:06:22,380 --> 00:06:26,100
+other functions on top of that.
+
+105
+00:06:26,100 --> 00:06:29,840
+But let's just look at this one here.
+All is defined
+
+106
+00:06:29,840 --> 00:06:34,210
+as map
+
+107
+00:06:34,210 --> 00:06:37,150
+p of x to the list xs
+
+108
+00:06:37,150 --> 00:06:41,960
+and then check whether every one of
+those is true.
+
+109
+00:06:41,960 --> 00:06:45,789
+A nicer definition of this would be
+
+110
+00:06:45,789 --> 00:06:50,710
+map of p compose and. Any
+
+111
+00:06:50,710 --> 00:06:54,500
+is the same thing. We map p
+
+112
+00:06:54,500 --> 00:06:57,620
+over the list xs and then we call
+
+113
+00:06:57,620 --> 00:07:01,180
+or. So for example if we want to check
+that
+
+114
+00:07:01,180 --> 00:07:04,580
+this string here "abc def"
+
+115
+00:07:04,580 --> 00:07:08,360
+contains a space, we can call any isSpace
+
+116
+00:07:08,360 --> 00:07:12,240
+function from character to Bool and this
+will return True.
+
+117
+00:07:12,240 --> 00:07:16,199
+Here is another interesting function:
+
+118
+00:07:16,199 --> 00:07:19,580
+takeWhile. TakeWhile takes a predicate
+
+119
+00:07:19,580 --> 00:07:24,300
+and unlike filter, which goes through the
+whole list and throws away all the
+
+120
+00:07:24,300 --> 00:07:25,150
+elements
+
+121
+00:07:25,150 --> 00:07:29,340
+for which the predicate does not hold,
+takeWhile
+
+122
+00:07:29,340 --> 00:07:32,580
+is like a while loop, so it uses
+this predicate
+
+123
+00:07:32,580 --> 00:07:36,690
+and chops off elements from this list
+and returning them
+
+124
+00:07:36,690 --> 00:07:41,039
+until this predicate is False. So let's
+look at the definition.
+
+125
+00:07:41,039 --> 00:07:46,460
+If the list is empty, what can we do?
+We can only return the empty list.
+
+126
+00:07:46,460 --> 00:07:49,810
+In case we have a non-empty list
+
+127
+00:07:49,810 --> 00:07:53,830
+it looks like this: x:xs
+
+128
+00:07:53,830 --> 00:07:56,960
+and now we have two cases. Either
+
+129
+00:07:56,960 --> 00:08:00,759
+p of x does not hold, in that case we
+
+130
+00:08:00,759 --> 00:08:04,169
+terminate the recursion by
+returning the empty list
+
+131
+00:08:04,169 --> 00:08:07,750
+and if p of x is True...
+
+132
+00:08:07,750 --> 00:08:11,210
+There is a trapdoor here in the studio!
+
+133
+00:08:11,210 --> 00:08:15,219
+TakeWhile not fall through the
+
+134
+00:08:15,219 --> 00:08:18,529
+hole... if p of x is True
+
+135
+00:08:18,529 --> 00:08:22,940
+then we cons x onto the recursive call
+
+136
+00:08:22,940 --> 00:08:26,909
+of takeWhile of p of x. So for example
+
+137
+00:08:26,909 --> 00:08:30,630
+we have a string and we can take
+
+138
+00:08:30,630 --> 00:08:34,719
+characters from the string as long
+as they are
+
+139
+00:08:34,719 --> 00:08:38,570
+letters, by doing takeWhile isAlpha
+and then
+
+140
+00:08:38,570 --> 00:08:43,230
+it will take abc. And since the space
+is not
+
+141
+00:08:43,230 --> 00:08:46,820
+an alphanumeric character it will
+terminate
+
+142
+00:08:46,820 --> 00:08:51,250
+right there. Dually to takeWhile
+
+143
+00:08:51,250 --> 00:08:55,840
+we have the function dropWhile, that
+removes all the elements
+
+144
+00:08:55,840 --> 00:08:59,750
+while a predicate holds. So takeWhile
+
+145
+00:08:59,750 --> 00:09:02,840
+keeps all the elements until the
+predicate is False
+
+146
+00:09:02,840 --> 00:09:06,410
+dropWhile drops the elements
+
+147
+00:09:06,410 --> 00:09:10,440
+until the predicate turns False.
+
+148
+00:09:10,440 --> 00:09:14,820
+So you see here that in this case it
+drops the value
+
+149
+00:09:14,820 --> 00:09:18,880
+and instead of returning the empty list
+there, it just
+
+150
+00:09:18,880 --> 00:09:21,940
+puts the value on top of the rest.
+
+151
+00:09:21,940 --> 00:09:25,440
+Good! Happy hacking
+
+152
+00:09:25,440 --> 00:09:28,570
+and make sure you do the exercises,
+because
+
+153
+00:09:28,570 --> 00:09:32,550
+all the higher-order functions that we have
+seen here, like takeWhile, dropWhile, map
+
+154
+00:09:32,550 --> 00:09:33,310
+filter
+
+155
+00:09:33,310 --> 00:09:37,670
+you will have to implement them in
+terms of foldr.
+
+156
+00:09:37,670 --> 00:09:42,070
+So please make these exercises
+
+157
+00:09:42,070 --> 00:09:47,510
+and if you are not using Haskell, say
+you are using Scala or Java
+
+158
+00:09:47,510 --> 00:09:50,580
+you can do the same thing. These
+languages typically
+
+159
+00:09:50,580 --> 00:09:54,690
+also have foldr. Maybe it's not
+called foldr.
+
+160
+00:09:54,690 --> 00:09:58,720
+Sometimes it is called foldRight or
+sometimes it is just called fold
+
+161
+00:09:58,720 --> 00:10:03,210
+but this idea of having a higher-order
+function
+
+162
+00:10:03,210 --> 00:10:07,030
+that captures the essence of recursing
+over a list
+
+163
+00:10:07,030 --> 00:10:10,240
+is available in any library
+
+164
+00:10:10,240 --> 00:10:13,580
+that supports lists.
+
+165
+00:10:13,580 --> 00:10:17,150
+And for example in C# it is not even
+called foldr.
+
+166
+00:10:17,150 --> 00:10:22,270
+It is called aggregate.
+
+167
+00:10:22,270 --> 00:10:26,460
+That comes from SQL, where you are
+aggregating over a list.
+
+168
+00:10:26,460 --> 00:10:30,950
+So don't be fooled by the name, the
+idea is what matters.
+
+169
+00:10:30,950 --> 00:10:33,760
+Thank you so much and see you next week.

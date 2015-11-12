@@ -1,0 +1,1013 @@
+1
+00:00:00,179 --> 00:00:03,330
+Welcome everybody to yet another
+
+2
+00:00:03,330 --> 00:00:07,730
+FP101x episode. You may have heard
+
+3
+00:00:07,730 --> 00:00:12,059
+the saying that developers
+
+4
+00:00:12,059 --> 00:00:15,250
+are people that turn coffee
+
+5
+00:00:15,250 --> 00:00:19,090
+into code. Well, I'm a developer.
+
+6
+00:00:19,090 --> 00:00:22,730
+I turn coffee into code and in my
+case also
+
+7
+00:00:22,730 --> 00:00:26,090
+bananas. Here is a
+
+8
+00:00:26,090 --> 00:00:29,269
+string of coffee cups
+
+9
+00:00:29,269 --> 00:00:32,980
+but if you look at them like this
+
+10
+00:00:32,980 --> 00:00:36,800
+this looks like one object. But what
+we want
+
+11
+00:00:36,800 --> 00:00:40,270
+is we don't want to have like one
+object we want
+
+12
+00:00:40,270 --> 00:00:44,300
+to parse this thing into
+
+13
+00:00:44,300 --> 00:00:47,360
+a sequence of
+
+14
+00:00:47,360 --> 00:00:50,840
+cups of coffee that we can drink
+
+15
+00:00:50,840 --> 00:00:55,489
+such that we can code better. So here
+you see that I am
+
+16
+00:00:55,489 --> 00:00:59,899
+taking this thing, that was one thing,
+and destructing it
+
+17
+00:00:59,899 --> 00:01:03,340
+into its true meaning, namely
+
+18
+00:01:03,340 --> 00:01:07,580
+a whole bunch of coffee cups, that you
+can see
+
+19
+00:01:07,580 --> 00:01:12,479
+right here. And what we are going to
+show you in this lecture
+
+20
+00:01:12,479 --> 00:01:16,640
+how to not parse strings of coffee cups
+
+21
+00:01:16,640 --> 00:01:20,360
+but we are going to parse strings of
+characters
+
+22
+00:01:20,360 --> 00:01:24,009
+into expressions.
+
+23
+00:01:24,009 --> 00:01:29,079
+Let's get going. What is a parser?
+
+24
+00:01:29,079 --> 00:01:32,340
+A parser is a program that
+
+25
+00:01:32,340 --> 00:01:35,640
+analyses a piece of text to determine
+
+26
+00:01:35,640 --> 00:01:39,450
+its syntactic structure. So if we start
+with
+
+27
+00:01:39,450 --> 00:01:42,680
+2*3+4 what we want
+
+28
+00:01:42,680 --> 00:01:46,290
+is we want to have this tree, that says
+its two
+
+29
+00:01:46,290 --> 00:01:50,829
+times three plus four. And again
+
+30
+00:01:50,829 --> 00:01:55,619
+last time I'll show my string of coffee
+
+31
+00:01:55,619 --> 00:01:59,340
+cups. Here you see on the left
+
+32
+00:01:59,340 --> 00:02:02,689
+it is an unstructured thing and then
+
+33
+00:02:02,689 --> 00:02:05,799
+on the right what we get is the
+
+34
+00:02:05,799 --> 00:02:09,679
+real structure, namely that it's the
+coffee cups
+
+35
+00:02:09,679 --> 00:02:11,569
+that we are after.
+
+36
+00:02:11,569 --> 00:02:15,800
+So the thing on the left has no
+structure
+
+37
+00:02:15,800 --> 00:02:19,910
+and the parser is trying to extract this
+structure from that string.
+
+38
+00:02:19,910 --> 00:02:23,319
+One of the nice things
+
+39
+00:02:23,319 --> 00:02:28,049
+of Haskell and in particular Haskell lists
+
+40
+00:02:28,049 --> 00:02:31,310
+is that it is quite
+
+41
+00:02:31,310 --> 00:02:34,440
+nice to write parsers. It is quite elegant.
+
+42
+00:02:34,440 --> 00:02:37,620
+And it seems that every Haskell programmer
+
+43
+00:02:37,620 --> 00:02:41,150
+at one point in her career will
+
+44
+00:02:41,150 --> 00:02:46,120
+write a parser. Let's look at the type
+of parsers.
+
+45
+00:02:46,120 --> 00:02:52,470
+Let's formalize that. Here we
+have a function from String
+
+46
+00:02:52,470 --> 00:02:55,670
+to Trees. That picture that we showed
+
+47
+00:02:55,670 --> 00:02:59,620
+took a String and turned that into a Tree
+so we just defined
+
+48
+00:02:59,620 --> 00:03:04,410
+a type synonym here: Parser. That is a
+function that takes a String
+
+49
+00:03:04,410 --> 00:03:08,780
+and returns a Tree.
+
+50
+00:03:08,780 --> 00:03:12,160
+We are going to generalize this type
+
+51
+00:03:12,160 --> 00:03:17,840
+a little bit to make it easier to
+construct the parser. First of all
+
+52
+00:03:17,840 --> 00:03:22,880
+when we parse a string, we might not
+need
+
+53
+00:03:22,880 --> 00:03:26,859
+the complete string, so there might be
+some string left over. Maybe
+
+54
+00:03:26,859 --> 00:03:30,019
+with our string of coffee cups
+
+55
+00:03:30,019 --> 00:03:34,590
+after two or three cups of coffee
+we might get some heartburn or
+
+56
+00:03:34,590 --> 00:03:37,849
+we might be a little bit too hyped up.
+
+57
+00:03:37,849 --> 00:03:41,049
+So there will be some coffee cups left.
+
+58
+00:03:41,049 --> 00:03:44,790
+The type of parsers, we are going to
+refine that a little bit and
+
+59
+00:03:44,790 --> 00:03:49,680
+we say it will take a String and it
+will return a pair of a Tree
+
+60
+00:03:49,680 --> 00:03:53,540
+and the rest of the String.
+
+61
+00:03:53,540 --> 00:03:58,400
+What we can also do, in general, is that
+when we take a String
+
+62
+00:03:58,400 --> 00:04:02,489
+it can be parsed in many ways.
+There is not a unique way if the
+
+63
+00:04:02,489 --> 00:04:03,840
+grammar is ambiguous.
+
+64
+00:04:03,840 --> 00:04:09,400
+Or maybe this String cannot
+be parsed into a Tree.
+
+65
+00:04:09,400 --> 00:04:14,930
+And in that case what we want to
+do is we want to return a list
+
+66
+00:04:14,930 --> 00:04:20,250
+of pairs of Trees and Strings. So
+these are all the possible ways
+
+67
+00:04:20,250 --> 00:04:23,440
+that I can parse this String
+
+68
+00:04:23,440 --> 00:04:28,319
+into a pair of a Tree and the remainder of
+the String.
+
+69
+00:04:28,319 --> 00:04:32,940
+And that list can be empty in case
+there is no parse.
+
+70
+00:04:32,940 --> 00:04:36,080
+Or if it is ambiguous, it can
+
+71
+00:04:36,080 --> 00:04:39,440
+contain many pairs. Or if it's
+
+72
+00:04:39,440 --> 00:04:42,560
+a non-ambiguous grammar, it will either be
+
+73
+00:04:42,560 --> 00:04:46,099
+a list that has a single element or the
+empty list.
+
+74
+00:04:46,099 --> 00:04:50,319
+By the way, that is another Haskell
+idiom. In Haskell
+
+75
+00:04:50,319 --> 00:04:55,360
+we often use lists, where other
+languages would use the Maybe type.
+
+76
+00:04:55,360 --> 00:04:59,129
+The Maybe type is something that is
+either Nothing or a single value
+
+77
+00:04:59,129 --> 00:05:02,389
+and the list can be 0, 1 or more values.
+
+78
+00:05:02,389 --> 00:05:05,389
+In Haskell it is very
+
+79
+00:05:05,389 --> 00:05:08,780
+common to just use lists for both.
+
+80
+00:05:08,780 --> 00:05:11,889
+And the reason is that you can use
+
+81
+00:05:11,889 --> 00:05:16,289
+all the list operators quite easily
+when you use lists.
+
+82
+00:05:16,289 --> 00:05:20,400
+But if you are super statically typed
+
+83
+00:05:20,400 --> 00:05:25,310
+then it is not as precise, but I like
+the fact, so I will always typically use
+
+84
+00:05:25,310 --> 00:05:27,129
+lists. I'm not a big fan
+
+85
+00:05:27,129 --> 00:05:32,110
+of using the Maybe type. The next
+thing is that
+
+86
+00:05:32,110 --> 00:05:37,120
+really it doesn't matter whether we want
+to return a Tree or not
+
+87
+00:05:37,120 --> 00:05:40,990
+so we are going to parameterize the
+type Parser
+
+88
+00:05:40,990 --> 00:05:44,029
+over a. And a can be a Tree
+
+89
+00:05:44,029 --> 00:05:48,110
+it can be whatever, we don't care. So the
+final type of
+
+90
+00:05:48,110 --> 00:05:52,199
+Parser takes a String and returns a list
+of pairs
+
+91
+00:05:52,199 --> 00:05:56,250
+of a, that is the value that we are trying
+to extract from the String
+
+92
+00:05:56,250 --> 00:06:01,050
+and the rest of the String that we
+don't use.
+
+93
+00:06:01,050 --> 00:06:04,960
+And in this case, as I mentioned
+
+94
+00:06:04,960 --> 00:06:08,740
+we are going to keep things really simple
+and we are going to
+
+95
+00:06:08,740 --> 00:06:11,759
+only consider parsers that either
+succeed
+
+96
+00:06:11,759 --> 00:06:14,879
+with a single value or fail
+
+97
+00:06:14,879 --> 00:06:20,349
+with an empty value. So this list, if the
+parse succeeds, will always be a singleton
+
+98
+00:06:20,349 --> 00:06:20,819
+list.
+
+99
+00:06:20,819 --> 00:06:24,250
+But we are not going to use the Maybe
+type.
+
+100
+00:06:24,250 --> 00:06:27,349
+If you love the Maybe type, you
+can take this
+
+101
+00:06:27,349 --> 00:06:31,129
+chapter and rewrite everything using
+the Maybe type.
+
+102
+00:06:31,129 --> 00:06:35,360
+But I think what you will discover
+
+103
+00:06:35,360 --> 00:06:39,400
+is that it's not more elegant than using
+lists.
+
+104
+00:06:39,400 --> 00:06:43,380
+And in fact I think the code with lists
+
+105
+00:06:43,380 --> 00:06:47,229
+will be more elegant.
+
+106
+00:06:47,229 --> 00:06:52,280
+In order to build complicated parsers
+what we are going to do is
+
+107
+00:06:52,280 --> 00:06:54,970
+we are going to first create simple
+parsers.
+
+108
+00:06:54,970 --> 00:06:58,259
+And here is the simplest parser that
+we can imagine
+
+109
+00:06:58,259 --> 00:07:01,490
+that will just parse a single character.
+
+110
+00:07:01,490 --> 00:07:05,520
+So this is a parser that will take a
+String
+
+111
+00:07:05,520 --> 00:07:09,169
+and return a pair of a character
+
+112
+00:07:09,169 --> 00:07:13,090
+and the rest of the String. If the input
+String
+
+113
+00:07:13,090 --> 00:07:16,199
+is empty
+
+114
+00:07:16,199 --> 00:07:19,220
+then I cannot extract
+
+115
+00:07:19,220 --> 00:07:23,419
+a character from that String, so the
+only thing I can do is return
+
+116
+00:07:23,419 --> 00:07:26,930
+the empty list. But if the input is of
+the form
+
+117
+00:07:26,930 --> 00:07:29,949
+x:xs then I can
+
+118
+00:07:29,949 --> 00:07:33,099
+take the pair of the first character
+
+119
+00:07:33,099 --> 00:07:37,080
+and the rest of the String and return
+the singleton list of the result.
+
+120
+00:07:37,080 --> 00:07:40,320
+Notice here that we are not using
+
+121
+00:07:40,320 --> 00:07:44,020
+pattern matching on the left hand
+side, so we don't define
+
+122
+00:07:44,020 --> 00:07:47,580
+item here using two clauses, but we are
+using
+
+123
+00:07:47,580 --> 00:07:51,490
+a lambda expression with a case
+expression
+
+124
+00:07:51,490 --> 00:07:55,500
+that has the pattern matching. So this is
+the first time that we have seen
+
+125
+00:07:55,500 --> 00:07:58,940
+this syntactic construct in use
+
+126
+00:07:58,940 --> 00:08:03,650
+and also I must say, I like this very
+much, because again it conveys
+
+127
+00:08:03,650 --> 00:08:07,240
+that a parser is a function that takes
+the input
+
+128
+00:08:07,240 --> 00:08:12,280
+and returns a list of pairs. And here you
+can also see that it
+
+129
+00:08:12,280 --> 00:08:16,139
+really returns either a empty list or a
+singleton list.
+
+130
+00:08:16,139 --> 00:08:20,030
+What is another
+
+131
+00:08:20,030 --> 00:08:24,479
+simple parser that we can imagine?
+That is a parser that always fails.
+
+132
+00:08:24,479 --> 00:08:28,669
+What is the parser that always fails?
+
+133
+00:08:28,669 --> 00:08:31,750
+For any input it returns the empty list.
+
+134
+00:08:31,750 --> 00:08:35,880
+And then if we have the parser that
+always fails
+
+135
+00:08:35,880 --> 00:08:39,630
+we also need the parser that always
+succeeds.
+
+136
+00:08:39,630 --> 00:08:43,300
+But if we want the parser that always
+succeeds
+
+137
+00:08:43,300 --> 00:08:46,770
+we need to give it a value
+
+138
+00:08:46,770 --> 00:08:49,130
+with which it can succeed.
+
+139
+00:08:49,130 --> 00:08:52,640
+So the parser that always succeeds, takes
+a value v
+
+140
+00:08:52,640 --> 00:08:56,470
+then it takes the input, it doesn't do
+anything with the input.
+
+141
+00:08:56,470 --> 00:08:59,480
+It just returns that value v with the input
+
+142
+00:08:59,480 --> 00:09:02,830
+unchanged in a singleton list.
+
+143
+00:09:02,830 --> 00:09:06,220
+And for reasons that we will see later
+
+144
+00:09:06,220 --> 00:09:10,390
+is that this parser that always
+succeeds is called return.
+
+145
+00:09:10,390 --> 00:09:14,010
+And that has everything to do
+
+146
+00:09:14,010 --> 00:09:17,130
+with the M word. Ohhh, the M word...
+And now my
+
+147
+00:09:17,130 --> 00:09:22,779
+whole slides got all confused, because I
+mentioned the M word.
+
+148
+00:09:22,779 --> 00:09:27,020
+Be very careful, people, when you mention
+the M word
+
+149
+00:09:27,020 --> 00:09:30,240
+because things will go spooky.
+
+150
+00:09:30,240 --> 00:09:33,839
+That was the parser that always succeeds.
+
+151
+00:09:33,839 --> 00:09:37,200
+The parser that always fails.
+
+152
+00:09:37,200 --> 00:09:40,529
+And now we can look at some more
+
+153
+00:09:40,529 --> 00:09:43,950
+interesting parsers. How do we take
+
+154
+00:09:43,950 --> 00:09:48,380
+two parsers and combine the results?
+We want to
+
+155
+00:09:48,380 --> 00:09:53,020
+try this parser and if that
+
+156
+00:09:53,020 --> 00:09:56,810
+succeeds, we are done
+
+157
+00:09:56,810 --> 00:10:00,550
+and otherwise we want to try that parser.
+
+158
+00:10:00,550 --> 00:10:05,100
+How do we define that? Well, we take
+these two parsers.
+
+159
+00:10:05,100 --> 00:10:08,140
+We define a function, a new parser
+
+160
+00:10:08,140 --> 00:10:13,040
+which is a function that takes the
+input. We try to parse the input
+
+161
+00:10:13,040 --> 00:10:16,170
+using the first parser. If that fails
+
+162
+00:10:16,170 --> 00:10:19,709
+it will return the empty list, in which
+case
+
+163
+00:10:19,709 --> 00:10:25,120
+we try the second parser on the input.
+And if the first parser succeeds
+
+164
+00:10:25,120 --> 00:10:28,950
+it will succeed with a singleton list of
+a value
+
+165
+00:10:28,950 --> 00:10:31,990
+and the remainder of the input, and we
+just
+
+166
+00:10:31,990 --> 00:10:35,020
+return that same value.
+
+167
+00:10:35,020 --> 00:10:38,390
+So this thing here first tries parser p.
+
+168
+00:10:38,390 --> 00:10:42,579
+If it fails, it will try parser q
+
+169
+00:10:42,579 --> 00:10:45,950
+but if parser p succeeds, it will just
+
+170
+00:10:45,950 --> 00:10:49,300
+return the result of that. And then
+
+171
+00:10:49,300 --> 00:10:53,130
+finally here we want to have a function
+that takes a Parser
+
+172
+00:10:53,130 --> 00:10:57,839
+and a String and then applies that Parser
+to the String. So here
+
+173
+00:10:57,839 --> 00:11:00,810
+we get a function from String to
+
+174
+00:11:00,810 --> 00:11:03,550
+list of a and String. And
+
+175
+00:11:03,550 --> 00:11:07,380
+it just applies the parser to the
+input.
+
+176
+00:11:07,380 --> 00:11:11,450
+Let's
+
+177
+00:11:11,450 --> 00:11:15,250
+open up GHC and
+
+178
+00:11:15,250 --> 00:11:19,050
+check out the behavior of our parsers.
+
+179
+00:11:19,050 --> 00:11:22,700
+Let's take the simple parser
+
+180
+00:11:22,700 --> 00:11:25,920
+and try to parse
+
+181
+00:11:25,920 --> 00:11:29,540
+something from the empty string. That
+doesn't work.
+
+182
+00:11:29,540 --> 00:11:33,460
+Now let's try to parse the first value
+
+183
+00:11:33,460 --> 00:11:37,500
+from the string "abc". In this case we can
+
+184
+00:11:37,500 --> 00:11:40,730
+extract the first character from the
+string
+
+185
+00:11:40,730 --> 00:11:44,090
+and what you will see is that it will
+return the list
+
+186
+00:11:44,090 --> 00:11:49,870
+containing a pair of the first value of
+the string, the first character
+
+187
+00:11:49,870 --> 00:11:53,780
+and the rest of the string. This is
+just as we defined. So we
+
+188
+00:11:53,780 --> 00:11:57,320
+verify here that our definition of the
+
+189
+00:11:57,320 --> 00:12:03,500
+item parser works as expected. Let's try
+the parser that always fails.
+
+190
+00:12:03,500 --> 00:12:06,650
+The parser that always fails, whatever
+input we give it
+
+191
+00:12:06,650 --> 00:12:10,790
+it should fail and should return the empty
+list. Let's give it the input "abc"
+
+192
+00:12:10,790 --> 00:12:14,010
+and yes, boom, it returns the empty list.
+
+193
+00:12:14,010 --> 00:12:17,450
+Let's try the parser that always succeeds.
+
+194
+00:12:17,450 --> 00:12:21,490
+And in this case the parser that always
+succeeds with the number 1.
+
+195
+00:12:21,490 --> 00:12:25,400
+We apply that to the string "abc"
+
+196
+00:12:25,400 --> 00:12:29,480
+and guess what? It succeeds by returning
+the value 1
+
+197
+00:12:29,480 --> 00:12:34,160
+and leaving the input unchanged.
+
+198
+00:12:34,160 --> 00:12:38,050
+Now let's try to parse an item
+
+199
+00:12:38,050 --> 00:12:41,990
+and if that fails, we immediately
+
+200
+00:12:41,990 --> 00:12:45,340
+return 'd'. So we use the parser that
+always succeeds.
+
+201
+00:12:45,340 --> 00:12:48,950
+Let's do this on "abc". Since we can
+
+202
+00:12:48,950 --> 00:12:51,980
+get the first element of "abc"
+
+203
+00:12:51,980 --> 00:12:55,510
+that will succeed, so we will just get
+the result 'a'
+
+204
+00:12:55,510 --> 00:12:59,200
+"bc". And now
+
+205
+00:12:59,200 --> 00:13:02,240
+the last example here
+
+206
+00:13:02,240 --> 00:13:07,160
+is we try the parser that always
+fails. And if it fails
+
+207
+00:13:07,160 --> 00:13:10,490
+we will try the parser that always
+succeeds.
+
+208
+00:13:10,490 --> 00:13:14,070
+This will fail
+
+209
+00:13:14,070 --> 00:13:18,240
+this will succeed and it will succeed by
+not consuming any input
+
+210
+00:13:18,240 --> 00:13:21,690
+but just returning 'd' and that is
+exactly what
+
+211
+00:13:21,690 --> 00:13:28,110
+GHCi will verify for us.
+
+212
+00:13:28,110 --> 00:13:31,970
+The parsing library by the way is
+available
+
+213
+00:13:31,970 --> 00:13:35,580
+from the Haskell home page.
+
+214
+00:13:35,580 --> 00:13:42,060
+Notice that this parsing is very
+simple. There are many many
+
+215
+00:13:42,060 --> 00:13:46,060
+more advanced parsing libraries out there.
+
+216
+00:13:46,060 --> 00:13:50,330
+And as I mentioned, the parser type here
+that we have shown
+
+217
+00:13:50,330 --> 00:13:55,070
+is an example of a monad and you noticed
+when I mentioned the word
+
+218
+00:13:55,070 --> 00:13:55,810
+monads
+
+219
+00:13:55,810 --> 00:13:59,220
+my clicker here went completely berserk.
+
+220
+00:13:59,220 --> 00:14:03,530
+There is nothing really special
+about monads.
+
+221
+00:14:03,530 --> 00:14:08,070
+It is just a type that has certain
+operations on it.
+
+222
+00:14:08,070 --> 00:14:12,100
+So don't make a big deal of it, because
+when you make a big deal of it
+
+223
+00:14:12,100 --> 00:14:15,410
+you will get into trouble, like I did.
+
+224
+00:14:15,410 --> 00:14:18,580
+Thanks. Let's take a short break
+
+225
+00:14:18,580 --> 00:14:22,580
+and see you after the break for part 2
+
+226
+00:14:22,580 --> 00:14:23,220
+on parsers.
+

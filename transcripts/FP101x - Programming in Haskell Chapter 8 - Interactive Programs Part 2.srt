@@ -1,0 +1,698 @@
+1
+00:00:00,680 --> 00:00:04,220
+Welcome back. We have just seen
+
+2
+00:00:04,220 --> 00:00:08,330
+some simple examples of the I/O monad
+
+3
+00:00:08,330 --> 00:00:12,980
+that allows a Haskell program to
+communicate with the outside world.
+
+4
+00:00:12,980 --> 00:00:16,330
+And the idiom
+
+5
+00:00:16,330 --> 00:00:20,109
+that we emphasized was that we have
+
+6
+00:00:20,109 --> 00:00:23,230
+a sea of imperative code with
+
+7
+00:00:23,230 --> 00:00:26,820
+islands of pure code.
+
+8
+00:00:26,820 --> 00:00:30,289
+In this part of this lecture
+
+9
+00:00:30,289 --> 00:00:33,620
+we are going to show a slightly larger
+example
+
+10
+00:00:33,620 --> 00:00:37,670
+that also features this pattern.
+
+11
+00:00:37,670 --> 00:00:40,899
+We will have some imperative code
+
+12
+00:00:40,899 --> 00:00:44,940
+that glues the program that we are
+going to write, the pure program that
+
+13
+00:00:44,940 --> 00:00:46,719
+we are going to write, with the outside
+world.
+
+14
+00:00:46,719 --> 00:00:50,260
+But we are going to use all the nice
+functions
+
+15
+00:00:50,260 --> 00:00:54,340
+pure functions that we defined before
+over lists
+
+16
+00:00:54,340 --> 00:00:57,420
+we are going to use them here to
+
+17
+00:00:57,420 --> 00:01:02,320
+write the core of our program.
+
+18
+00:01:02,320 --> 00:01:06,400
+The example that we are going to do is a
+very simple
+
+19
+00:01:06,400 --> 00:01:10,110
+version of the game of hangman.
+
+20
+00:01:10,110 --> 00:01:13,760
+If you have never played hangman, it's
+
+21
+00:01:13,760 --> 00:01:17,540
+a popular game with kids
+
+22
+00:01:17,540 --> 00:01:21,170
+and what you do is one person
+
+23
+00:01:21,170 --> 00:01:24,750
+has a secret typed word and then the
+other person
+
+24
+00:01:24,750 --> 00:01:29,710
+has to try to guess the word by
+entering a sequence of guesses.
+
+25
+00:01:29,710 --> 00:01:32,869
+And for each guess, you will
+
+26
+00:01:32,869 --> 00:01:36,439
+see which letters occur
+
+27
+00:01:36,439 --> 00:01:40,220
+and then as you go on, you have
+to guess the word.
+
+28
+00:01:40,220 --> 00:01:43,750
+Kids play this quite a lot and it's
+kind of fun.
+
+29
+00:01:43,750 --> 00:01:48,299
+The hangman part is that you only have
+a finite number of
+
+30
+00:01:48,299 --> 00:01:53,270
+tries and you draw a picture and
+at some point you die
+
+31
+00:01:53,270 --> 00:01:54,180
+because you
+
+32
+00:01:54,180 --> 00:01:58,689
+ran out of turns. So the game ends
+
+33
+00:01:58,689 --> 00:02:02,530
+when the word is correct. In this case
+
+34
+00:02:02,530 --> 00:02:06,799
+we don't draw pictures or try to
+make you lose.
+
+35
+00:02:06,799 --> 00:02:10,010
+Now let's
+
+36
+00:02:10,010 --> 00:02:12,720
+start writing this code.
+
+37
+00:02:12,720 --> 00:02:16,780
+What we are going to do, is we are
+going to take a top-down approach
+
+38
+00:02:16,780 --> 00:02:22,420
+where as we go we will design the
+parts of the game that we need.
+
+39
+00:02:22,420 --> 00:02:25,830
+But we first start with the interaction
+with the outside world.
+
+40
+00:02:25,830 --> 00:02:29,450
+What we do is we print to the output
+
+41
+00:02:29,450 --> 00:02:32,630
+"Think of a word" and then we
+
+42
+00:02:32,630 --> 00:02:36,010
+secretly read that word.
+
+43
+00:02:36,010 --> 00:02:39,420
+This function sgetLine
+
+44
+00:02:39,420 --> 00:02:43,070
+will read a string, but it will
+
+45
+00:02:43,070 --> 00:02:48,200
+echo that string with underscores.
+And then
+
+46
+00:02:48,200 --> 00:02:51,750
+the computer will ask us to try to
+guess the word.
+
+47
+00:02:51,750 --> 00:02:55,820
+How do we do that? Well, we typed
+in the word
+
+48
+00:02:55,820 --> 00:02:59,170
+and then we are going to guess the
+word and
+
+49
+00:02:59,170 --> 00:03:02,650
+we will see what that function guess is
+
+50
+00:03:02,650 --> 00:03:07,170
+in the next few slides. First thing I
+want to show
+
+51
+00:03:07,170 --> 00:03:10,280
+is this function here
+
+52
+00:03:10,280 --> 00:03:14,520
+sgetLine, which reads a line of
+text from the keyboard
+
+53
+00:03:14,520 --> 00:03:19,020
+echoing each character as a dash, as
+an underscore.
+
+54
+00:03:19,020 --> 00:03:23,990
+So what do we do? Well, it's a function
+that reads a string from the standard
+
+55
+00:03:23,990 --> 00:03:28,450
+input, so it has type IO String and
+what do we do?
+
+56
+00:03:28,450 --> 00:03:31,760
+We first get the character.
+
+57
+00:03:31,760 --> 00:03:35,890
+If that character is a newline
+
+58
+00:03:35,890 --> 00:03:39,950
+then we echo the newline
+
+59
+00:03:39,950 --> 00:03:43,860
+and then we return the empty string.
+Otherwise
+
+60
+00:03:43,860 --> 00:03:47,800
+we print an underscore
+
+61
+00:03:47,800 --> 00:03:51,440
+we recursively secretly read
+
+62
+00:03:51,440 --> 00:03:55,209
+the rest of the string and then we
+return
+
+63
+00:03:55,209 --> 00:03:58,890
+the string that we read.
+
+64
+00:03:58,890 --> 00:04:04,350
+You can type this code in and try
+it out in GHCi. And what you will see
+
+65
+00:04:04,350 --> 00:04:09,120
+is that as you type a word, it will show
+the dashes and it will return
+
+66
+00:04:09,120 --> 00:04:12,420
+the word that you typed in, without
+revealing
+
+67
+00:04:12,420 --> 00:04:19,420
+what the word was, because it only shows
+you how many characters there are.
+
+68
+00:04:19,840 --> 00:04:23,169
+The action getCh here
+
+69
+00:04:23,169 --> 00:04:26,289
+reads a character
+
+70
+00:04:26,289 --> 00:04:30,000
+without echoing it to the screen.
+So what we have to do
+
+71
+00:04:30,000 --> 00:04:33,629
+is we have to turn the echoing off
+
+72
+00:04:33,629 --> 00:04:38,039
+then we read a character and then
+we turn the echoing on
+
+73
+00:04:38,039 --> 00:04:42,090
+and then we actually return the
+character. So here you see
+
+74
+00:04:42,090 --> 00:04:46,069
+that this is typical imperative code
+
+75
+00:04:46,069 --> 00:04:49,810
+where you write one statement, another
+statement, another statement
+
+76
+00:04:49,810 --> 00:04:54,389
+another statement, and one thing to note
+is that while this looks like an
+
+77
+00:04:54,389 --> 00:04:55,370
+assignment
+
+78
+00:04:55,370 --> 00:04:59,069
+it is really not an assignment.
+This is just saying
+
+79
+00:04:59,069 --> 00:05:02,979
+this is type IO of Char and you bind it
+
+80
+00:05:02,979 --> 00:05:06,689
+to a character. So there are side effects
+here
+
+81
+00:05:06,689 --> 00:05:09,759
+because we are interacting with the
+environment
+
+82
+00:05:09,759 --> 00:05:13,319
+but we are not using mutable variables.
+
+83
+00:05:13,319 --> 00:05:16,569
+Haskell does support mutable variables
+
+84
+00:05:16,569 --> 00:05:19,629
+but we won't discuss them
+
+85
+00:05:19,629 --> 00:05:24,129
+in this lecture. But for that you have to
+
+86
+00:05:24,129 --> 00:05:28,330
+have a special monad or you can do it
+in the I/O monad as well, but you have to
+
+87
+00:05:28,330 --> 00:05:32,440
+allocate specifically the mutable variables
+
+88
+00:05:32,440 --> 00:05:36,210
+and write and read from them. And this
+
+89
+00:05:36,210 --> 00:05:39,219
+here, because this is a monad
+
+90
+00:05:39,219 --> 00:05:42,949
+it just takes the value of this computation
+
+91
+00:05:42,949 --> 00:05:49,520
+and binds it to c. So c is not a mutable
+variable.
+
+92
+00:05:49,520 --> 00:05:53,490
+Enough of the I/O part. Let's now
+
+93
+00:05:53,490 --> 00:05:56,750
+look at the function guess. Guess is
+
+94
+00:05:56,750 --> 00:06:00,120
+the game loop, which requests
+
+95
+00:06:00,120 --> 00:06:04,629
+guesses and then checks whether the
+guesses are right
+
+96
+00:06:04,629 --> 00:06:08,800
+until the user
+
+97
+00:06:08,800 --> 00:06:12,020
+or the player has found the right answer.
+
+98
+00:06:12,020 --> 00:06:18,529
+Let's look at the code. We guess the word.
+This word was the secret word that
+
+99
+00:06:18,529 --> 00:06:19,270
+we read.
+
+100
+00:06:19,270 --> 00:06:23,310
+So what we do is we print
+
+101
+00:06:23,310 --> 00:06:26,330
+a prompt on the screen, we
+
+102
+00:06:26,330 --> 00:06:30,930
+read the guess, and then if the word that
+
+103
+00:06:30,930 --> 00:06:34,680
+we typed in was the secret word
+we are done.
+
+104
+00:06:34,680 --> 00:06:38,580
+So we say: Congratulations, you got it!
+
+105
+00:06:38,580 --> 00:06:42,330
+Otherwise we
+
+106
+00:06:42,330 --> 00:06:45,460
+compute the difference between the secret
+word
+
+107
+00:06:45,460 --> 00:06:48,509
+and what the user typed in
+
+108
+00:06:48,509 --> 00:06:52,389
+we print that difference on the standard
+output
+
+109
+00:06:52,389 --> 00:06:56,360
+and we then recursively go
+
+110
+00:06:56,360 --> 00:07:00,610
+and guess the word. And here you see
+
+111
+00:07:00,610 --> 00:07:05,550
+where there is a tail recursion.
+This thing here "guess word"
+
+112
+00:07:05,550 --> 00:07:10,349
+calls "guess word" again and if you are a
+lousy player
+
+113
+00:07:10,349 --> 00:07:14,780
+like me, you will have to use a lot of
+turns
+
+114
+00:07:14,780 --> 00:07:18,780
+to do this and you don't want this
+to stack overflow.
+
+115
+00:07:18,780 --> 00:07:23,300
+And...
+
+116
+00:07:23,300 --> 00:07:26,440
+We are now back
+
+117
+00:07:26,440 --> 00:07:31,150
+into the world of pure functions. We
+finally left the sea
+
+118
+00:07:31,150 --> 00:07:34,900
+of imperative code and we have reached
+the beautiful island
+
+119
+00:07:34,900 --> 00:07:39,139
+of purity. And there we are going to
+define this function "diff".
+
+120
+00:07:39,139 --> 00:07:44,250
+The function that takes two strings
+
+121
+00:07:44,250 --> 00:07:47,630
+and returns a string that
+
+122
+00:07:47,630 --> 00:07:50,810
+describes their difference.
+
+123
+00:07:50,810 --> 00:07:53,810
+To define that function we are going to
+use a list comprehension.
+
+124
+00:07:53,810 --> 00:07:57,289
+So what we say
+
+125
+00:07:57,289 --> 00:08:01,710
+we take the two strings and we are going
+to check
+
+126
+00:08:01,710 --> 00:08:05,759
+for each character in the first string
+for each x
+
+127
+00:08:05,759 --> 00:08:09,020
+in the first string, we say
+
+128
+00:08:09,020 --> 00:08:12,409
+if that character
+
+129
+00:08:12,409 --> 00:08:16,380
+appears in the second string, then
+
+130
+00:08:16,380 --> 00:08:20,020
+we just return that character. So every
+character
+
+131
+00:08:20,020 --> 00:08:24,930
+from the first string that appears in
+the second string, we are just
+
+132
+00:08:24,930 --> 00:08:26,080
+going to return
+
+133
+00:08:26,080 --> 00:08:30,990
+and all characters from the first string
+that don't appear in the second string
+
+134
+00:08:30,990 --> 00:08:36,070
+we are going to return an underscore. So
+for example: if we take the diff between
+
+135
+00:08:36,070 --> 00:08:37,250
+"haskell"
+
+136
+00:08:37,250 --> 00:08:40,500
+and "pascal" then we see that
+
+137
+00:08:40,500 --> 00:08:43,070
+the as
+
+138
+00:08:43,070 --> 00:08:45,560
+appears here and the double l
+
+139
+00:08:45,560 --> 00:08:49,600
+appears here, because l appears there.
+
+140
+00:08:49,600 --> 00:08:52,830
+But we see it twice, because we just look
+whether
+
+141
+00:08:52,830 --> 00:08:56,140
+l appears in this string, yes, and then
+we see another l
+
+142
+00:08:56,140 --> 00:08:59,660
+that appears here as well. So it's a
+
+143
+00:08:59,660 --> 00:09:03,250
+very simple diff. It just checks which
+
+144
+00:09:03,250 --> 00:09:08,089
+strings on the left appear on the right.
+
+145
+00:09:08,089 --> 00:09:12,510
+That was the whole game. Happy
+hacking and make sure again
+
+146
+00:09:12,510 --> 00:09:15,610
+that you do your exercises
+
+147
+00:09:15,610 --> 00:09:20,140
+and that you play around with the I/O
+monad and when you write code yourself
+
+148
+00:09:20,140 --> 00:09:23,810
+no matter whether it's Haskell, C#
+
+149
+00:09:23,810 --> 00:09:28,470
+Java, F#, Scala, Python, PHP
+
+150
+00:09:28,470 --> 00:09:32,620
+think about the idea of having a sea
+
+151
+00:09:32,620 --> 00:09:36,079
+of imperative code that interacts with the
+outside world
+
+152
+00:09:36,079 --> 00:09:39,269
+and in there have islands of pure code
+
+153
+00:09:39,269 --> 00:09:42,420
+where you write your functions in a
+pure way.
+
+154
+00:09:42,420 --> 00:09:47,079
+But you have to decide how big the
+islands are
+
+155
+00:09:47,079 --> 00:09:52,470
+and how big the sea is. But the answer
+is never that there are only islands
+
+156
+00:09:52,470 --> 00:09:58,680
+or only sea. A good programmer knows
+exactly the right balance. Great!
+
+157
+00:09:58,680 --> 00:10:00,810
+Thank you and see you next time.
+

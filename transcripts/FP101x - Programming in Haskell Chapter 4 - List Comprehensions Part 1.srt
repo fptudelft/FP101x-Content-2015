@@ -1,0 +1,947 @@
+1
+00:00:01,020 --> 00:00:03,060
+Welcome everybody
+
+2
+00:00:03,060 --> 00:00:07,350
+to the next lecture of functional
+programming 101x.
+
+3
+00:00:07,350 --> 00:00:11,480
+Today we're going to talk about list
+comprehensions.
+
+4
+00:00:11,480 --> 00:00:14,660
+List comprehensions are
+
+5
+00:00:14,660 --> 00:00:19,270
+a mechanism to write code that
+manipulates collections.
+
+6
+00:00:19,270 --> 00:00:23,070
+If we look at most programming
+languages,
+
+7
+00:00:23,070 --> 00:00:26,900
+most of the features in a programming
+language
+
+8
+00:00:26,900 --> 00:00:31,510
+have to do with dealing with collections.
+If you look at
+
+9
+00:00:31,510 --> 00:00:37,020
+a traditional imperative language
+such as Java or C#,
+
+10
+00:00:37,020 --> 00:00:41,750
+it has a wide range of mechanisms to
+deal with collections.
+
+11
+00:00:41,750 --> 00:00:45,160
+For loops, while loops, do while loops
+
+12
+00:00:45,160 --> 00:00:48,649
+foreach loops, continue, break
+
+13
+00:00:48,649 --> 00:00:52,480
+and all these constructs are there to
+
+14
+00:00:52,480 --> 00:00:56,280
+iterate over collections. 
+
+15
+00:00:56,280 --> 00:01:01,320
+Now of course mathematicians have been
+dealing with collections
+
+16
+00:01:01,320 --> 00:01:04,540
+for centuries.
+
+17
+00:01:04,540 --> 00:01:07,659
+For mathematicians the favorite
+
+18
+00:01:07,659 --> 00:01:11,500
+collection type is set.
+
+19
+00:01:11,500 --> 00:01:15,979
+Sets however are computationally a
+little bit awkward.
+
+20
+00:01:15,979 --> 00:01:19,240
+Because when you have a set it 
+means that duplicated
+
+21
+00:01:19,240 --> 00:01:24,509
+elements are removed. Which implies that
+you need equality to deal with sets.
+
+22
+00:01:24,509 --> 00:01:27,520
+Especially in a functional language like
+Haskell
+
+23
+00:01:27,520 --> 00:01:32,000
+it's very hard, well impossible,
+you have to solve the halting problem
+
+24
+00:01:32,000 --> 00:01:35,439
+to decide equality between functions.
+
+25
+00:01:35,439 --> 00:01:38,460
+So what
+
+26
+00:01:38,460 --> 00:01:43,290
+Haskell did, it took some of the ideas
+that mathematicians have
+
+27
+00:01:43,290 --> 00:01:44,000
+used
+
+28
+00:01:44,000 --> 00:01:47,280
+for a long time to deal with sets and
+
+29
+00:01:47,280 --> 00:01:52,820
+simplified them to work over lists.
+Lists are
+
+30
+00:01:52,820 --> 00:01:57,810
+my favorite collection type and the
+reason is that a list
+
+31
+00:01:57,810 --> 00:02:01,619
+just gives you the bare minimum to
+deal with a collection.
+
+32
+00:02:01,619 --> 00:02:06,860
+You can, as you have seen, if we have a
+list that's composed out of a head and a
+
+33
+00:02:06,860 --> 00:02:07,450
+tail
+
+34
+00:02:07,450 --> 00:02:12,970
+you can decompose that list recursively
+by just picking off the first element
+
+35
+00:02:12,970 --> 00:02:13,569
+one by one.
+
+36
+00:02:13,569 --> 00:02:17,030
+And that's very convenient and
+that puts
+
+37
+00:02:17,030 --> 00:02:20,139
+very few restrictions on the collection
+type.
+
+38
+00:02:20,139 --> 00:02:25,129
+Unless sets where you assume
+equality of the elements or arrays where
+
+39
+00:02:25,129 --> 00:02:26,079
+you assume
+
+40
+00:02:26,079 --> 00:02:30,209
+constant time indexing. Sets
+
+41
+00:02:30,209 --> 00:02:34,010
+are in some sense the most pure form
+
+42
+00:02:34,010 --> 00:02:37,840
+of collection types. In Java eight,
+
+43
+00:02:37,840 --> 00:02:41,900
+they call these lists streams.
+
+44
+00:02:41,900 --> 00:02:44,919
+To emphasize that these are
+
+45
+00:02:44,919 --> 00:02:47,930
+collections where you can only
+access the elements
+
+46
+00:02:47,930 --> 00:02:51,079
+one by one. In that sense
+
+47
+00:02:51,079 --> 00:02:56,489
+Haskell lists are an example of Java
+eight streams in that philosophy.
+
+48
+00:02:56,489 --> 00:02:59,790
+Alright let's
+
+49
+00:02:59,790 --> 00:03:03,409
+look at how mathematicians use
+
+50
+00:03:03,409 --> 00:03:07,159
+so-called set comprehensions to define
+sets.
+
+51
+00:03:07,159 --> 00:03:10,949
+Here's an example of a set.
+
+52
+00:03:10,949 --> 00:03:14,799
+It's a set of all squares
+
+53
+00:03:14,799 --> 00:03:18,150
+with values
+
+54
+00:03:18,150 --> 00:03:21,599
+between one and five. It's x
+squared
+
+55
+00:03:21,599 --> 00:03:25,299
+where x is taken from the set
+from one to five.
+
+56
+00:03:25,299 --> 00:03:30,689
+The result of this is the set 
+{1,4,9,16,25}.
+
+57
+00:03:30,689 --> 00:03:34,159
+But as I said, if we take
+
+58
+00:03:34,159 --> 00:03:39,409
+x to range over functions then this
+becomes really hard to implement.
+
+59
+00:03:39,409 --> 00:03:43,060
+So what people did
+
+60
+00:03:43,060 --> 00:03:46,949
+in functional languages is take the same
+notation the same ideas
+
+61
+00:03:46,949 --> 00:03:52,259
+but instead of sets, use lists.
+Set comprehensions from mathematics
+
+62
+00:03:52,259 --> 00:03:55,280
+become list comprehensions in Haskell.
+
+63
+00:03:55,280 --> 00:04:01,290
+Here's the same example written as a
+list comprehension. Here you see
+
+64
+00:04:01,290 --> 00:04:04,449
+it's the list of square numbers
+
+65
+00:04:04,449 --> 00:04:08,009
+x squared where x is taken from
+the list
+
+66
+00:04:08,009 --> 00:04:11,150
+one to five. You read this as x
+
+67
+00:04:11,150 --> 00:04:15,109
+is taken from the list one to five.
+
+68
+00:04:15,109 --> 00:04:18,500
+If you evaluate this you will see that
+
+69
+00:04:18,500 --> 00:04:22,460
+this returns the list [1,4,9,16,25].
+
+70
+00:04:22,460 --> 00:04:27,600
+But as a list not a set.
+
+71
+00:04:27,600 --> 00:04:28,520
+The expression
+
+72
+00:04:28,520 --> 00:04:32,300
+x taken from one to five, that's called a
+generator
+
+73
+00:04:32,300 --> 00:04:36,120
+and the reason it's called a
+generator is because it
+
+74
+00:04:36,120 --> 00:04:39,919
+defines how to generate values 
+
+75
+00:04:39,919 --> 00:04:43,690
+for x. So x is taken from that set.
+
+76
+00:04:43,690 --> 00:04:47,330
+Of course since everything
+
+77
+00:04:47,330 --> 00:04:50,580
+in Haskell, and that's a good
+
+78
+00:04:50,580 --> 00:04:54,280
+aspect of programming languages, has to be
+compositional so you should be able to
+
+79
+00:04:54,280 --> 00:04:59,160
+just recursively use the same
+structures over and over again.
+
+80
+00:04:59,160 --> 00:05:03,380
+Comprehensions can have multiple
+generators.
+
+81
+00:05:03,380 --> 00:05:06,600
+Here you see an example of that:
+
+82
+00:05:06,600 --> 00:05:10,090
+we take all pairs (x, y)
+
+83
+00:05:10,090 --> 00:05:13,500
+Where x is drawn from one, two, three, 
+and y
+
+84
+00:05:13,500 --> 00:05:16,990
+is drawn from four, five. What you see
+
+85
+00:05:16,990 --> 00:05:20,169
+is that the y varies
+
+86
+00:05:20,169 --> 00:05:24,229
+faster then the x. The result list is
+
+87
+00:05:24,229 --> 00:05:27,470
+(1,4) (1,5)
+
+88
+00:05:27,470 --> 00:05:31,110
+(2,4) (2,5) (3,4) (3,5).
+
+89
+00:05:31,110 --> 00:05:34,460
+Another way to look at these nested
+
+90
+00:05:34,460 --> 00:05:38,139
+generators or multiple generators is
+like
+
+91
+00:05:38,139 --> 00:05:41,450
+a nested loop where y is inner loop
+
+92
+00:05:41,450 --> 00:05:48,450
+and the x is the outer loop. 
+If we swap the order of the
+
+93
+00:05:48,470 --> 00:05:49,349
+generator
+
+94
+00:05:49,349 --> 00:05:52,690
+then now x
+
+95
+00:05:52,690 --> 00:05:57,060
+varies most quickly because this becomes
+the inner loop. What we get now
+
+96
+00:05:57,060 --> 00:06:00,130
+is, but notice that we still
+
+97
+00:06:00,130 --> 00:06:03,860
+have here (x,y). We only swap
+the order
+
+98
+00:06:03,860 --> 00:06:07,190
+of the generators not the order of the
+variables.
+
+99
+00:06:07,190 --> 00:06:11,650
+Now instead of
+
+100
+00:06:11,650 --> 00:06:15,030
+this guy moving fastest, you get
+
+101
+00:06:15,030 --> 00:06:18,889
+x moving fastest. The result is (1,4)
+
+102
+00:06:18,889 --> 00:06:22,440
+(2,4) (3,4) et cetera
+
+103
+00:06:22,440 --> 00:06:25,789
+This notion of generators
+
+104
+00:06:25,789 --> 00:06:28,820
+you will recognize that
+
+105
+00:06:28,820 --> 00:06:32,550
+in many many programming languages.
+In Haskell these are list comprehensions
+
+106
+00:06:32,550 --> 00:06:34,590
+if you use python
+
+107
+00:06:34,590 --> 00:06:38,080
+it also has list comprehensions.
+
+108
+00:06:38,080 --> 00:06:42,750
+Scala has for comprehensions. F#
+has comprehensions.
+
+109
+00:06:42,750 --> 00:06:46,390
+C# and Visual Basic
+
+110
+00:06:46,390 --> 00:06:49,550
+have LINQ comprehensions.
+
+111
+00:06:49,550 --> 00:06:53,500
+If you look at the language like
+SQL
+
+112
+00:06:53,500 --> 00:06:57,500
+which is completely built on top of
+comprehensions.
+
+113
+00:06:57,500 --> 00:07:01,950
+Only there you don't write them this concisely.
+You write select from where
+
+114
+00:07:01,950 --> 00:07:06,270
+et cetera. But it's basically the same
+idea so by studying
+
+115
+00:07:06,270 --> 00:07:10,550
+list comprehensions in Haskell you
+will be well equipped
+
+116
+00:07:10,550 --> 00:07:15,020
+to use the same ideas in whatever
+language you encounter them in.
+
+117
+00:07:15,020 --> 00:07:18,550
+Alright,
+
+118
+00:07:18,550 --> 00:07:21,610
+now
+
+119
+00:07:21,610 --> 00:07:25,900
+we have seen a few simple examples
+with generators
+
+120
+00:07:25,900 --> 00:07:29,500
+where the generators only had constants.
+
+121
+00:07:29,500 --> 00:07:33,010
+But generators can also depend on each
+other.
+
+122
+00:07:33,010 --> 00:07:36,550
+Just like when you have a loop, 
+the inner loop
+
+123
+00:07:36,550 --> 00:07:40,490
+can use variables from the outer loop.
+With comprehensions
+
+124
+00:07:40,490 --> 00:07:44,360
+that's no different. If we look here
+
+125
+00:07:44,360 --> 00:07:47,680
+we say x is drawn from one to three.
+And then
+
+126
+00:07:47,680 --> 00:07:50,860
+y is drawn from x to three.
+
+127
+00:07:50,860 --> 00:07:54,780
+So x is in scope in the generators that
+
+128
+00:07:54,780 --> 00:07:59,710
+come after it. If we execute this
+comprehension
+
+129
+00:07:59,710 --> 00:08:04,000
+we get the list (1,1)
+
+130
+00:08:04,000 --> 00:08:07,210
+because y is drawn from one to three.
+
+131
+00:08:07,210 --> 00:08:12,300
+Because x starts out at one, so we
+get (1,1) (1,2) (1,3).
+
+132
+00:08:12,300 --> 00:08:16,320
+Then y is exhausted.
+
+133
+00:08:16,320 --> 00:08:20,419
+We're going to check the next value
+of x, that will be two.
+
+134
+00:08:20,419 --> 00:08:24,570
+Now y is taken from two to three so
+we say
+
+135
+00:08:24,570 --> 00:08:28,310
+two to three and then the last iteration
+
+136
+00:08:28,310 --> 00:08:32,610
+we take x to be three and then y is
+drawn from the list
+
+137
+00:08:32,610 --> 00:08:35,860
+three to three, so that is the last value is just
+
+138
+00:08:35,860 --> 00:08:39,360
+(3,3). But again you’re
+
+139
+00:08:39,360 --> 00:08:44,720
+totally familiar with this because this
+is the same as how nested loops work
+
+140
+00:08:44,720 --> 00:08:48,310
+in any language. The inner loop
+can
+
+141
+00:08:48,310 --> 00:08:51,950
+use variables defined in outer loops.
+
+142
+00:08:51,950 --> 00:08:55,600
+One of the nice things
+
+143
+00:08:55,600 --> 00:08:59,870
+of comprehensions and especially of
+dependent generators
+
+144
+00:08:59,870 --> 00:09:02,959
+is that you can write very concise code.
+
+145
+00:09:02,959 --> 00:09:07,040
+For example, if we want to take a list
+of lists
+
+146
+00:09:07,040 --> 00:09:10,970
+and flatten them into a single list 
+
+147
+00:09:10,970 --> 00:09:14,450
+we can do that with the following
+comprehension.
+
+148
+00:09:14,450 --> 00:09:19,190
+We say: just give me every list
+out of that list of lists.
+
+149
+00:09:19,190 --> 00:09:22,649
+Then just give me every element of
+that list
+
+150
+00:09:22,649 --> 00:09:27,560
+and return that. This is a doubly
+nested loop that goes over
+
+151
+00:09:27,560 --> 00:09:31,190
+every list in this list of lists
+and just
+
+152
+00:09:31,190 --> 00:09:34,529
+yields all the values to return
+
+153
+00:09:34,529 --> 00:09:38,620
+a single list of type a, of the same
+element type
+
+154
+00:09:38,620 --> 00:09:42,019
+as the original list. When we
+
+155
+00:09:42,019 --> 00:09:46,430
+concatenate [1,2,3] [4,5] and [6]
+
+156
+00:09:46,430 --> 00:09:49,589
+the result will be [1,2,3,4,5,6].
+
+157
+00:09:49,589 --> 00:09:53,910
+Very very 
+
+158
+00:09:53,910 --> 00:10:00,250
+concise code that we can write
+using comprehensions. Now the next thing
+
+159
+00:10:00,250 --> 00:10:04,540
+besides generators that you want to use
+in a comprehension, and that's also
+
+160
+00:10:04,540 --> 00:10:09,180
+used a lot in set comprehensions is to
+allow filters.
+
+161
+00:10:09,180 --> 00:10:12,350
+You want to
+
+162
+00:10:12,350 --> 00:10:16,019
+have x drawn from some collection
+
+163
+00:10:16,019 --> 00:10:19,089
+but you want to throw out certain values
+
+164
+00:10:19,089 --> 00:10:22,610
+for which a predicate does not hold. 
+For example, if we want to have
+
+165
+00:10:22,610 --> 00:10:26,050
+all the even numbers between one and ten
+
+166
+00:10:26,050 --> 00:10:30,339
+we can just say x is drawn from
+one to ten
+
+167
+00:10:30,339 --> 00:10:34,399
+and filter out only the even numbers. 
+The result
+
+168
+00:10:34,399 --> 00:10:38,440
+of this is a list [2,4,6,8,10].
+
+169
+00:10:38,440 --> 00:10:41,870
+The even numbers between one and ten.
+
+170
+00:10:41,870 --> 00:10:46,170
+In SQL you will recognize
+this as a SELECT WHERE.
+
+171
+00:10:46,170 --> 00:10:50,220
+The WHERE clause here is called a
+guard
+
+172
+00:10:50,220 --> 00:10:53,600
+in Haskell and if you use a LINQ
+
+173
+00:10:53,600 --> 00:10:58,300
+list comprehension or
+comprehension syntax that will be also
+
+174
+00:10:58,300 --> 00:10:59,149
+be called
+
+175
+00:10:59,149 --> 00:11:02,380
+WHERE.
+
+176
+00:11:02,380 --> 00:11:03,690
+Here's an
+
+177
+00:11:03,690 --> 00:11:07,920
+example that uses guards to take
+
+178
+00:11:07,920 --> 00:11:11,750
+a number and break it down into its
+factors.
+
+179
+00:11:11,750 --> 00:11:15,230
+What are the factors? Well we take a
+number n,
+
+180
+00:11:15,230 --> 00:11:18,980
+we take all the numbers between 1 and
+n.
+
+181
+00:11:18,980 --> 00:11:22,880
+And then we only
+
+182
+00:11:22,880 --> 00:11:26,360
+retain those for which n modulo x is zero.
+
+183
+00:11:26,360 --> 00:11:30,360
+The factors of 15; we start out
+with all the numbers between
+
+184
+00:11:30,360 --> 00:11:34,430
+1 and 15 and then we throw out all the
+numbers
+
+185
+00:11:34,430 --> 00:11:38,240
+for which n modulo x is not zero.
+
+186
+00:11:38,240 --> 00:11:42,420
+In this case the factors are [1,3,5,15].
+
+187
+00:11:42,420 --> 00:11:45,440
+Then we can use this
+
+188
+00:11:45,440 --> 00:11:49,339
+factors function
+
+189
+00:11:49,339 --> 00:11:52,740
+to define a very simple
+
+190
+00:11:52,740 --> 00:11:56,390
+predicate to check whether a number 
+is prime.
+
+191
+00:11:56,390 --> 00:12:02,230
+A number is prime if the factors of that
+number are exactly the list [1,n].
+
+192
+00:12:02,230 --> 00:12:05,589
+For example, fifteen is not a prime
+
+193
+00:12:05,589 --> 00:12:09,510
+because the factors are not just one and
+fifteen.
+
+194
+00:12:09,510 --> 00:12:12,560
+It's one three five and fifteen. But seven
+
+195
+00:12:12,560 --> 00:12:17,420
+is a prime because you can check by
+using GHCi, or your
+
+196
+00:12:17,420 --> 00:12:21,550
+own favorite programming language, that
+the factors of seven are one and seven.
+
+197
+00:12:21,550 --> 00:12:24,650
+So we decide that
+
+198
+00:12:24,650 --> 00:12:28,170
+seven is a prime.
+
+199
+00:12:28,170 --> 00:12:31,830
+If we want to check
+
+200
+00:12:31,830 --> 00:12:35,810
+what are the primes up to a
+certain number.
+
+201
+00:12:35,810 --> 00:12:39,490
+Well we can write this simple list
+comprehension where we say:
+
+202
+00:12:39,490 --> 00:12:43,589
+give me all the numbers between two and
+n where n is the parameter to
+
+203
+00:12:43,589 --> 00:12:44,070
+this
+
+204
+00:12:44,070 --> 00:12:49,089
+function. Then I only want to
+maintain the prime numbers. I filter out
+
+205
+00:12:49,089 --> 00:12:51,579
+all the numbers that are not prime.
+If I want to have
+
+206
+00:12:51,579 --> 00:12:55,520
+all the prime numbers up to 40
+
+207
+00:12:55,520 --> 00:12:59,600
+I just run this list comprehension
+
+208
+00:12:59,600 --> 00:13:04,290
+and I get all the prime numbers. 
+Of course this is not the most efficient
+
+209
+00:13:04,290 --> 00:13:05,200
+way
+
+210
+00:13:05,200 --> 00:13:10,190
+to compute prime numbers but I think
+it's a very nice illustration
+
+211
+00:13:10,190 --> 00:13:13,459
+of using list comprehensions. See you
+
+212
+00:13:13,459 --> 00:13:14,309
+in the next chapter.
+

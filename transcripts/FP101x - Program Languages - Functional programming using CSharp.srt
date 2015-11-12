@@ -1,0 +1,727 @@
+1
+00:00:02,899 --> 00:00:03,389
+ 
+
+2
+00:00:03,389 --> 00:00:07,649
+Welcome everybody to another jam
+session
+
+3
+00:00:07,649 --> 00:00:11,600
+in the FP101x functional programming course.
+
+4
+00:00:11,690 --> 00:00:14,769
+In this snippet
+
+5
+00:00:14,769 --> 00:00:18,560
+I'm going to show how the ideas
+
+6
+00:00:18,560 --> 00:00:22,300
+that we learnt in the main course
+
+7
+00:00:22,300 --> 00:00:25,500
+with Haskell, can be applied
+
+8
+00:00:25,500 --> 00:00:29,400
+in .NET. In order to program .Net
+
+9
+00:00:29,400 --> 00:00:32,900
+I'll be using Xamarin Studio.
+
+10
+00:00:32,900 --> 00:00:37,100
+Xamarin is an open source
+implementation of the .NET framework
+
+11
+00:00:37,100 --> 00:00:40,500
+that is cross-platform, so if you want to
+write code
+
+12
+00:00:40,559 --> 00:00:43,620
+in C# or Visual Basic
+
+13
+00:00:43,620 --> 00:00:47,600
+or F# - I'll only do C# today, but
+
+14
+00:00:47,600 --> 00:00:52,710
+Xamarin supports the other two
+languages as well -
+
+15
+00:00:52,710 --> 00:00:57,640
+if you want to write cross-platform
+.NET code that runs on the iPhone,
+
+16
+00:00:57,640 --> 00:00:58,680
+on Android
+
+17
+00:00:58,680 --> 00:01:03,550
+on Windows Phone, on the Mac or Windows, Xamarin studio
+
+18
+00:01:03,550 --> 00:01:07,100
+is your tool of choice. Because of
+that
+
+19
+00:01:07,100 --> 00:01:11,210
+Xamarin Studio is also my tool of
+choice.
+
+20
+00:01:11,210 --> 00:01:15,500
+Let's sit down,
+
+21
+00:01:15,500 --> 00:01:19,530
+open up Xamarin Studio and write some
+C# code
+
+22
+00:01:19,530 --> 00:01:23,000
+using functions. C#
+
+23
+00:01:23,000 --> 00:01:26,520
+has a couple of interesting twists
+
+24
+00:01:26,520 --> 00:01:29,689
+that we haven't seen
+
+25
+00:01:29,689 --> 00:01:34,220
+in other languages. Here is our
+Xamarin Studio,
+
+26
+00:01:34,220 --> 00:01:37,780
+and here is some sample
+
+27
+00:01:37,780 --> 00:01:41,840
+C# code.
+
+28
+00:01:41,840 --> 00:01:45,000
+As always,
+
+29
+00:01:45,000 --> 00:01:48,390
+C# requires a main method.
+
+30
+00:01:48,390 --> 00:01:51,640
+It doesn't require
+
+31
+00:01:51,640 --> 00:01:56,329
+you to pass the arguments if you don't
+use them. Here's the typical hello
+
+32
+00:01:56,329 --> 00:01:56,899
+world:
+
+33
+00:01:56,899 --> 00:02:02,640
+Console.WriteLine("Hello World!") and
+
+34
+00:02:02,640 --> 00:02:05,829
+f here is our first example of a lambda expression, so
+
+35
+00:02:05,829 --> 00:02:09,929
+the right inside here x => x * 2
+
+36
+00:02:09,929 --> 00:02:13,569
+is a lambda expression that multiplies
+
+37
+00:02:13,569 --> 00:02:18,170
+the argument by two and I assign it
+
+38
+00:02:18,170 --> 00:02:23,120
+to f. Here's another form of a lambda
+expression that defines a function from
+
+39
+00:02:23,120 --> 00:02:26,189
+int to int h and and it takes a
+
+40
+00:02:26,189 --> 00:02:29,239
+parameter x and then
+
+41
+00:02:29,239 --> 00:02:32,980
+it uses a statement body
+
+42
+00:02:32,980 --> 00:02:38,680
+with curly braces. Those are the two forms of lambda expressions and here I
+
+43
+00:02:38,680 --> 00:02:39,579
+print f
+
+44
+00:02:39,579 --> 00:02:43,760
+and h. C# does support
+
+45
+00:02:43,760 --> 00:02:46,840
+type inference, so I can write
+
+46
+00:02:46,840 --> 00:02:50,959
+var z
+
+47
+00:02:50,959 --> 00:02:55,040
+equals 42 and when I do this,
+
+48
+00:02:55,040 --> 00:03:02,040
+you see that
+
+49
+00:03:02,169 --> 00:03:08,480
+it has inferred... The
+
+50
+00:03:08,480 --> 00:03:12,620
+editor here says that this is
+redundant because I'm not using z
+
+51
+00:03:12,620 --> 00:03:13,430
+anywhere,
+
+52
+00:03:13,430 --> 00:03:17,449
+but what I wanted to show you is that
+you can define
+
+53
+00:03:17,449 --> 00:03:20,729
+var here and the compiler
+
+54
+00:03:20,729 --> 00:03:26,810
+will infer that z has type int.
+Now you can
+
+55
+00:03:26,810 --> 00:03:31,739
+ask yourself why can't we use type
+inference here. Let's
+
+56
+00:03:31,739 --> 00:03:34,930
+try to
+
+57
+00:03:34,930 --> 00:03:37,959
+write var here
+
+58
+00:03:37,959 --> 00:03:41,750
+and let's not forget the type.
+
+59
+00:03:41,750 --> 00:03:47,889
+There is our var and let's run this
+code. Now what you see here is that
+
+60
+00:03:47,889 --> 00:03:51,970
+it says: implicitly typed local variable
+declaration
+
+61
+00:03:51,970 --> 00:03:55,139
+cannot be initialized with anonymous
+method.
+
+62
+00:03:55,139 --> 00:04:00,139
+What does that all mean? Well, the
+
+63
+00:04:00,139 --> 00:04:03,849
+thing here is that in C#
+
+64
+00:04:03,849 --> 00:04:06,909
+I can use a lambda expression,
+
+65
+00:04:06,909 --> 00:04:10,629
+like we do below here.
+
+66
+00:04:16,019 --> 00:04:21,150
+Here I define another lambda
+expression; it's exactly the same
+
+67
+00:04:21,150 --> 00:04:24,350
+lambda expression as here, but instead of
+
+68
+00:04:24,350 --> 00:04:28,060
+giving it the type of Func from int to int,
+
+69
+00:04:28,060 --> 00:04:31,130
+I say it's an expression
+
+70
+00:04:31,130 --> 00:04:34,530
+of Func from int to int. This is
+
+71
+00:04:34,530 --> 00:04:38,460
+a super interesting aspect of C#
+
+72
+00:04:38,460 --> 00:04:42,080
+where a lambda expression by itself
+
+73
+00:04:42,080 --> 00:04:46,290
+has no type - that's why I couldn't use
+type inference there -
+
+74
+00:04:46,290 --> 00:04:49,900
+but depending on the context where you use this lambda
+
+75
+00:04:49,900 --> 00:04:53,050
+expression, that lambda expression can be
+turned
+
+76
+00:04:53,050 --> 00:04:56,260
+into code - like here, into a function -
+
+77
+00:04:56,260 --> 00:04:59,460
+or it can be turned into data
+
+78
+00:04:59,460 --> 00:05:04,930
+- like here, into an expression.
+The price you pay
+
+79
+00:05:04,930 --> 00:05:08,090
+for that magic, where you can take
+
+80
+00:05:08,090 --> 00:05:11,650
+a lambda expression and represent it
+
+81
+00:05:11,650 --> 00:05:14,980
+as code and
+
+82
+00:05:14,980 --> 00:05:18,320
+as data, is the fact that you have to
+
+83
+00:05:18,320 --> 00:05:21,669
+explicitly type them.
+
+84
+00:05:21,669 --> 00:05:25,080
+Let's have a little look here at g
+
+85
+00:05:25,080 --> 00:05:29,110
+and see
+
+86
+00:05:29,110 --> 00:05:32,930
+what intellisense tells us. So what you
+see here now
+
+87
+00:05:32,930 --> 00:05:36,010
+is that g has a body - so let's
+
+88
+00:05:36,010 --> 00:05:39,270
+get g's body - and then
+
+89
+00:05:39,270 --> 00:05:43,080
+here we see that we have all kind of
+methods
+
+90
+00:05:43,080 --> 00:05:46,570
+on g. For example, we can reduce, et
+cetera.
+
+91
+00:05:46,570 --> 00:05:50,100
+This gives you a full API
+
+92
+00:05:50,100 --> 00:05:54,090
+to manipulate this lambda expression
+
+93
+00:05:54,090 --> 00:05:58,940
+as data. This mechanism is used very
+heavily for example,
+
+94
+00:05:58,940 --> 00:06:04,229
+in frameworks like the Entity Framework,
+
+95
+00:06:04,229 --> 00:06:07,310
+and in the olden days, in LINQ to SQL,
+
+96
+00:06:07,310 --> 00:06:11,530
+where you can take fragments like this,
+analyze them
+
+97
+00:06:11,530 --> 00:06:15,520
+and compile them to SQL. 
+Satnam Singh at
+
+98
+00:06:15,520 --> 00:06:19,610
+Microsoft Research has also done some
+interesting work here for example, where
+
+99
+00:06:19,610 --> 00:06:20,560
+he takes these
+
+100
+00:06:20,560 --> 00:06:24,450
+lambda expressions and compiles them
+into FPGAs
+
+101
+00:06:24,450 --> 00:06:28,160
+and people do all kinds of interesting
+things.
+
+102
+00:06:28,160 --> 00:06:31,620
+If you are a lisp programmer,
+
+103
+00:06:31,620 --> 00:06:34,860
+the way you would do this is using
+quoting
+
+104
+00:06:34,860 --> 00:06:38,450
+and this is kind of C#'s way of
+doing quoting
+
+105
+00:06:38,450 --> 00:06:42,840
+using static types.
+
+106
+00:06:42,840 --> 00:06:47,240
+One thing that C# doesn't have
+
+107
+00:06:47,240 --> 00:06:50,460
+and which we saw
+
+108
+00:06:50,460 --> 00:06:55,750
+in other languages, that did work,
+for example in Kotlin,
+
+109
+00:06:55,750 --> 00:06:59,860
+in Scala, in Dart, is the idea of
+
+110
+00:06:59,860 --> 00:07:04,650
+local functions. So you can have a lambda
+expression here,
+
+111
+00:07:04,650 --> 00:07:07,970
+which is kind of a local function, but I
+cannot define
+
+112
+00:07:07,970 --> 00:07:11,280
+a function, or method, just
+
+113
+00:07:11,280 --> 00:07:15,330
+like I defined here -  inside another
+method.
+
+114
+00:07:15,330 --> 00:07:19,260
+Suppose I wanted to define h here,
+that's nested inside
+
+115
+00:07:19,260 --> 00:07:22,950
+main - you see already here that I get a
+syntax error
+
+116
+00:07:22,950 --> 00:07:28,290
+that you cannot do this. Oh well,
+I've already defined h, so
+
+117
+00:07:28,290 --> 00:07:33,010
+let's call this k, but I
+still cannot do that
+
+118
+00:07:33,010 --> 00:07:37,670
+because now it gives me a
+proper parse error
+
+119
+00:07:37,670 --> 00:07:40,890
+saying that you cannot have local
+
+120
+00:07:40,890 --> 00:07:45,200
+function declarations. I think that's
+something that I do miss
+
+121
+00:07:45,200 --> 00:07:49,250
+in C#, because now if you want to
+declare a
+
+122
+00:07:49,250 --> 00:07:52,630
+method like that you have to lift everything
+
+123
+00:07:52,630 --> 00:07:57,160
+to the top level. What else can we say
+
+124
+00:07:57,160 --> 00:08:01,420
+about C#? Well...comprehensions, so in C#
+
+125
+00:08:01,420 --> 00:08:04,660
+when I say here var xs =
+
+126
+00:08:04,660 --> 00:08:07,770
+new array
+
+127
+00:08:07,770 --> 00:08:11,690
+{1,2,3,4,5}.
+So here we
+
+128
+00:08:11,690 --> 00:08:18,140
+have an array xs, of the values 1 to 5
+- you see that it's full type inferenced, I don't
+
+129
+00:08:18,140 --> 00:08:19,710
+have to specify any types.
+
+130
+00:08:19,710 --> 00:08:23,450
+Now i can say var ys =
+
+131
+00:08:23,450 --> 00:08:27,060
+from x in xs where
+
+132
+00:08:27,060 --> 00:08:32,200
+x < 4 select
+
+133
+00:08:32,200 --> 00:08:38,190
+x * 2. Here you see
+
+134
+00:08:38,190 --> 00:08:41,240
+the comprehension syntax
+
+135
+00:08:41,240 --> 00:08:44,320
+in C#. It looks a little bit like
+SQL
+
+136
+00:08:44,320 --> 00:08:47,760
+and that's on purpose
+
+137
+00:08:47,760 --> 00:08:51,940
+- these are called LINQ
+comprehension - but they work exactly the
+
+138
+00:08:51,940 --> 00:08:52,820
+same way
+
+139
+00:08:52,820 --> 00:08:55,860
+as Haskell list comprehensions.
+Talking about
+
+140
+00:08:55,860 --> 00:09:00,440
+comprehensions, C#, of
+course,
+
+141
+00:09:00,440 --> 00:09:04,910
+also supports the range of higher-order
+functions that we
+
+142
+00:09:04,910 --> 00:09:09,180
+know and love from Haskell. In this
+case, if we look at the
+
+143
+00:09:09,180 --> 00:09:13,120
+inferred type for ys, that has type
+
+144
+00:09:13,120 --> 00:09:17,780
+enumerable of int. If we use
+intellisense to show
+
+145
+00:09:17,780 --> 00:09:21,750
+the methods that are
+available there, we see
+
+146
+00:09:21,750 --> 00:09:25,790
+that there are a lot of methods in here.
+
+147
+00:09:25,790 --> 00:09:29,350
+C# calls them
+
+148
+00:09:29,350 --> 00:09:33,540
+slightly different then Haskell
+
+149
+00:09:33,540 --> 00:09:37,260
+and other languages:
+instead of map, C#
+
+150
+00:09:37,260 --> 00:09:41,470
+uses Select and
+
+151
+00:09:41,470 --> 00:09:46,670
+the pop-up there is a little bit small,
+but Select
+
+152
+00:09:46,670 --> 00:09:50,060
+is the version of map and it takes
+a function.
+
+153
+00:09:50,060 --> 00:09:54,230
+Bind or flatMap
+
+154
+00:09:54,230 --> 00:09:59,270
+is called SelectMany - if we look here
+there's SelectMany -
+
+155
+00:09:59,270 --> 00:10:03,210
+and instead of filter, C#
+
+156
+00:10:03,210 --> 00:10:08,320
+uses Where. Except for this little
+alpha renaming
+
+157
+00:10:08,320 --> 00:10:14,830
+of these methods, all the higher-order
+functions over collections and even more,
+
+158
+00:10:14,830 --> 00:10:18,690
+like GroupBy and
+
+159
+00:10:18,690 --> 00:10:21,860
+joins, are all available
+
+160
+00:10:21,860 --> 00:10:25,060
+in the standard library.
+
+161
+00:10:25,060 --> 00:10:28,970
+So if you want to give C# or
+Visual Basic,
+
+162
+00:10:28,970 --> 00:10:33,130
+or F# a try, you can
+
+163
+00:10:33,130 --> 00:10:37,650
+immediately apply all the things
+that you learned
+
+164
+00:10:37,650 --> 00:10:40,980
+in the Haskell part of the course
+
+165
+00:10:40,980 --> 00:10:45,030
+to programming in these .NET
+languages.
+
+166
+00:10:45,030 --> 00:10:46,730
+Thank you and see you next time!
+

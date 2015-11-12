@@ -1,0 +1,882 @@
+1
+00:00:00,570 --> 00:00:04,020
+Good morning everybody. I am Eddy and
+I'm another TA for this
+
+2
+00:00:04,020 --> 00:00:04,970
+functional programming course.
+
+3
+00:00:04,970 --> 00:00:08,290
+Today we're gonna look at an exercise
+about higher order functions,
+
+4
+00:00:08,290 --> 00:00:13,690
+namely an exercise about Church Numerals.
+When we think about the representation
+
+5
+00:00:13,690 --> 00:00:14,290
+of a number,
+
+6
+00:00:14,290 --> 00:00:18,449
+we can see that we can represent a
+number in many different ways.
+
+7
+00:00:18,449 --> 00:00:21,460
+We can represent it using decimals
+
+8
+00:00:21,460 --> 00:00:25,670
+like 123. We can represent it using binary
+
+9
+00:00:25,670 --> 00:00:29,470
+notation, so only using zeros and ones,
+
+10
+00:00:29,470 --> 00:00:32,649
+but we can also represented in many
+other ways for example with the
+
+11
+00:00:32,649 --> 00:00:36,390
+with a string of stars
+
+12
+00:00:36,390 --> 00:00:39,989
+in which each star represents a unit.
+
+13
+00:00:39,989 --> 00:00:43,050
+When we talk about Church numerals
+
+14
+00:00:43,050 --> 00:00:46,719
+we talk about a way to abstract
+over this
+
+15
+00:00:46,719 --> 00:00:50,260
+concrete representation of a number
+
+16
+00:00:50,260 --> 00:00:53,500
+by means of functions and function
+definition.
+
+17
+00:00:53,500 --> 00:00:57,300
+Now let's see how a Church numeral works.
+
+18
+00:00:57,300 --> 00:01:00,699
+The type of the Church numeral is this,
+that you can see
+
+19
+00:01:00,699 --> 00:01:04,409
+here on the slide.
+
+20
+00:01:04,409 --> 00:01:08,590
+It's basically a function that
+takes as
+
+21
+00:01:08,590 --> 00:01:11,900
+input argument another function namely
+
+22
+00:01:11,900 --> 00:01:15,650
+we will see that this function is called
+the successor function
+
+23
+00:01:15,650 --> 00:01:20,439
+it takes another element, another
+argument which is this the zero number
+
+24
+00:01:20,439 --> 00:01:23,890
+and it returns the Church representation
+of this number.
+
+25
+00:01:23,890 --> 00:01:27,689
+Ideally a number n
+
+26
+00:01:27,689 --> 00:01:31,750
+is defined as n applications of the
+successor function
+
+27
+00:01:31,750 --> 00:01:35,549
+over the zero number. Now let's try to
+actually
+
+28
+00:01:35,549 --> 00:01:39,460
+write this type of number so that we see
+more or less
+
+29
+00:01:39,460 --> 00:01:42,790
+how they look like. We said they are
+
+30
+00:01:42,790 --> 00:01:46,210
+represented as a function that takes as an
+input parameter
+
+31
+00:01:46,210 --> 00:01:49,320
+an s and a z
+
+32
+00:01:49,320 --> 00:01:52,409
+and for example the zero representation
+returns only
+
+33
+00:01:52,409 --> 00:01:55,570
+the zero number. For the
+
+34
+00:01:55,570 --> 00:01:59,719
+representation of one we apply the successor
+function
+
+35
+00:01:59,719 --> 00:02:03,000
+only one time, for the representation of
+two
+
+36
+00:02:03,000 --> 00:02:06,299
+we apply twice. Now we can see that
+
+37
+00:02:06,299 --> 00:02:08,920
+since we are Haskall programmers, we don't
+like
+
+38
+00:02:08,920 --> 00:02:13,020
+a lot of noise in our code.
+
+39
+00:02:13,020 --> 00:02:17,459
+We can refactor our representation of
+two
+
+40
+00:02:17,459 --> 00:02:21,000
+by using the composition operator
+
+41
+00:02:21,000 --> 00:02:24,209
+so then we can write s . s and
+then
+
+42
+00:02:24,209 --> 00:02:28,140
+using a technique that comes from
+
+43
+00:02:28,140 --> 00:02:31,140
+lambda calculus namely called eta
+reduction.
+
+44
+00:02:31,140 --> 00:02:34,270
+We can remove the z argument
+
+45
+00:02:34,270 --> 00:02:37,989
+and just the show
+
+46
+00:02:37,989 --> 00:02:42,290
+this implementation of two, which is
+exactly the same from the first one.
+
+47
+00:02:42,290 --> 00:02:45,640
+
+
+48
+00:02:45,640 --> 00:02:48,880
+These are the representation on the Church numerals.
+
+49
+00:02:48,880 --> 00:02:52,049
+As you can see from the type the
+
+50
+00:02:52,049 --> 00:02:56,230
+a tells us that they are polymorphic.
+What does this mean?
+
+51
+00:02:56,230 --> 00:02:59,519
+This means that we can instantiate
+them
+
+52
+00:02:59,519 --> 00:03:03,530
+to represent a number in any concrete
+representation and this is what we're
+
+53
+00:03:03,530 --> 00:03:04,019
+saying
+
+54
+00:03:04,019 --> 00:03:07,049
+from the beginning. Therefore this a can
+become
+
+55
+00:03:07,049 --> 00:03:11,239
+integer, can become a string, can become
+anything else. Let's try now to write
+
+56
+00:03:11,239 --> 00:03:13,220
+some functions that actually instantiate
+
+57
+00:03:13,220 --> 00:03:16,280
+these Church numerals to concrete
+
+58
+00:03:16,280 --> 00:03:19,290
+representations. For example lets write
+a function
+
+59
+00:03:19,290 --> 00:03:23,040
+Church to Int. This function will take as
+an input argument
+
+60
+00:03:23,040 --> 00:03:27,299
+a Church representation of a
+number, therefore a function,
+
+61
+00:03:27,299 --> 00:03:30,890
+and will apply to this a successor function
+that would be only the
+
+62
+00:03:30,890 --> 00:03:34,660
+plus one and a zero number that would
+be zero.
+
+63
+00:03:34,660 --> 00:03:38,160
+We can he see here an example
+
+64
+00:03:38,160 --> 00:03:42,299
+so the first argument is
+
+65
+00:03:42,299 --> 00:03:46,880
+two and then we apply to this +1 and 0.
+
+66
+00:03:46,880 --> 00:03:52,620
+Once we substitute we see that we apply +1 to 0
+
+67
+00:03:52,620 --> 00:03:55,670
+the first time. Once we have done this
+
+68
+00:03:55,670 --> 00:03:59,319
+we will apply +1 to the result of
+that, which will be 1,
+
+69
+00:03:59,319 --> 00:04:02,709
+which will give us 2 in the end.
+
+70
+00:04:02,709 --> 00:04:06,100
+As I said we can instantiate
+
+71
+00:04:06,100 --> 00:04:09,329
+this function not only to integers but
+to other things as well.
+
+72
+00:04:09,329 --> 00:04:13,280
+For example we can do for our example with strings
+
+73
+00:04:13,280 --> 00:04:17,570
+from before. The successor function
+will append
+
+74
+00:04:17,570 --> 00:04:21,620
+to the String (the head of the
+
+75
+00:04:21,620 --> 00:04:24,669
+String) the star
+
+76
+00:04:24,669 --> 00:04:28,229
+and the zero operator will be
+
+77
+00:04:28,229 --> 00:04:32,320
+the empty string. Here you can see an
+example in the slide and again
+
+78
+00:04:32,320 --> 00:04:36,020
+we apply this to the number 2 and
+we see that
+
+79
+00:04:36,020 --> 00:04:39,520
+first we
+
+80
+00:04:39,520 --> 00:04:43,280
+cons a star
+
+81
+00:04:43,280 --> 00:04:46,990
+to the empty string and then we cons
+again to the result of that which
+
+82
+00:04:46,990 --> 00:04:48,810
+will be the string containing only the
+star,
+
+83
+00:04:48,810 --> 00:04:53,240
+only one star. We will cons again
+another star and
+
+84
+00:04:53,240 --> 00:04:56,630
+we will have the representation of two.
+
+85
+00:04:56,630 --> 00:05:01,370
+Up until now we have
+described what a Church numeral is
+
+86
+00:05:01,370 --> 00:05:03,500
+and we have described how to instantiate
+it
+
+87
+00:05:03,500 --> 00:05:06,669
+to a concrete representation but
+
+88
+00:05:06,669 --> 00:05:10,570
+what we have to do now is we need
+to define operations over
+
+89
+00:05:10,570 --> 00:05:13,870
+these numbers so that we can
+actually
+
+90
+00:05:13,870 --> 00:05:17,139
+manipulate them. To do this we will try
+now to
+
+91
+00:05:17,139 --> 00:05:21,990
+derive an implementation of addition.
+We start by
+
+92
+00:05:21,990 --> 00:05:25,550
+taking two definitions: we have
+
+93
+00:05:25,550 --> 00:05:28,979
+x' and y' which are
+
+94
+00:05:28,979 --> 00:05:32,620
+Church to Int of x and y. So x and y are
+Church
+
+95
+00:05:32,620 --> 00:05:36,250
+numerals and their Church to Int version is
+an integer.
+
+96
+00:05:36,250 --> 00:05:40,450
+What we want to achieve in our derivation
+
+97
+00:05:40,450 --> 00:05:43,810
+is that the integer addition of
+
+98
+00:05:43,810 --> 00:05:46,849
+x and y equals
+
+99
+00:05:46,849 --> 00:05:50,300
+Church to Int of a function that we will
+define: add x y
+
+100
+00:05:50,300 --> 00:05:55,310
+defined over Church
+numerals. Okay, to do this
+
+101
+00:05:55,310 --> 00:05:59,030
+let's start easily, so we say
+
+102
+00:05:59,030 --> 00:06:02,180
+x' + y' just equals
+
+103
+00:06:02,180 --> 00:06:05,970
+the representation from here: Church
+to Int of x
+
+104
+00:06:05,970 --> 00:06:09,740
+plus Church to Int of y. 
+
+105
+00:06:09,740 --> 00:06:13,160
+Now we expand the first definition
+Church to Int of x
+
+106
+00:06:13,160 --> 00:06:16,630
+with our implementation of Church to Int
+
+107
+00:06:16,630 --> 00:06:19,849
+so we'll apply to x the
+
+108
+00:06:19,849 --> 00:06:25,050
+successor function +1 and the zero
+number 0. Now what we can see
+
+109
+00:06:25,050 --> 00:06:28,699
+is that here we are building up zero
+
+110
+00:06:28,699 --> 00:06:32,729
+starting from zero number which we gave
+ourselves which is zero,
+
+111
+00:06:32,729 --> 00:06:34,920
+but then we say
+
+112
+00:06:34,920 --> 00:06:38,370
+after this we want to add another
+integer which is the integer
+
+113
+00:06:38,370 --> 00:06:39,560
+presentation of y.
+
+114
+00:06:39,560 --> 00:06:43,200
+So why don't we just start building x
+
+115
+00:06:43,200 --> 00:06:47,770
+instead of from zero from the integer
+representation a y itself?
+
+116
+00:06:47,770 --> 00:06:53,060
+Okay, we can see that by generalizing
+a little the Church to Int function this
+
+117
+00:06:53,060 --> 00:06:53,580
+
+
+118
+00:06:53,580 --> 00:06:57,260
+is really easy. If the Church to Int
+function will take another parameter z
+
+119
+00:06:57,260 --> 00:06:57,710
+
+
+120
+00:06:57,710 --> 00:07:01,130
+we can substitute the zero
+
+121
+00:07:01,130 --> 00:07:04,880
+to a parameter defined by the user and
+so we can
+
+122
+00:07:04,880 --> 00:07:08,880
+get this Church to Int and move
+
+123
+00:07:08,880 --> 00:07:12,870
+it inside as the base number of the
+representation of x.
+
+124
+00:07:12,870 --> 00:07:15,940
+What to do now is we expand
+
+125
+00:07:15,940 --> 00:07:19,460
+Church to Int of y again with the
+same definition of Church to Int
+
+126
+00:07:19,460 --> 00:07:22,680
+and what we can do now is that
+
+127
+00:07:22,680 --> 00:07:25,910
+we have two instances of
+
+128
+00:07:25,910 --> 00:07:29,030
+the +1 function and then
+one time
+
+129
+00:07:29,030 --> 00:07:32,610
+we can find the zero number.
+
+130
+00:07:32,610 --> 00:07:35,930
+Why don't we get those, we abstract them out
+
+131
+00:07:35,930 --> 00:07:39,300
+with another trick from lambda
+calculus
+
+132
+00:07:39,300 --> 00:07:43,590
+which is called beta expansion and we
+create a function out of that.
+
+133
+00:07:43,590 --> 00:07:47,350
+This is this step: here I have
+highlighted the
+
+134
+00:07:47,350 --> 00:07:51,820
++1 and successor and all the names
+so that the it's easier to understand
+
+135
+00:07:51,820 --> 00:07:55,740
+what we have basically done here is we
+have
+
+136
+00:07:55,740 --> 00:08:00,230
+expanded that term that we have,
+that expression,
+
+137
+00:08:00,230 --> 00:08:03,940
+into a function that is then applied to
++1 and 0.
+
+138
+00:08:03,940 --> 00:08:08,470
+So these two terms in the last two
+lines are exactly the same.
+
+139
+00:08:08,470 --> 00:08:11,790
+What to do now is we can get
+
+140
+00:08:11,790 --> 00:08:15,650
+this lambda
+
+141
+00:08:15,650 --> 00:08:19,160
+and we can give it a name just because
+it's easier for us to see.
+
+142
+00:08:19,160 --> 00:08:23,130
+So let's call it add. Now I will explain
+one second why add but
+
+143
+00:08:23,130 --> 00:08:27,930
+let's call it add and we see
+that we need to parameterize it over x and y
+
+144
+00:08:27,930 --> 00:08:29,060
+because they were
+
+145
+00:08:29,060 --> 00:08:32,290
+the only two free variables in the
+definition above
+
+146
+00:08:32,290 --> 00:08:37,500
+and if we take a look at this function we
+see that this is just an application
+
+147
+00:08:37,500 --> 00:08:42,140
+of the Church to Int body of the function
+that we defined before.
+
+148
+00:08:42,140 --> 00:08:45,180
+We can just substitute that
+
+149
+00:08:45,180 --> 00:08:47,829
+and we see that in the end we have arrived to our
+
+150
+00:08:47,829 --> 00:08:51,279
+definition and this was really easy we
+didn't really do anything. We just
+
+151
+00:08:51,279 --> 00:08:52,190
+mechanically
+
+152
+00:08:52,190 --> 00:08:56,190
+substituted and used a few tricks
+from
+
+153
+00:08:56,190 --> 00:09:00,620
+lambda calculus to arrive to
+our answer.
+
+154
+00:09:00,620 --> 00:09:04,100
+Finally the definition of addition
+
+155
+00:09:04,100 --> 00:09:07,660
+between two Church numerals
+
+156
+00:09:07,660 --> 00:09:11,500
+is a function which would be
+actually
+
+157
+00:09:11,500 --> 00:09:15,540
+a Church numeral which will build x
+with
+
+158
+00:09:15,540 --> 00:09:18,680
+the successor function but starting from
+the
+
+159
+00:09:18,680 --> 00:09:23,160
+final representation of y and
+therefore giving us the addition of x and y.
+
+160
+00:09:23,160 --> 00:09:26,750
+Now we have done the addition let's try
+now to
+
+161
+00:09:26,750 --> 00:09:32,589
+define the multiplication. When we think
+about multiplying two numbers,
+
+162
+00:09:32,589 --> 00:09:35,910
+to decimal numbers, what we know
+
+163
+00:09:35,910 --> 00:09:40,319
+from school is that what we
+do is
+
+164
+00:09:40,319 --> 00:09:43,430
+let's say we want to do
+
+165
+00:09:43,430 --> 00:09:46,980
+2 times 3 then we want to add together
+
+166
+00:09:46,980 --> 00:09:50,160
+3 times the number 2
+
+167
+00:09:50,160 --> 00:09:53,540
+and this is a what this
+
+168
+00:09:53,540 --> 00:09:57,740
+thing says. Now when we want to do this
+with functions, we cannot just
+
+169
+00:09:57,740 --> 00:10:00,810
+add functions together, but we can compose
+them.
+
+170
+00:10:00,810 --> 00:10:04,800
+The idea is basically the same: we
+want to every time
+
+171
+00:10:04,800 --> 00:10:08,180
+for three times we want to compose
+
+172
+00:10:08,180 --> 00:10:12,329
+the definition of 2. We can see
+it here:
+
+173
+00:10:12,329 --> 00:10:15,709
+that 6 will be
+
+174
+00:10:15,709 --> 00:10:18,980
+the composition if we substitute s
+
+175
+00:10:18,980 --> 00:10:22,839
+with the definition of two, we can see that
+
+176
+00:10:22,839 --> 00:10:26,519
+six will be just the composition six
+times
+
+177
+00:10:26,519 --> 00:10:32,040
+of the successor function.
+
+178
+00:10:32,040 --> 00:10:35,269
+Therefore the multiplication will be
+
+179
+00:10:35,269 --> 00:10:40,050
+defined as a Church numeral again which will take a
+
+180
+00:10:40,050 --> 00:10:41,100
+successor function
+
+181
+00:10:41,100 --> 00:10:44,420
+and a zero number.
+
+182
+00:10:44,420 --> 00:10:47,699
+We will apply a different successor
+function to s
+
+183
+00:10:47,699 --> 00:10:51,850
+which we can call a super
+successor which will contain
+
+184
+00:10:51,850 --> 00:10:55,290
+y exemplars on the successor
+function.
+
+185
+00:10:55,290 --> 00:11:00,370
+Therefore will have the
+multiplication.
+
+186
+00:11:00,370 --> 00:11:02,880
+We can furthermore
+
+187
+00:11:02,880 --> 00:11:06,070
+clear up this definition
+
+188
+00:11:06,070 --> 00:11:11,080
+with again few tricks from lambda
+calculus and we can just express
+
+189
+00:11:11,080 --> 00:11:11,980
+it in this way
+
+190
+00:11:11,980 --> 00:11:16,310
+nicely with composition of x and y. So
+that was it
+
+191
+00:11:16,310 --> 00:11:19,770
+for Church numerals. In the
+exercises you will
+
+192
+00:11:19,770 --> 00:11:23,760
+see a few more tricks that we can do
+for example exponentiation
+
+193
+00:11:23,760 --> 00:11:27,080
+and then there will be on the course
+page another link
+
+194
+00:11:27,080 --> 00:11:31,570
+to further more information about
+
+195
+00:11:31,570 --> 00:11:35,110
+this representation. Thank you for
+listening and happy hacking.

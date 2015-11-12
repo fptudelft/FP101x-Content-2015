@@ -1,0 +1,898 @@
+1
+00:00:01,240 --> 00:00:03,629
+Welcome back everybody to our
+
+2
+00:00:03,629 --> 00:00:06,859
+lecture on parsing and let's
+
+3
+00:00:06,859 --> 00:00:10,620
+make a toast on our first monad.
+
+4
+00:00:10,620 --> 00:00:14,910
+That's great. Now we can move on.
+
+5
+00:00:14,910 --> 00:00:18,440
+Let's look at
+
+6
+00:00:18,440 --> 00:00:21,949
+another operator
+
+7
+00:00:21,949 --> 00:00:25,859
+on parsers that really
+
+8
+00:00:25,859 --> 00:00:29,300
+makes it into a monad
+
+9
+00:00:29,300 --> 00:00:33,110
+and that is namely sequencing of parsers.
+
+10
+00:00:33,110 --> 00:00:36,670
+So what we want to do is we want to take
+a parser
+
+11
+00:00:36,670 --> 00:00:41,570
+and not try the other one if the first
+one fails
+
+12
+00:00:41,570 --> 00:00:45,620
+but we want to sequentially
+compose them. So we want to run
+
+13
+00:00:45,620 --> 00:00:46,649
+one parser
+
+14
+00:00:46,649 --> 00:00:52,910
+and then when it is terminated, we want to
+run the next parser. And for that we are
+
+15
+00:00:52,910 --> 00:00:56,469
+going to use the so-called do syntax
+and the do syntax
+
+16
+00:00:56,469 --> 00:01:00,770
+that's one of the advantages of having a
+monad, because now you can write
+
+17
+00:01:00,770 --> 00:01:04,610
+code that makes this
+
+18
+00:01:04,610 --> 00:01:09,460
+sequential composition clear. So here is
+what we want to
+
+19
+00:01:09,460 --> 00:01:12,700
+write. We want to write the following.
+We want to say
+
+20
+00:01:12,700 --> 00:01:16,310
+try to parse an item
+
+21
+00:01:16,310 --> 00:01:20,570
+call that x. Parse another item.
+
+22
+00:01:20,570 --> 00:01:24,409
+I don't care about that one, so I don't
+give it a name.
+
+23
+00:01:24,409 --> 00:01:28,110
+Then parse a third item. Call that y.
+
+24
+00:01:28,110 --> 00:01:31,860
+And then return the pair of x,y.
+
+25
+00:01:31,860 --> 00:01:35,060
+So what you see here is that we are
+sequencing
+
+26
+00:01:35,060 --> 00:01:38,210
+these three parses of items
+
+27
+00:01:38,210 --> 00:01:42,049
+and we are just returning the first
+and the last.
+
+28
+00:01:42,049 --> 00:01:45,820
+
+
+29
+00:01:45,820 --> 00:01:49,280
+If you look at this code here
+
+30
+00:01:49,280 --> 00:01:52,560
+remember that we talked about the layout
+rule, so
+
+31
+00:01:52,560 --> 00:01:57,049
+all these things here must be lined up
+
+32
+00:01:57,049 --> 00:02:00,770
+really nice. You can also put curly
+braces
+
+33
+00:02:00,770 --> 00:02:04,710
+and semicolons in here. That is actually
+what I usually do
+
+34
+00:02:04,710 --> 00:02:08,560
+when I use the do notation, because
+then it looks even more like imperative
+
+35
+00:02:08,560 --> 00:02:09,060
+code.
+
+36
+00:02:09,060 --> 00:02:11,730
+
+
+37
+00:02:11,730 --> 00:02:15,140
+And as we already showed
+
+38
+00:02:15,140 --> 00:02:18,940
+if you don't put this left arrow
+in there
+
+39
+00:02:18,940 --> 00:02:22,090
+then the parser is called, but the
+result is
+
+40
+00:02:22,090 --> 00:02:26,100
+discarded.
+
+41
+00:02:26,100 --> 00:02:29,320
+The other thing is that
+
+42
+00:02:29,320 --> 00:02:33,250
+when we are composing parsers, multiple
+parsers in a row
+
+43
+00:02:33,250 --> 00:02:36,510
+what we want to have is that when
+
+44
+00:02:36,510 --> 00:02:41,040
+any of them fails, the whole thing will
+fail. And then we can always
+
+45
+00:02:41,040 --> 00:02:44,370
+try with the triple plus to
+
+46
+00:02:44,370 --> 00:02:47,890
+use another parser.
+
+47
+00:02:47,890 --> 00:02:51,540
+So if we parse here p
+
+48
+00:02:51,540 --> 00:02:54,560
+that was our example here
+
+49
+00:02:54,560 --> 00:02:57,590
+it would take this guy and
+
+50
+00:02:57,590 --> 00:03:01,240
+parses three characters and returns the
+first
+
+51
+00:03:01,240 --> 00:03:05,640
+and the third. So it returns this. But
+if we try to
+
+52
+00:03:05,640 --> 00:03:10,470
+apply that to a string that only has
+two characters
+
+53
+00:03:10,470 --> 00:03:13,910
+then it won't work. So it will fail.
+
+54
+00:03:13,910 --> 00:03:17,110
+It will fail, you see it here.
+
+55
+00:03:17,110 --> 00:03:20,490
+Failing, there... I'm failing
+
+56
+00:03:20,490 --> 00:03:23,640
+like the parser.
+
+57
+00:03:23,640 --> 00:03:28,760
+When any parser that you sequentially
+compose fails, you want the whole
+
+58
+00:03:28,760 --> 00:03:32,310
+thing to fail. And the other thing
+
+59
+00:03:32,310 --> 00:03:35,630
+is that the real
+
+60
+00:03:35,630 --> 00:03:39,860
+advantage of having a monad is not
+that it makes you look smart.
+
+61
+00:03:39,860 --> 00:03:44,160
+It is not that you are a cool kid.
+It is not that you can write
+
+62
+00:03:44,160 --> 00:03:47,420
+the millionth blog post on explaining
+monads.
+
+63
+00:03:47,420 --> 00:03:51,180
+The real advantage of monads is
+that you can
+
+64
+00:03:51,180 --> 00:03:54,410
+use the do notation.
+
+65
+00:03:54,410 --> 00:03:58,360
+That is all there is to it.
+
+66
+00:03:58,360 --> 00:04:03,560
+Not a big deal. Let's
+
+67
+00:04:03,560 --> 00:04:06,680
+continue
+
+68
+00:04:06,680 --> 00:04:09,940
+writing some more parsers. Here in this
+case
+
+69
+00:04:09,940 --> 00:04:13,170
+assuming that we have this parser
+
+70
+00:04:13,170 --> 00:04:16,820
+that can do sequential composition
+
+71
+00:04:16,820 --> 00:04:20,260
+we are going to write
+
+72
+00:04:20,260 --> 00:04:23,600
+the following function, that takes a
+predicate
+
+73
+00:04:23,600 --> 00:04:24,740
+from character
+
+74
+00:04:24,740 --> 00:04:28,210
+to Bool and returns a parser
+
+75
+00:04:28,210 --> 00:04:33,539
+for characters. So here it is:
+sat p
+
+76
+00:04:33,539 --> 00:04:37,240
+So we are looking for a character that
+satisfies p.
+
+77
+00:04:37,240 --> 00:04:40,860
+We parse an item that will return x.
+
+78
+00:04:40,860 --> 00:04:47,860
+If p holds, then we immediately return x
+and we don't change the input.
+
+79
+00:04:48,050 --> 00:04:51,539
+If p of x
+
+80
+00:04:51,539 --> 00:04:55,449
+does not hold, then we have to
+
+81
+00:04:55,449 --> 00:04:58,800
+fail. So this is
+
+82
+00:04:58,800 --> 00:05:02,340
+quite obvious. We try to parse any item.
+
+83
+00:05:02,340 --> 00:05:06,370
+Then we check whether the predicate holds.
+If it holds
+
+84
+00:05:06,370 --> 00:05:10,020
+we use the parser that always succeeds and
+
+85
+00:05:10,020 --> 00:05:14,740
+if the predicate does not hold, we
+use the parser that always fails.
+
+86
+00:05:14,740 --> 00:05:18,069
+So those came in quite handy.
+
+87
+00:05:18,069 --> 00:05:21,870
+Let's use this
+
+88
+00:05:21,870 --> 00:05:25,509
+parser now to write some interesting
+
+89
+00:05:25,509 --> 00:05:29,650
+things. So say that we want to parse a
+digit.
+
+90
+00:05:29,650 --> 00:05:33,460
+Well, what we can is we can say use
+this sat
+
+91
+00:05:33,460 --> 00:05:39,409
+with isDigit. So now this thing will
+try to parse a character
+
+92
+00:05:39,409 --> 00:05:43,370
+check whether it's a digit. In that case
+it will immediately succeed
+
+93
+00:05:43,370 --> 00:05:47,349
+with that digit. If it is not a digit,
+it will fail
+
+94
+00:05:47,349 --> 00:05:51,830
+immediately. If we want to parse
+
+95
+00:05:51,830 --> 00:05:55,590
+a specific character, here
+
+96
+00:05:55,590 --> 00:05:58,880
+so that is character x, then we can
+use sectioning
+
+97
+00:05:58,880 --> 00:06:02,009
+to create a predicate
+
+98
+00:06:02,009 --> 00:06:05,919
+(x==). So this is a function that
+
+99
+00:06:05,919 --> 00:06:09,610
+expects a character and checks whether
+it is equal to x
+
+100
+00:06:09,610 --> 00:06:13,969
+and then we apply that to sat.
+
+101
+00:06:13,969 --> 00:06:17,460
+So here you see a quite nice use of
+sectioning.
+
+102
+00:06:17,460 --> 00:06:22,310
+In case you wondered why on earth is this
+weird sectioning in Haskell
+
+103
+00:06:22,310 --> 00:06:25,479
+here you have an example of this.
+
+104
+00:06:25,479 --> 00:06:28,490
+Some people say
+
+105
+00:06:28,490 --> 00:06:32,050
+there is an x here and there is an x there
+
+106
+00:06:32,050 --> 00:06:35,400
+I can write this in pointfree style. So
+maybe you should try that.
+
+107
+00:06:35,400 --> 00:06:37,410
+You can write this thing here
+
+108
+00:06:37,410 --> 00:06:41,010
+in pointfree style. But again as I
+warned you
+
+109
+00:06:41,010 --> 00:06:44,370
+when you use pointfree style with function
+composition and so on
+
+110
+00:06:44,370 --> 00:06:48,360
+your code might become quite unreadable
+
+111
+00:06:48,360 --> 00:06:52,530
+very quickly. But in this case I think
+it's a nice challenge
+
+112
+00:06:52,530 --> 00:06:55,840
+to write this one pointfree. It will look
+
+113
+00:06:55,840 --> 00:07:01,350
+quite nice. Let's look at the next one
+here.
+
+114
+00:07:01,350 --> 00:07:04,660
+This is a parser that tries to parse p
+
+115
+00:07:04,660 --> 00:07:09,310
+zero or more times. And you see this
+often. It is like a regular expression or
+
+116
+00:07:09,310 --> 00:07:11,670
+a repetition. And I want to find
+
+117
+00:07:11,670 --> 00:07:15,500
+zero or more digits. Or if I want to
+parse an
+
+118
+00:07:15,500 --> 00:07:18,970
+identifier, I want to parse a letter
+
+119
+00:07:18,970 --> 00:07:22,790
+followed by zero or more identifiers
+or digits.
+
+120
+00:07:22,790 --> 00:07:25,820
+So this often happens
+
+121
+00:07:25,820 --> 00:07:29,370
+when you are trying to parse things.
+Here we see: many
+
+122
+00:07:29,370 --> 00:07:32,850
+takes a Parser of a and returns a Parser
+
+123
+00:07:32,850 --> 00:07:36,090
+of list of a. And guess what?
+
+124
+00:07:36,090 --> 00:07:40,440
+This is defined recursively. So many of p
+
+125
+00:07:40,440 --> 00:07:45,020
+first tries to parse at least one p
+
+126
+00:07:45,020 --> 00:07:49,060
+and if that fails, it returns
+
+127
+00:07:49,060 --> 00:07:53,810
+the empty list. It would be
+slightly nicer to use the
+
+128
+00:07:53,810 --> 00:07:59,370
+parser that always fails there.
+How do we write many1?
+
+129
+00:07:59,370 --> 00:08:03,350
+We define that in terms of many
+so we have here
+
+130
+00:08:03,350 --> 00:08:07,020
+a mutual recursive definition. So if I
+want to parse p
+
+131
+00:08:07,020 --> 00:08:11,680
+one or more times, I try to parse p once.
+
+132
+00:08:11,680 --> 00:08:16,150
+I get the value v. Then I try to
+
+133
+00:08:16,150 --> 00:08:19,270
+parse zero or more times p.
+
+134
+00:08:19,270 --> 00:08:22,590
+I get the value. This can be the empty
+list
+
+135
+00:08:22,590 --> 00:08:26,480
+if I return the empty list...
+
+136
+00:08:26,480 --> 00:08:33,480
+I have to apologize. This is really
+returning the empty list. That's not failing
+
+137
+00:08:36,650 --> 00:08:37,190
+because
+
+138
+00:08:37,190 --> 00:08:41,570
+if I parse p zero or more times, I can
+parse it one time or zero times.
+
+139
+00:08:41,570 --> 00:08:44,930
+And in the case of zero times, I have to
+return the empty
+
+140
+00:08:44,930 --> 00:08:48,630
+list.
+
+141
+00:08:48,630 --> 00:08:52,910
+That was something there. So if we
+parse it there
+
+142
+00:08:52,910 --> 00:08:57,330
+so we get zero or more times, and then
+we return
+
+143
+00:08:57,330 --> 00:09:00,330
+v concatenated with vs.
+
+144
+00:09:00,330 --> 00:09:04,580
+So this is the one times and this is
+the many times.
+
+145
+00:09:04,580 --> 00:09:08,430
+So this is like a subtle mutual recursion
+
+146
+00:09:08,430 --> 00:09:12,089
+and very subtle. Even Erik made a
+mistake there
+
+147
+00:09:12,089 --> 00:09:16,470
+so you better pay attention.
+
+148
+00:09:16,470 --> 00:09:21,720
+The last thing here is we are going to
+
+149
+00:09:21,720 --> 00:09:25,520
+define a function, that tries to parse a
+string.
+
+150
+00:09:25,520 --> 00:09:28,860
+So far we have seen many examples where
+we were trying to parse
+
+151
+00:09:28,860 --> 00:09:32,740
+a character, but I want to parse a string.
+
+152
+00:09:32,740 --> 00:09:36,480
+
+
+153
+00:09:36,480 --> 00:09:39,800
+And remember strings are just lists of
+characters.
+
+154
+00:09:39,800 --> 00:09:42,800
+So if I start with the empty list
+
+155
+00:09:42,800 --> 00:09:47,160
+I just return the empty list, the
+empty string.
+
+156
+00:09:47,160 --> 00:09:52,380
+If I try to parse the character (x:xs)
+
+157
+00:09:52,380 --> 00:09:57,360
+I try to parse the character x,
+I recursively try to parse a
+
+158
+00:09:57,360 --> 00:10:01,410
+string that represents the rest of this
+thing and then
+
+159
+00:10:01,410 --> 00:10:05,500
+I return
+
+160
+00:10:05,500 --> 00:10:09,080
+the result. I found an x.
+
+161
+00:10:09,080 --> 00:10:12,959
+I return that and I return that, so I just
+
+162
+00:10:12,959 --> 00:10:16,490
+return the string. So this just checks
+whether this string
+
+163
+00:10:16,490 --> 00:10:21,670
+is the prefix of my input.
+
+164
+00:10:21,670 --> 00:10:25,850
+So now we can define a parser that
+consumes a list
+
+165
+00:10:25,850 --> 00:10:30,070
+of one or more digits from a string. So
+this is starting to become more like
+
+166
+00:10:30,070 --> 00:10:30,990
+parsing
+
+167
+00:10:30,990 --> 00:10:34,390
+an actual language. What do we do?
+We want to parse a list
+
+168
+00:10:34,390 --> 00:10:38,459
+so we have to parse an open brace
+and a close brace.
+
+169
+00:10:38,459 --> 00:10:42,190
+We are not interested in those values,
+so you don't see
+
+170
+00:10:42,190 --> 00:10:45,740
+a left arrow there. Then we are trying to
+parse a digit
+
+171
+00:10:45,740 --> 00:10:49,020
+and then we are trying to parse many
+
+172
+00:10:49,020 --> 00:10:52,360
+characters
+
+173
+00:10:52,360 --> 00:10:56,260
+comma digits. Because we want to have
+a list
+
+174
+00:10:56,260 --> 00:11:00,640
+of one or more digits. So there is one
+digit
+
+175
+00:11:00,640 --> 00:11:03,780
+and then the more digits here
+
+176
+00:11:03,780 --> 00:11:08,460
+and then we just concatenate those digits
+with the other digits. Here you
+
+177
+00:11:08,460 --> 00:11:08,950
+see
+
+178
+00:11:08,950 --> 00:11:12,150
+how we take all these
+
+179
+00:11:12,150 --> 00:11:15,630
+elementary parsers and combine them
+together
+
+180
+00:11:15,630 --> 00:11:18,660
+to write already
+
+181
+00:11:18,660 --> 00:11:22,870
+pretty complicated parsers like this.
+If we
+
+182
+00:11:22,870 --> 00:11:25,950
+apply this parser here on the list
+
+183
+00:11:25,950 --> 00:11:29,020
+well, it's a string
+
+184
+00:11:29,020 --> 00:11:32,520
+but we want to parse that string as a list
+
+185
+00:11:32,520 --> 00:11:35,690
+we will see that we get the
+
+186
+00:11:35,690 --> 00:11:39,610
+digits 1234. And if we are trying to
+
+187
+00:11:39,610 --> 00:11:43,830
+parse it on something that is
+not a proper list
+
+188
+00:11:43,830 --> 00:11:47,280
+we will get an error.
+
+189
+00:11:47,280 --> 00:11:50,900
+Of course, as we said, this is a
+
+190
+00:11:50,900 --> 00:11:54,150
+super simple parser. If you want to write
+
+191
+00:11:54,150 --> 00:11:57,330
+a real parser, if you want to use
+
+192
+00:11:57,330 --> 00:12:01,570
+a parser in real code, you typically want
+to do something smarter, when
+
+193
+00:12:01,570 --> 00:12:04,660
+there are errors than just returning
+the empty list.
+
+194
+00:12:04,660 --> 00:12:08,500
+At least you want to give the position
+
+195
+00:12:08,500 --> 00:12:12,450
+in the input list where things go wrong.
+Or you want to try to
+
+196
+00:12:12,450 --> 00:12:16,420
+correct errors or whatever. But again
+we are trying to
+
+197
+00:12:16,420 --> 00:12:21,070
+cover here the very very basics of parsing.
+
+198
+00:12:21,070 --> 00:12:25,040
+And there's plenty of parsing libraries
+for Haskell
+
+199
+00:12:25,040 --> 00:12:28,960
+and for other languages that are based
+on the same idea
+
+200
+00:12:28,960 --> 00:12:31,960
+that add all these more sophisticated
+features.
+
+201
+00:12:31,960 --> 00:12:35,670
+Thank you very much and see you
+
+202
+00:12:35,670 --> 00:12:36,320
+in the next part.
+

@@ -1,0 +1,1128 @@
+1
+00:00:01,170 --> 00:00:03,520
+Hello, everybody! Welcome back
+
+2
+00:00:03,520 --> 00:00:07,279
+at the next episode of functional
+programming 101
+
+3
+00:00:07,279 --> 00:00:10,679
+and today we are going to talk about
+
+4
+00:00:10,679 --> 00:00:14,980
+interactive programs. But before we
+start
+
+5
+00:00:14,980 --> 00:00:19,619
+I want to share a story that I
+originally heard from Simon Peyton Jones.
+
+6
+00:00:19,619 --> 00:00:23,890
+Simon Peyton Jones, everybody
+should know,
+
+7
+00:00:23,890 --> 00:00:27,070
+is one of the main drivers behind
+
+8
+00:00:27,070 --> 00:00:30,269
+Haskell and also
+
+9
+00:00:30,269 --> 00:00:33,880
+one of the founders of the Glasgow
+Haskell Compiler that
+
+10
+00:00:33,880 --> 00:00:36,940
+we have been using in this course.
+
+11
+00:00:36,940 --> 00:00:40,040
+Here is the story. In this little box
+
+12
+00:00:40,040 --> 00:00:45,210
+there is a super powerful quantum
+computer.
+
+13
+00:00:45,210 --> 00:00:50,559
+It's extremely powerful. It can
+break every encryption scheme
+
+14
+00:00:50,559 --> 00:00:56,770
+known to man. It can solve any
+problem. It cures cancer...
+
+15
+00:00:56,770 --> 00:01:00,649
+everything! The only problem is that
+
+16
+00:01:00,649 --> 00:01:05,170
+it has no I/O. So we will never know
+
+17
+00:01:05,170 --> 00:01:08,400
+whether this quantum computer works
+
+18
+00:01:08,400 --> 00:01:12,840
+or not. The moral of this story is that
+
+19
+00:01:12,840 --> 00:01:16,210
+if your program is not able to
+communicate
+
+20
+00:01:16,210 --> 00:01:19,509
+with the outside world, it might as well
+
+21
+00:01:19,509 --> 00:01:24,780
+not exist. And if you go back to the
+early days of Haskell
+
+22
+00:01:24,780 --> 00:01:29,400
+it was actually really hard to have a
+Haskell program
+
+23
+00:01:29,400 --> 00:01:33,369
+communicate with the outside world.
+Whereas if you use
+
+24
+00:01:33,369 --> 00:01:36,790
+any other programming language it's
+trivial.
+
+25
+00:01:36,790 --> 00:01:41,090
+The first code we all write is hello world
+which prints "hello world"
+
+26
+00:01:41,090 --> 00:01:44,439
+on the standard output, whereas in
+Haskell
+
+27
+00:01:44,439 --> 00:01:48,140
+that hello world was super complicated.
+
+28
+00:01:48,140 --> 00:01:53,030
+First we had stream I/O, then we had
+continuation based I/O and
+
+29
+00:01:53,030 --> 00:01:56,439
+finally, and that's what we are going to
+talk about today
+
+30
+00:01:56,439 --> 00:02:01,270
+we have the I/O monad. And with the I/O
+monad
+
+31
+00:02:01,270 --> 00:02:03,900
+
+
+32
+00:02:03,900 --> 00:02:07,820
+Haskell has gotten its I/O port
+
+33
+00:02:07,820 --> 00:02:12,090
+on the box, such that it can easily
+communicate
+
+34
+00:02:12,090 --> 00:02:17,140
+with the outside world.
+
+35
+00:02:17,140 --> 00:02:21,260
+So far we have only written programs
+that
+
+36
+00:02:21,260 --> 00:02:27,430
+take some input and return a string
+or an integer or a tuple or a list
+
+37
+00:02:27,430 --> 00:02:30,730
+and we have printed that value
+
+38
+00:02:30,730 --> 00:02:33,990
+on the output of the
+
+39
+00:02:33,990 --> 00:02:37,520
+REPL loop, of the GHC interpreter.
+
+40
+00:02:37,520 --> 00:02:41,130
+But what we really want to do, is we want
+to write
+
+41
+00:02:41,130 --> 00:02:44,520
+programs like most programs, like every
+
+42
+00:02:44,520 --> 00:02:47,560
+Java program, like every C# program, like
+
+43
+00:02:47,560 --> 00:02:51,060
+any imperative program, that takes
+
+44
+00:02:51,060 --> 00:02:55,550
+inputs from the external world, does
+something with it
+
+45
+00:02:55,550 --> 00:02:58,840
+and produces output.
+
+46
+00:02:58,840 --> 00:03:02,410
+And in fact what we want, is that it
+produces output
+
+47
+00:03:02,410 --> 00:03:05,780
+as it's getting new inputs.
+
+48
+00:03:05,780 --> 00:03:09,920
+So we want to produce outputs
+as we are getting
+
+49
+00:03:09,920 --> 00:03:14,730
+new inputs. So what this program has to do
+
+50
+00:03:14,730 --> 00:03:18,020
+it has two interact with the keyboard
+
+51
+00:03:18,020 --> 00:03:21,590
+and the screen. If we
+
+52
+00:03:21,590 --> 00:03:24,709
+look at our program as a function
+
+53
+00:03:24,709 --> 00:03:28,709
+in some sense now it becomes dependent
+on the keyboard
+
+54
+00:03:28,709 --> 00:03:32,290
+and besides just producing output
+
+55
+00:03:32,290 --> 00:03:35,580
+it also will communicate with the screen.
+
+56
+00:03:35,580 --> 00:03:39,430
+The problem
+
+57
+00:03:39,430 --> 00:03:43,260
+is that Haskell programs are
+
+58
+00:03:43,260 --> 00:03:47,660
+pure functions, which means they cannot
+have side effects.
+
+59
+00:03:47,660 --> 00:03:50,739
+Maybe it is good to
+
+60
+00:03:50,739 --> 00:03:53,739
+informally talk about
+
+61
+00:03:53,739 --> 00:03:57,730
+what a mathematical function is.
+A mathe..
+
+62
+00:03:57,730 --> 00:04:00,730
+That's a complex word!
+
+63
+00:04:00,730 --> 00:04:04,160
+A mathematical function is
+
+64
+00:04:04,160 --> 00:04:07,440
+a function that when you give it the
+same
+
+65
+00:04:07,440 --> 00:04:11,090
+argument will always give you the same
+result.
+
+66
+00:04:11,090 --> 00:04:14,160
+For example, factorial
+
+67
+00:04:14,160 --> 00:04:16,190
+when I give it n
+
+68
+00:04:16,190 --> 00:04:20,000
+it will return factorial n. When I give
+it n again
+
+69
+00:04:20,000 --> 00:04:25,080
+it will return factorial of n again. Now
+look at a common function
+
+70
+00:04:25,080 --> 00:04:28,670
+that we use in imperative programming,
+for example
+
+71
+00:04:28,670 --> 00:04:32,870
+readLine. ReadLine takes no arguments or
+
+72
+00:04:32,870 --> 00:04:38,780
+the empty tuple and returns a string.
+When I call readLine again
+
+73
+00:04:38,780 --> 00:04:43,330
+with the same arguments, the same empty
+tuple, it will return a different string.
+
+74
+00:04:43,330 --> 00:04:46,900
+So readLine is not a mathematical
+function
+
+75
+00:04:46,900 --> 00:04:50,040
+and the reason is because it has side
+effects.
+
+76
+00:04:50,040 --> 00:04:53,150
+So it will return a string
+
+77
+00:04:53,150 --> 00:04:56,810
+but there is something there that is not
+apparent in the type.
+
+78
+00:04:56,810 --> 00:05:00,330
+And that's what the I/O monad
+
+79
+00:05:00,330 --> 00:05:04,380
+solves. The I/O monad expresses
+
+80
+00:05:04,380 --> 00:05:07,430
+in the type of a function that this
+function
+
+81
+00:05:07,430 --> 00:05:11,440
+has a side effect. So interactive
+programs, programs that
+
+82
+00:05:11,440 --> 00:05:15,000
+interact with the outside world, have
+side effects
+
+83
+00:05:15,000 --> 00:05:18,870
+and we need a way to incorporate side
+effects
+
+84
+00:05:18,870 --> 00:05:22,540
+in Haskell programs.
+
+85
+00:05:22,540 --> 00:05:26,060
+I don't think that side effects are bad.
+
+86
+00:05:26,060 --> 00:05:31,030
+Actually they are super useful
+because without side effects it is
+
+87
+00:05:31,030 --> 00:05:32,560
+really hard to write these
+
+88
+00:05:32,560 --> 00:05:37,180
+interactive programs. But the thing is
+that you have to make sure
+
+89
+00:05:37,180 --> 00:05:40,330
+again it's a balance, it's a question of
+taste
+
+90
+00:05:40,330 --> 00:05:45,520
+how you use those side effects.
+It's a little bit like salt or spices
+
+91
+00:05:45,520 --> 00:05:46,240
+in food.
+
+92
+00:05:46,240 --> 00:05:50,850
+You can overdo it and your food is too
+salty and it doesn't taste well
+
+93
+00:05:50,850 --> 00:05:54,400
+but if you don't use any salt
+
+94
+00:05:54,400 --> 00:05:57,510
+your food is also not tasty.
+
+95
+00:05:57,510 --> 00:06:01,080
+So it is up to you as a developer
+
+96
+00:06:01,080 --> 00:06:04,500
+to decide how much side effects to use.
+
+97
+00:06:04,500 --> 00:06:07,890
+But it is never a good answer to say
+
+98
+00:06:07,890 --> 00:06:10,910
+I'm never going to use side effects
+
+99
+00:06:10,910 --> 00:06:15,200
+or it is also never good, the other
+extreme, to say
+
+100
+00:06:15,200 --> 00:06:18,600
+I don't care about purity.
+
+101
+00:06:18,600 --> 00:06:21,880
+That is exactly what shows mastery of
+programming
+
+102
+00:06:21,880 --> 00:06:25,100
+that you can decide where to use side
+effects
+
+103
+00:06:25,100 --> 00:06:28,350
+and where to avoid them. But if I hear
+you say
+
+104
+00:06:28,350 --> 00:06:29,310
+
+
+105
+00:06:29,310 --> 00:06:33,240
+we have to program without any side
+effects, you have not
+
+106
+00:06:33,240 --> 00:06:37,900
+understood the essence of this course.
+
+107
+00:06:37,900 --> 00:06:43,620
+As I mentioned, the solution to
+the problem is to introduce a new type
+
+108
+00:06:43,620 --> 00:06:48,160
+and we really don't care how this type
+is defined.
+
+109
+00:06:48,160 --> 00:06:51,210
+For now we will just assume
+
+110
+00:06:51,210 --> 00:06:54,480
+it is some abstract type: IO of a.
+
+111
+00:06:54,480 --> 00:06:58,950
+And this type denotes an action
+
+112
+00:06:58,950 --> 00:07:02,620
+that will perform some side effects and
+as a result
+
+113
+00:07:02,620 --> 00:07:06,140
+will return a value of type a.
+
+114
+00:07:06,140 --> 00:07:12,160
+
+
+115
+00:07:12,160 --> 00:07:15,550
+Maybe a good way to
+
+116
+00:07:15,550 --> 00:07:20,840
+remember the difference, is that in
+Haskell so far we have only used
+
+117
+00:07:20,840 --> 00:07:21,730
+expressions
+
+118
+00:07:21,730 --> 00:07:24,990
+but we didn't mention statements, whereas
+in an imperative
+
+119
+00:07:24,990 --> 00:07:29,340
+language there are expressions and there
+are statements, where statements
+
+120
+00:07:29,340 --> 00:07:32,560
+mostly communicate via side effects. And
+
+121
+00:07:32,560 --> 00:07:37,060
+in some sense by introducing the I/O monad
+
+122
+00:07:37,060 --> 00:07:40,710
+we are also introducing statements in
+Haskell.
+
+123
+00:07:40,710 --> 00:07:44,390
+Or another way to say that is
+we introduce the notion of
+
+124
+00:07:44,390 --> 00:07:48,600
+actions in Haskell. But these actions
+themselves
+
+125
+00:07:48,600 --> 00:07:53,350
+are also expressions, so they can be
+composed. Let's look at some concrete
+
+126
+00:07:53,350 --> 00:07:54,230
+examples
+
+127
+00:07:54,230 --> 00:07:57,530
+of the I/O monad. Here is IO of Char
+
+128
+00:07:57,530 --> 00:08:02,590
+which is the type of an action that will
+perform some side effects
+
+129
+00:08:02,590 --> 00:08:06,080
+and then return a character. And then
+
+130
+00:08:06,080 --> 00:08:09,150
+the most imperative
+
+131
+00:08:09,150 --> 00:08:12,950
+of imperative types, that is IO of unit.
+
+132
+00:08:12,950 --> 00:08:16,790
+That is a function that only performs
+side effects.
+
+133
+00:08:16,790 --> 00:08:20,050
+The only interesting thing it does is
+performing side effects.
+
+134
+00:08:20,050 --> 00:08:24,780
+Because it has no real result value, it
+returns the empty tuple.
+
+135
+00:08:24,780 --> 00:08:28,210
+And in a typical imperative language
+
+136
+00:08:28,210 --> 00:08:32,800
+this would be the type void. So if you
+have a function that returns void
+
+137
+00:08:32,800 --> 00:08:36,280
+in Haskell that becomes a function that
+returns
+
+138
+00:08:36,280 --> 00:08:39,520
+type IO of unit.
+
+139
+00:08:39,520 --> 00:08:42,180
+
+
+140
+00:08:42,180 --> 00:08:45,290
+This empty tuple is nothing special.
+
+141
+00:08:45,290 --> 00:08:51,320
+It's just a tuple that has no
+components. Now
+
+142
+00:08:51,320 --> 00:08:55,790
+that we have this type, and again we
+really don't care how the I/O monad is
+
+143
+00:08:55,790 --> 00:08:56,540
+defined
+
+144
+00:08:56,540 --> 00:08:59,770
+as long as we have operations
+
+145
+00:08:59,770 --> 00:09:03,399
+defined on them. So this is a little
+bit like
+
+146
+00:09:03,399 --> 00:09:06,940
+object-oriented programming. We have a
+class.
+
+147
+00:09:06,940 --> 00:09:10,899
+We have methods on that class. And in
+order to use
+
+148
+00:09:10,899 --> 00:09:14,730
+a class, you don't need to know how that
+class is implemented.
+
+149
+00:09:14,730 --> 00:09:18,700
+You just use the methods, and that's the
+same thing here
+
+150
+00:09:18,700 --> 00:09:22,690
+with the I/O monad. And the first operation
+that we have
+
+151
+00:09:22,690 --> 00:09:26,490
+on the I/O monad here is getChar. In
+
+152
+00:09:26,490 --> 00:09:29,820
+a typical imperative language, getChar
+
+153
+00:09:29,820 --> 00:09:33,040
+has type
+
+154
+00:09:33,040 --> 00:09:36,080
+unit arrow char.
+
+155
+00:09:36,080 --> 00:09:41,220
+In Haskell, because we are lazy, we don't
+need the unit arrow.
+
+156
+00:09:41,220 --> 00:09:44,510
+And so instead getChar is just
+
+157
+00:09:44,510 --> 00:09:48,010
+something that has a side effect and then
+
+158
+00:09:48,010 --> 00:09:51,820
+returns a character. If this would
+be strict
+
+159
+00:09:51,820 --> 00:09:56,150
+it would immediately return a character
+
+160
+00:09:56,150 --> 00:09:56,550
+right there.
+
+161
+00:09:56,550 --> 00:10:00,240
+But since Haskell is lazy, we don't have to
+
+162
+00:10:00,240 --> 00:10:04,529
+have this explicit thunk that defers
+evaluation.
+
+163
+00:10:04,529 --> 00:10:08,040
+That's another interesting thing.
+
+164
+00:10:08,040 --> 00:10:13,810
+In typical imperative languages, whenever
+you see a function that has type unit
+
+165
+00:10:13,810 --> 00:10:17,370
+arrow something, it means that you are
+trying to simulate
+
+166
+00:10:17,370 --> 00:10:21,350
+laziness. Here is another
+
+167
+00:10:21,350 --> 00:10:24,790
+example. The function
+
+168
+00:10:24,790 --> 00:10:29,360
+putChar, which writes a character to
+the standard output.
+
+169
+00:10:29,360 --> 00:10:32,820
+It takes a character and it returns void.
+
+170
+00:10:32,820 --> 00:10:36,490
+It has side effects, but it doesn't
+return any
+
+171
+00:10:36,490 --> 00:10:40,040
+useful value. And then
+
+172
+00:10:40,040 --> 00:10:44,100
+just like for parsers, we have the
+
+173
+00:10:44,100 --> 00:10:48,339
+action that immediately returns without
+doing anything.
+
+174
+00:10:48,339 --> 00:10:53,140
+So it takes a value and it immediately
+returns that value
+
+175
+00:10:53,140 --> 00:10:54,840
+without performing
+
+176
+00:10:54,840 --> 00:10:59,100
+any further side effects. And then
+
+177
+00:10:59,100 --> 00:11:04,470
+we will be using the same kind of
+sequencing that we used for parsers.
+
+178
+00:11:04,470 --> 00:11:08,330
+And again, in the exercises you will
+
+179
+00:11:08,330 --> 00:11:12,710
+see how this do notation
+
+180
+00:11:12,710 --> 00:11:16,510
+is translated in terms of the bind
+
+181
+00:11:16,510 --> 00:11:19,520
+function. But right now
+
+182
+00:11:19,520 --> 00:11:23,150
+we will just use the do notation, because
+it looks very much like
+
+183
+00:11:23,150 --> 00:11:26,260
+traditional imperative code. So here is a
+function
+
+184
+00:11:26,260 --> 00:11:30,990
+that reads a character, reads another
+character but
+
+185
+00:11:30,990 --> 00:11:35,210
+ignores the result, and then reads a
+third character
+
+186
+00:11:35,210 --> 00:11:40,040
+and returns the pair of those two. So if
+you remember the parsers from the last
+
+187
+00:11:40,040 --> 00:11:40,650
+lecture
+
+188
+00:11:40,650 --> 00:11:44,380
+we had more or less exactly the same
+example here
+
+189
+00:11:44,380 --> 00:11:48,350
+except that we used the item parser
+three times and here
+
+190
+00:11:48,350 --> 00:11:54,400
+we are reading a character from the
+standard input. We can
+
+191
+00:11:54,400 --> 00:11:58,800
+define a function using getChar
+
+192
+00:11:58,800 --> 00:12:03,630
+that reads a string from the standard
+input as follows:
+
+193
+00:12:03,630 --> 00:12:07,980
+we read a character, we call that
+character x.
+
+194
+00:12:07,980 --> 00:12:12,430
+Notice that getChar has type IO of Char
+
+195
+00:12:12,430 --> 00:12:16,010
+and then x here has type Char.
+
+196
+00:12:16,010 --> 00:12:20,440
+So the arrow is very similar to the
+arrow in generators in list
+
+197
+00:12:20,440 --> 00:12:21,780
+comprehensions. So there is an
+
+198
+00:12:21,780 --> 00:12:25,160
+IO of t on the right and then there is
+
+199
+00:12:25,160 --> 00:12:28,420
+a t on the left of the arrow. And that's
+why
+
+200
+00:12:28,420 --> 00:12:31,610
+we use the arrow symbol and not
+
+201
+00:12:31,610 --> 00:12:36,340
+the equals symbol, because the type on this
+side is different than the type
+
+202
+00:12:36,340 --> 00:12:41,000
+on that side. If the character that we
+just read is
+
+203
+00:12:41,000 --> 00:12:45,230
+the new line, then we are done
+so we return
+
+204
+00:12:45,230 --> 00:12:48,990
+the empty string. Otherwise we
+recursively
+
+205
+00:12:48,990 --> 00:12:53,730
+read on to read the rest of this
+character
+
+206
+00:12:53,730 --> 00:12:58,120
+and then we return the previous
+character that we read
+
+207
+00:12:58,120 --> 00:13:02,900
+concatenated on the string that we
+recursively write.
+
+208
+00:13:02,900 --> 00:13:06,070
+So another recursive
+
+209
+00:13:06,070 --> 00:13:09,610
+thing here, where we just
+
+210
+00:13:09,610 --> 00:13:14,210
+call this thing itself recursively, until
+we hit the new line
+
+211
+00:13:14,210 --> 00:13:20,230
+and then we return all the values. Here
+is an example
+
+212
+00:13:20,230 --> 00:13:24,010
+that takes a string and writes it to the
+standard output.
+
+213
+00:13:24,010 --> 00:13:29,580
+If we have the empty string, we cannot
+do anything, so we just
+
+214
+00:13:29,580 --> 00:13:35,040
+return unit immediately. If we have a
+string that starts with a character x
+
+215
+00:13:35,040 --> 00:13:37,380
+followed by a string xs
+
+216
+00:13:37,380 --> 00:13:41,530
+we print the first character and
+then recursively
+
+217
+00:13:41,530 --> 00:13:45,210
+we print the rest of the string on the
+screen.
+
+218
+00:13:45,210 --> 00:13:50,330
+This guy here returns IO of unit, so the
+whole thing returns IO of
+
+219
+00:13:50,330 --> 00:13:55,440
+unit and everything fits. Now
+
+220
+00:13:55,440 --> 00:13:58,680
+we can define
+
+221
+00:13:58,680 --> 00:14:02,700
+another function that simply combines
+putString with putChar
+
+222
+00:14:02,700 --> 00:14:06,170
+to write a new line behind it, so we
+first print the string
+
+223
+00:14:06,170 --> 00:14:13,170
+and then we print a new line. The beauty
+of all this
+
+224
+00:14:13,170 --> 00:14:17,450
+is that we can mix and match imperative
+code or I/O
+
+225
+00:14:17,450 --> 00:14:21,690
+code with all the functions that we
+have defined before.
+
+226
+00:14:21,690 --> 00:14:26,040
+In particular functions over lists,
+because strings are just lists.
+
+227
+00:14:26,040 --> 00:14:29,280
+So we can imperatively read
+
+228
+00:14:29,280 --> 00:14:32,490
+a string from the standard input. Then
+
+229
+00:14:32,490 --> 00:14:37,270
+use regular list
+
+230
+00:14:37,270 --> 00:14:40,690
+functions on that string and then
+
+231
+00:14:40,690 --> 00:14:43,870
+imperatively
+
+232
+00:14:43,870 --> 00:14:47,290
+within the I/O monad write this to the
+standard output.
+
+233
+00:14:47,290 --> 00:14:51,240
+So let's walk through this example. We
+
+234
+00:14:51,240 --> 00:14:55,070
+print "Enter a string", we read this
+
+235
+00:14:55,070 --> 00:14:58,900
+line from the input and then we print
+
+236
+00:14:58,900 --> 00:15:02,510
+that that line has so many characters.
+
+237
+00:15:02,510 --> 00:15:05,920
+Very simple, but you see here you combine
+there's an
+
+238
+00:15:05,920 --> 00:15:09,600
+island of purity in the sea of impurity.
+
+239
+00:15:09,600 --> 00:15:14,199
+And this is a perfect perfect perfect way
+to program.
+
+240
+00:15:14,199 --> 00:15:18,279
+So you have little parts of pure code
+embedded
+
+241
+00:15:18,279 --> 00:15:23,589
+in a context of impure code. And when we
+
+242
+00:15:23,589 --> 00:15:27,639
+run this string length in GHCi
+
+243
+00:15:27,639 --> 00:15:31,930
+it will print "Enter a string", we
+type a string
+
+244
+00:15:31,930 --> 00:15:36,130
+and it will tell us that this string has
+five characters.
+
+245
+00:15:36,130 --> 00:15:39,699
+Note that this thing is only
+
+246
+00:15:39,699 --> 00:15:43,259
+evaluated for the side effects. It
+doesn't return
+
+247
+00:15:43,259 --> 00:15:46,279
+a useful value and we see that
+
+248
+00:15:46,279 --> 00:15:51,800
+because it has type IO of unit. This is
+the end of part 1.
+
+249
+00:15:51,800 --> 00:15:57,680
+See you in a few minutes when we are
+continuing to talk about the I/O monad.
+
+250
+00:15:57,680 --> 00:15:57,980
+Thank you!
+

@@ -42,6 +42,6 @@ putStrLn'g xs = putStr' xs >> putStr' "\n"
 
 {-
 -- answer h
-putStrLn'h [] = putChar '\n'
+putStrLn'h [] = putChar "\n"
 putStrLn'h xs = putStr' xs >> putChar '\n'
 -}

@@ -6,7 +6,7 @@ mapM'a f as = sequence' (map f as)
 {-
 -- answer b
 mapM'b f [] = return []
-mapM'b f (a : as) = f a >>= \b -> mapM' f as >>= \bs -> return (b : bs)
+mapM'b f (a : as) = f a >>= \b -> mapM'b f as >>= \bs -> return (b : bs)
 -}
 
 {-
@@ -26,7 +26,7 @@ mapM'e f [] = return []
 mapM'e f (a : as) =
     do
         f a -> b
-        mapM' f as -> bs
+        mapM'e f as -> bs
         return (b : bs)
 -}
 

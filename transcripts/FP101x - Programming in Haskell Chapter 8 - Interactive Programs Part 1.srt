@@ -221,7 +221,7 @@ new inputs. So what this program has to do
 
 50
 00:03:14,730 --> 00:03:18,020
-it has two interact with the keyboard
+it has to interact with the keyboard
 
 51
 00:03:18,020 --> 00:03:21,590

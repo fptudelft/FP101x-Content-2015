@@ -34,7 +34,7 @@ getc xs = do x <- getChar
 
 {-
 -- answer d
-getLine'd = get []
+getLine'd = getd []
 
 getd :: String -> IO String
 getd xs = do x <- getChar

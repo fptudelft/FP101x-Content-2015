@@ -7,7 +7,7 @@ geta xs = do x <- getChar
             case x of
                 ' ' -> return xs
                 '\n' -> return xs
-                _ -> geta (xs + [x])
+                _ -> geta (xs ++ [x])
 -}
 
 {-
@@ -29,7 +29,7 @@ getc :: String -> IO String
 getc xs = do x <- getChar
             case x of
                 '\n' -> return xs
-                _ -> getc (xs + [x])
+                _ -> getc (xs ++ [x])
 -}
 
 {-
@@ -40,5 +40,5 @@ getd :: String -> IO String
 getd xs = do x <- getChar
             case x of
                 '\n' -> return (x : xs)
-                _ -> getd (xs + [x])
+                _ -> getd (xs ++ [x])
 -}

@@ -2,7 +2,7 @@
 -- original statement
 import Data.List
 import Data.Char
-import Unsafe.Coerce
+import Hugs.IOExts (unsafeCoerce)
 
 data Nat = Zero | Succ Nat deriving Show
 -}

@@ -28,5 +28,5 @@ multc m (Succ n) = add n (multc m n)
 {-
 -- answer d
 multd m Zero = Zero
-multd m n = add m (mult m (Succ n))
+multd m n = add m (multd m (Succ n))
 -}

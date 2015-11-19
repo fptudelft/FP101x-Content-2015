@@ -65,18 +65,18 @@ occursf m (Node l n r)
 
 {-
 -- answer g
-occurse m n = m == n
-occurse m (Node l n r)
+occursg m n = m == n
+occursg m (Node l n r)
     | m == n = True
-    | m < n = occurse m l
-    | otherwise = occurse m r
+    | m < n = occursg m l
+    | otherwise = occursg m r
 -}
 
 {-
 -- answer h
-occurse m (Leaf n) = m == n
-occurse m (Node l n r)
+occursh m (Leaf n) = m == n
+occursh m (Node l n r)
     | m == n = False
-    | m < n = occurse m r
-    | otherwise = occurse m l
+    | m < n = occursh m r
+    | otherwise = occursh m l
 -}

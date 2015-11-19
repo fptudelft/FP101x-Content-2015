@@ -1,0 +1,342 @@
+1
+00:00:00,190 --> 00:00:06,589
+Okay! Let's finish our derivation of the
+countdown problem. We started out
+
+2
+00:00:06,589 --> 00:00:09,840
+with a very simple brute force solution.
+
+3
+00:00:09,840 --> 00:00:13,830
+Then in the second step we took
+
+4
+00:00:13,830 --> 00:00:18,130
+the generation process and we made
+sure that we
+
+5
+00:00:18,130 --> 00:00:21,369
+never generate expressions that were
+invalid.
+
+6
+00:00:21,369 --> 00:00:25,230
+And what we are going to do in this third
+step is we are going to
+
+7
+00:00:25,230 --> 00:00:29,869
+shrink the search space by leveraging
+
+8
+00:00:29,869 --> 00:00:33,280
+algebraic properties of an expression.
+In particular
+
+9
+00:00:33,280 --> 00:00:36,800
+the fact that multiplication is
+commutative
+
+10
+00:00:36,800 --> 00:00:41,030
+and the fact that 1 is the neutral
+element
+
+11
+00:00:41,030 --> 00:00:44,500
+for multiplication.
+
+12
+00:00:44,500 --> 00:00:48,129
+These are the properties we are going to
+use. Multiplication
+
+13
+00:00:48,129 --> 00:00:52,870
+is commutative and
+
+14
+00:00:52,870 --> 00:00:56,000
+1 is the neutral element for
+
+15
+00:00:56,000 --> 00:00:59,510
+multiplication. Alright.
+
+16
+00:00:59,510 --> 00:01:04,390
+Here is the previous definition
+of whether an
+
+17
+00:01:04,390 --> 00:01:07,890
+expression was valid. And remember:
+
+18
+00:01:07,890 --> 00:01:11,750
+An expression was valid when the
+
+19
+00:01:11,750 --> 00:01:15,130
+numbers of which it was composed were
+positive.
+
+20
+00:01:15,130 --> 00:01:18,170
+When we added two
+
+21
+00:01:18,170 --> 00:01:22,640
+values, well, that is valid, because
+adding two positive numbers
+
+22
+00:01:22,640 --> 00:01:26,369
+gives a positive number. When we subtract
+two numbers
+
+23
+00:01:26,369 --> 00:01:30,310
+the result is positive when the first
+number is larger than the second.
+
+24
+00:01:30,310 --> 00:01:35,220
+Multiplication of two positive
+numbers is always positive.
+
+25
+00:01:35,220 --> 00:01:38,329
+And here we had to make sure that
+
+26
+00:01:38,329 --> 00:01:41,829
+we remained within the integer domain.
+
+27
+00:01:41,829 --> 00:01:47,290
+In this case, instead of just
+returning True
+
+28
+00:01:47,290 --> 00:01:52,159
+what we do now is we say we want
+x to be less than y. So we are going
+
+29
+00:01:52,159 --> 00:01:53,939
+to make this thing biased.
+
+30
+00:01:53,939 --> 00:01:57,009
+Adding x to y is valid
+
+31
+00:01:57,009 --> 00:02:02,070
+if x is less than y and we are
+going to do the same
+
+32
+00:02:02,070 --> 00:02:05,829
+for multiplication. And now
+
+33
+00:02:05,829 --> 00:02:09,530
+we also want to say that
+
+34
+00:02:09,530 --> 00:02:13,150
+if the x is 1
+
+35
+00:02:13,150 --> 00:02:16,610
+we don't consider this thing valid.
+
+36
+00:02:16,610 --> 00:02:19,920
+So we are throwing that one away. So
+what we did
+
+37
+00:02:19,920 --> 00:02:24,780
+is we biased the representation. We
+say we always want the one on the left
+
+38
+00:02:24,780 --> 00:02:28,569
+to be larger than the right and by that
+we have
+
+39
+00:02:28,569 --> 00:02:32,700
+eliminated Add y x as a valid
+expression.
+
+40
+00:02:32,700 --> 00:02:37,780
+So you see this is a clever trick. If x
+and y are the same, it is still valid
+
+41
+00:02:37,780 --> 00:02:41,690
+but if x is less than y, less or equal
+than y
+
+42
+00:02:41,690 --> 00:02:45,250
+we have eliminated the
+
+43
+00:02:45,250 --> 00:02:48,780
+commutative expression Add y x.
+
+44
+00:02:48,780 --> 00:02:52,920
+Good. And then we also
+
+45
+00:02:52,920 --> 00:02:56,170
+want to use the case where
+
+46
+00:02:56,170 --> 00:03:00,769
+x or y is 1. So this takes into
+account
+
+47
+00:03:00,769 --> 00:03:05,360
+the commutativity of multiplication
+and addition
+
+48
+00:03:05,360 --> 00:03:09,800
+and the fact that 1 is the neutral
+element
+
+49
+00:03:09,800 --> 00:03:13,450
+of multiplication. And finally
+
+50
+00:03:13,450 --> 00:03:16,890
+also when we divide by 1
+
+51
+00:03:16,890 --> 00:03:21,220
+that's the same as x. When we
+
+52
+00:03:21,220 --> 00:03:25,590
+apply this very simple extension to
+the tests
+
+53
+00:03:25,590 --> 00:03:29,959
+it has quite dramatic results. So when we
+look at the solutions
+
+54
+00:03:29,959 --> 00:03:35,700
+for this, there are now only 250,000
+valid expressions.
+
+55
+00:03:35,700 --> 00:03:39,610
+So that is about 20 times less than
+before.
+
+56
+00:03:39,610 --> 00:03:42,790
+And when we look at the solutions
+
+57
+00:03:42,790 --> 00:03:47,830
+there are about 16 times less,
+because all the solutions that we had
+
+58
+00:03:47,830 --> 00:03:51,510
+were duplicates of each other, or all the
+solutions, there were many duplicates
+
+59
+00:03:51,510 --> 00:03:55,030
+in those solutions. So when we run this now
+
+60
+00:03:55,030 --> 00:03:59,489
+it finds the first solution
+
+61
+00:03:59,489 --> 00:04:05,129
+in 0.02 seconds, but even more important
+
+62
+00:04:05,129 --> 00:04:08,860
+it finds all the solutions in under
+
+63
+00:04:08,860 --> 00:04:11,909
+half of a second.
+
+64
+00:04:11,909 --> 00:04:15,409
+Really all the
+
+65
+00:04:15,409 --> 00:04:19,130
+problems from this TV program
+
+66
+00:04:19,130 --> 00:04:23,160
+are solved within half a second.
+
+67
+00:04:23,160 --> 00:04:27,139
+And we started out with all solutions
+being about
+
+68
+00:04:27,139 --> 00:04:30,990
+44 seconds, so this is quite a dramatic
+improvement.
+
+69
+00:04:30,990 --> 00:04:34,850
+And you see that it was not that
+difficult. We made two small steps
+
+70
+00:04:34,850 --> 00:04:39,300
+starting with an obviously correct
+solution that was slow
+
+71
+00:04:39,300 --> 00:04:42,780
+and then we refactor it to remain correct
+
+72
+00:04:42,780 --> 00:04:46,690
+but become fast. And this is the way
+
+73
+00:04:46,690 --> 00:04:50,120
+Haskell programmers like to work.
+
+74
+00:04:50,120 --> 00:04:54,250
+You start with something that is right
+and then you make it better.
+
+75
+00:04:54,250 --> 00:04:57,470
+Great, thank you so much, happy hacking.
+
+76
+00:04:57,470 --> 00:05:00,210
+Make sure you do your homework and then
+see you next week.
+

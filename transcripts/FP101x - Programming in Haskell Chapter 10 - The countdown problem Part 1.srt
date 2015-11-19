@@ -1,0 +1,1383 @@
+1
+00:00:01,100 --> 00:00:03,919
+Welcome everybody to this
+
+2
+00:00:03,919 --> 00:00:07,190
+episode of functional programming 101.
+
+3
+00:00:07,190 --> 00:00:12,280
+In this lecture we're going to do
+something slightly different.
+
+4
+00:00:12,280 --> 00:00:16,170
+We're not going to introduce new
+concepts.
+
+5
+00:00:16,170 --> 00:00:19,619
+What we're going to do is, we're going to
+show you
+
+6
+00:00:19,619 --> 00:00:22,760
+how a typical development,
+
+7
+00:00:22,760 --> 00:00:26,720
+transformational development
+
+8
+00:00:26,720 --> 00:00:30,880
+of programs in Haskell works.
+
+9
+00:00:30,880 --> 00:00:34,090
+The general pattern is that
+
+10
+00:00:34,090 --> 00:00:38,210
+you start with an obviously correct
+solution
+
+11
+00:00:38,210 --> 00:00:42,300
+that usually uses a lot of brute force
+
+12
+00:00:42,300 --> 00:00:45,649
+and is super inefficient. And then
+
+13
+00:00:45,649 --> 00:00:49,110
+you use refactoring to make it more
+efficient.
+
+14
+00:00:49,110 --> 00:00:53,960
+But the first goal is to write the
+simplest program
+
+15
+00:00:53,960 --> 00:00:57,190
+that works no matter how inefficient it
+is.
+
+16
+00:00:57,190 --> 00:01:00,399
+And then you start refactoring it.
+
+17
+00:01:00,399 --> 00:01:05,049
+There's many similarities with
+extreme programming and things like
+
+18
+00:01:05,049 --> 00:01:05,510
+that.
+
+19
+00:01:05,510 --> 00:01:09,409
+Just do the minimal things to make it
+work and then later
+
+20
+00:01:09,409 --> 00:01:14,229
+we will try to optimize it and
+maybe it's not necessary to optimize.
+
+21
+00:01:14,229 --> 00:01:18,759
+Because even if something is quadratic,
+maybe you never use it on big 
+
+22
+00:01:18,759 --> 00:01:19,470
+inputs.
+
+23
+00:01:19,470 --> 00:01:23,840
+Or all the inputs that you get can
+run in reasonable time
+
+24
+00:01:23,840 --> 00:01:27,619
+and you can spend your time better
+on other things.
+
+25
+00:01:27,619 --> 00:01:31,100
+No premature optimization. Make sure
+
+26
+00:01:31,100 --> 00:01:34,670
+that things are correct first and then
+optimize
+
+27
+00:01:34,670 --> 00:01:38,119
+later. One thing that we won't show here
+
+28
+00:01:38,119 --> 00:01:42,420
+is that you can also take your
+Haskell code,
+
+29
+00:01:42,420 --> 00:01:45,820
+use it as a prototype, once you're happy
+with it
+
+30
+00:01:45,820 --> 00:01:49,030
+you implement the same
+
+31
+00:01:49,030 --> 00:01:54,479
+algorithm in another language that is
+maybe more efficient. 
+
+32
+00:01:54,479 --> 00:01:58,600
+But, depending
+
+33
+00:01:58,600 --> 00:02:02,869
+on the particular program it might, the
+
+34
+00:02:02,869 --> 00:02:05,899
+Haskell Compiler might already do a
+good job
+
+35
+00:02:05,899 --> 00:02:09,459
+but sometimes it's not just about speed
+that you want to use a different
+
+36
+00:02:09,459 --> 00:02:10,080
+language
+
+37
+00:02:10,080 --> 00:02:11,960
+but it is because
+
+38
+00:02:11,960 --> 00:02:17,720
+in your company they're not using
+Haskell but say PHP.
+
+39
+00:02:17,720 --> 00:02:21,710
+Remember one of the mottos of this
+course
+
+40
+00:02:21,710 --> 00:02:24,710
+is "Think like a fundamentalist
+
+41
+00:02:24,710 --> 00:02:28,080
+but code like a Hacker". 
+
+42
+00:02:28,080 --> 00:02:32,310
+This is what we will see here. We
+start with a very fundamentalist thing, it
+
+43
+00:02:32,310 --> 00:02:33,460
+has to be correct
+
+44
+00:02:33,460 --> 00:02:36,670
+and then we'll hack on the
+code
+
+45
+00:02:36,670 --> 00:02:40,820
+to make it more efficient. 
+
+46
+00:02:40,820 --> 00:02:44,470
+The problem we're going to look at is the 
+so-called
+
+47
+00:02:44,470 --> 00:02:49,380
+countdown problem. Countdown problem
+
+48
+00:02:49,380 --> 00:02:54,720
+is based on a quiz program on British
+TV that has been there for a while.
+
+49
+00:02:54,720 --> 00:02:58,010
+It's originally based on a French TV show.
+
+50
+00:02:58,010 --> 00:03:01,290
+In that show
+
+51
+00:03:01,290 --> 00:03:05,560
+there's a game that we call here
+
+52
+00:03:05,560 --> 00:03:09,660
+the countdown problem. If you
+
+53
+00:03:09,660 --> 00:03:13,650
+Google for "sudoku solver in Haskell" or
+
+54
+00:03:13,650 --> 00:03:17,250
+if you read any of Richard Bird's
+papers, you will
+
+55
+00:03:17,250 --> 00:03:20,460
+see a very similar development. This is
+
+56
+00:03:20,460 --> 00:03:24,400
+very idiomatic Haskell development.
+
+57
+00:03:24,400 --> 00:03:29,710
+Let's look at what this countdown problem
+is first in an informal way.
+
+58
+00:03:29,710 --> 00:03:32,710
+What we need to do is, given
+
+59
+00:03:32,710 --> 00:03:36,460
+a set of numbers and the standard
+
+60
+00:03:36,460 --> 00:03:39,470
+operators, addition,
+
+61
+00:03:39,470 --> 00:03:43,920
+subtraction, multiplication and
+division
+
+62
+00:03:43,920 --> 00:03:47,320
+we need to create an expression whose
+
+63
+00:03:47,320 --> 00:03:51,400
+value is some given value. In this case
+we say
+
+64
+00:03:51,400 --> 00:03:54,940
+we have to create an expression whose
+value is
+
+65
+00:03:54,940 --> 00:04:00,660
+765. Now for humans
+
+66
+00:04:00,660 --> 00:04:03,820
+this can be hard because the search
+space
+
+67
+00:04:03,820 --> 00:04:08,740
+is rather big. We have to try
+all possible combinations with 
+
+68
+00:04:08,740 --> 00:04:09,590
+parenthesis
+
+69
+00:04:09,590 --> 00:04:13,940
+and whatever to find the answer. This
+is fun in a quiz show
+
+70
+00:04:13,940 --> 00:04:18,400
+and some people are really good at it,
+can do it fast, other people
+
+71
+00:04:18,400 --> 00:04:22,410
+fail, but this is something
+computers are good at.
+
+72
+00:04:22,410 --> 00:04:24,980
+Because computers have infinite
+patience.
+
+73
+00:04:24,980 --> 00:04:28,200
+They can churn through this
+search space
+
+74
+00:04:28,200 --> 00:04:32,800
+and find a solution. If we can
+restrict the search page enough
+
+75
+00:04:32,800 --> 00:04:36,040
+it might even be able to find the
+solutions
+
+76
+00:04:36,040 --> 00:04:39,100
+very quickly. That will be the case
+
+77
+00:04:39,100 --> 00:04:43,610
+for this example. There's a couple of more
+rules.
+
+78
+00:04:43,610 --> 00:04:47,660
+It's that all numbers including
+
+79
+00:04:47,660 --> 00:04:53,220
+intermediate results must be natural
+numbers, they must be positive,
+
+80
+00:04:53,220 --> 00:04:56,560
+each of the numbers in the original set
+
+81
+00:04:56,560 --> 00:05:00,280
+can be used only once 
+
+82
+00:05:00,280 --> 00:05:04,190
+and then there's another set of rules but
+
+83
+00:05:04,190 --> 00:05:07,800
+we keep things simple, right here.
+
+84
+00:05:07,800 --> 00:05:11,040
+In particular let's look at a possible
+solution.
+
+85
+00:05:11,040 --> 00:05:14,930
+In our case, using the numbers
+
+86
+00:05:14,930 --> 00:05:18,370
+25, 10, 50 and 1 we can create
+
+87
+00:05:18,370 --> 00:05:21,610
+765 as follows: and notice that
+
+88
+00:05:21,610 --> 00:05:25,600
+25-10 is a positive number
+
+89
+00:05:25,600 --> 00:05:28,950
+50+1 is a positive number and
+
+90
+00:05:28,950 --> 00:05:32,080
+when you multiply two positive numbers
+they are
+
+91
+00:05:32,080 --> 00:05:36,540
+positive as well. Alright,
+
+92
+00:05:36,540 --> 00:05:39,670
+for this particular example the
+search space
+
+93
+00:05:39,670 --> 00:05:43,500
+consist of 780 possible solutions
+
+94
+00:05:43,500 --> 00:05:46,710
+but if we slightly change
+
+95
+00:05:46,710 --> 00:05:50,350
+the result value then
+
+96
+00:05:50,350 --> 00:05:54,310
+suddenly we can find no solution.
+
+97
+00:05:54,310 --> 00:05:58,850
+We go from 780 possible solutions
+
+98
+00:05:58,850 --> 00:06:02,490
+to no solutions. 
+
+99
+00:06:02,490 --> 00:06:06,480
+Let's start to build a solution to
+this program
+
+100
+00:06:06,480 --> 00:06:10,050
+bottom-up, were going to start
+
+101
+00:06:10,050 --> 00:06:14,420
+by building the pieces and then we glue
+everything together to solve the problem.
+
+102
+00:06:14,420 --> 00:06:18,470
+Erik
+
+103
+00:06:18,470 --> 00:06:23,240
+come on, You make a mess.
+
+104
+00:06:23,240 --> 00:06:26,639
+Ok here we go, what we're going to do
+
+105
+00:06:26,639 --> 00:06:29,719
+is we'll define our
+
+106
+00:06:29,719 --> 00:06:35,189
+operators as an algebraic data type,
+so we have addition
+
+107
+00:06:35,189 --> 00:06:40,129
+subtraction, multiplication and division.
+What we're going to do is we're
+
+108
+00:06:40,129 --> 00:06:41,089
+going to define
+
+109
+00:06:41,089 --> 00:06:44,379
+an evaluation function that takes two
+
+110
+00:06:44,379 --> 00:06:47,800
+numbers and applies
+
+111
+00:06:47,800 --> 00:06:51,139
+the operator. It's
+
+112
+00:06:51,139 --> 00:06:54,699
+straightforward whenever you want to add
+two numbers,
+
+113
+00:06:54,699 --> 00:06:58,599
+you add two numbers. Whenever
+you want to subtract them you
+
+114
+00:06:58,599 --> 00:06:59,499
+subtract them
+
+115
+00:06:59,499 --> 00:07:03,059
+et cetera. The reason we're using
+
+116
+00:07:03,059 --> 00:07:06,759
+this representation and not immediately
+evaluating them
+
+117
+00:07:06,759 --> 00:07:10,499
+is because we want to build
+
+118
+00:07:10,499 --> 00:07:14,039
+a symbolic representation of the
+expression.
+
+119
+00:07:14,039 --> 00:07:17,559
+Because we don't want to find the
+number
+
+120
+00:07:17,559 --> 00:07:22,589
+765, we want to find an expression that
+when you evaluate it
+
+121
+00:07:22,589 --> 00:07:25,649
+will return this number.
+
+122
+00:07:25,649 --> 00:07:29,139
+We want to do symbolic processing of
+
+123
+00:07:29,139 --> 00:07:33,349
+expressions and then once we have
+an expression we can
+
+124
+00:07:33,349 --> 00:07:38,819
+evaluate it with this function. Now let's 
+encode
+
+125
+00:07:38,819 --> 00:07:42,629
+the rules of the game. One of the
+rules was
+
+126
+00:07:42,629 --> 00:07:46,079
+that every operator
+
+127
+00:07:46,079 --> 00:07:49,649
+must be applied to positive numbers
+
+128
+00:07:49,649 --> 00:07:52,869
+so let's check whether when we
+
+129
+00:07:52,869 --> 00:07:56,349
+apply an operator that it's a valid
+
+130
+00:07:56,349 --> 00:08:00,360
+application of that operater. If we add
+two numbers
+
+131
+00:08:00,360 --> 00:08:04,740
+we don't have to check.
+
+132
+00:08:04,740 --> 00:08:08,409
+Because if we add two positive numbers the result
+will be positive.
+
+133
+00:08:08,409 --> 00:08:12,719
+If we must, make sure
+
+134
+00:08:12,719 --> 00:08:16,499
+that the first number is bigger than the
+second number
+
+135
+00:08:16,499 --> 00:08:20,389
+because otherwise the result would be
+negative and that's not allowed.
+
+136
+00:08:20,389 --> 00:08:23,759
+Multiplying two positive numbers
+
+137
+00:08:23,759 --> 00:08:27,869
+is always positive and when we divide
+two numbers
+
+138
+00:08:27,869 --> 00:08:30,939
+we have to check that they are actually
+
+139
+00:08:30,939 --> 00:08:34,189
+divisible, because otherwise we don't
+get
+
+140
+00:08:34,189 --> 00:08:36,529
+a natural number.
+
+141
+00:08:36,529 --> 00:08:40,089
+Now we can define the data type
+
+142
+00:08:40,089 --> 00:08:43,510
+of expressions, just as we have seen
+
+143
+00:08:43,510 --> 00:08:48,510
+before. We have a slightly different...
+instead of having
+
+144
+00:08:48,510 --> 00:08:53,140
+a separate constructor for each
+operator we have...
+
+145
+00:08:53,140 --> 00:08:57,290
+We have only application that takes these
+operators.
+
+146
+00:08:57,290 --> 00:09:02,560
+How can we evaluate an
+expression?
+
+147
+00:09:02,560 --> 00:09:05,750
+Well we evaluate an expression,
+
+148
+00:09:05,750 --> 00:09:10,640
+either we return a singleton list
+
+149
+00:09:10,640 --> 00:09:14,579
+that contains the value or
+
+150
+00:09:14,579 --> 00:09:18,440
+when the expression is not valid
+
+151
+00:09:18,440 --> 00:09:22,079
+anywhere inside, we return the empty
+list.
+
+152
+00:09:22,079 --> 00:09:26,350
+You will recognize this trick
+
+153
+00:09:26,350 --> 00:09:29,529
+from our parsers. Our parser also
+
+154
+00:09:29,529 --> 00:09:32,630
+returned either an empty lest when they
+failed,
+
+155
+00:09:32,630 --> 00:09:36,290
+or a singleton list with the result
+when they succeeded.
+
+156
+00:09:36,290 --> 00:09:39,770
+We don't use the Maybe type,
+
+157
+00:09:39,770 --> 00:09:43,620
+we're using lists because it's much more
+convenient.
+
+158
+00:09:43,620 --> 00:09:47,770
+If you are a Haskell programmer
+
+159
+00:09:47,770 --> 00:09:53,810
+and you're using the Maybe type, please
+reconsider to use lists.
+
+160
+00:09:53,810 --> 00:09:57,079
+Because, as you see here,
+
+161
+00:09:57,079 --> 00:10:00,800
+its a little bit nicer because you can use
+
+162
+00:10:00,800 --> 00:10:04,260
+list comprehension like this. 
+
+163
+00:10:04,260 --> 00:10:07,480
+Let's see how the evaluation works. 
+Again
+
+164
+00:10:07,480 --> 00:10:10,920
+it's defined recursively over expressions,
+
+165
+00:10:10,920 --> 00:10:15,470
+we either have a value, well in that case
+it succeeds
+
+166
+00:10:15,470 --> 00:10:18,579
+if the expression
+
+167
+00:10:18,579 --> 00:10:23,390
+the value is greater than 0 and if we
+
+168
+00:10:23,390 --> 00:10:27,140
+have an expression that is the
+application of an operator to two sub-
+
+169
+00:10:27,140 --> 00:10:28,029
+expressions
+
+170
+00:10:28,029 --> 00:10:33,300
+what do we do? We evaluate the left hand
+side,
+
+171
+00:10:33,300 --> 00:10:37,180
+we evaluate the right hand side.
+We check
+
+172
+00:10:37,180 --> 00:10:41,680
+that the application of this operator,
+to these numbers, is valid.
+
+173
+00:10:41,680 --> 00:10:45,329
+If that's the case we return
+
+174
+00:10:45,329 --> 00:10:48,780
+that application there.
+
+175
+00:10:48,780 --> 00:10:51,580
+Really what you see here is that it's an
+
+176
+00:10:51,580 --> 00:10:55,360
+evaluation intermixed with a filter
+
+177
+00:10:55,360 --> 00:11:00,310
+for only valid sub-expressions.
+
+178
+00:11:00,310 --> 00:11:04,690
+Now let's continue to
+formalize the problem. There's a
+
+179
+00:11:04,690 --> 00:11:09,410
+few more helper functions that we
+need and these helper functions I will
+
+180
+00:11:09,410 --> 00:11:11,170
+just assume that they exist
+
+181
+00:11:11,170 --> 00:11:16,160
+but you will get them in your exercises.
+
+182
+00:11:16,160 --> 00:11:19,270
+So, hahaha,
+
+183
+00:11:19,270 --> 00:11:22,760
+I can assume that they exist but you
+will have to define them.
+
+184
+00:11:22,760 --> 00:11:26,340
+That's the advantage of teaching a course.
+
+185
+00:11:26,340 --> 00:11:30,230
+The first function here that we're
+going to use is choices.
+
+186
+00:11:30,230 --> 00:11:34,210
+Choices takes a list of values of
+type a
+
+187
+00:11:34,210 --> 00:11:37,620
+and returns a list of lists that
+
+188
+00:11:37,620 --> 00:11:42,210
+gives you all possible ways of choosing zero
+or more
+
+189
+00:11:42,210 --> 00:11:45,510
+elements from this input list.
+
+190
+00:11:45,510 --> 00:11:48,530
+It's not as
+
+191
+00:11:48,530 --> 00:11:52,730
+complicated as it sounds. 
+Let's look at a concrete example.
+
+192
+00:11:52,730 --> 00:11:56,690
+If I want to have all the choices of the
+list [1,2].
+
+193
+00:11:56,690 --> 00:12:01,620
+These are all the possible ways of
+choosing zero or more elements from that
+
+194
+00:12:01,620 --> 00:12:02,350
+list.
+
+195
+00:12:02,350 --> 00:12:08,190
+I can choose 0 elements, I can choose one
+element, so that can be [1] or [2]
+
+196
+00:12:08,190 --> 00:12:11,250
+and then I can choose [1,2]
+
+197
+00:12:11,250 --> 00:12:14,310
+or I can choose [2,1]
+
+198
+00:12:14,310 --> 00:12:18,110
+those are two possible ways to choose two
+values
+
+199
+00:12:18,110 --> 00:12:21,390
+from that list. You see
+
+200
+00:12:21,390 --> 00:12:24,780
+that thing here and again I will assume
+
+201
+00:12:24,780 --> 00:12:28,640
+that this function exists you will have
+to define that
+
+202
+00:12:28,640 --> 00:12:34,160
+in the exercises. Now we can define a new
+function
+
+203
+00:12:34,160 --> 00:12:37,410
+that given an expression returns
+
+204
+00:12:37,410 --> 00:12:41,470
+a list of all the values.
+
+205
+00:12:41,470 --> 00:12:45,730
+All the values, what are those?
+Those are all the values at the leaves.
+
+206
+00:12:45,730 --> 00:12:49,440
+If I have a value I return a 
+singleton list.
+
+207
+00:12:49,440 --> 00:12:52,800
+If I have the application of whatever
+operator
+
+208
+00:12:52,800 --> 00:12:56,990
+I take the values of the left
+
+209
+00:12:56,990 --> 00:13:00,540
+sub-expression and combine them with the
+values
+
+210
+00:13:00,540 --> 00:13:01,360
+of the 
+
+211
+00:13:01,360 --> 00:13:05,250
+right sub-expression. Now we can
+
+212
+00:13:05,250 --> 00:13:08,870
+decide if some expression is a solution
+
+213
+00:13:08,870 --> 00:13:12,430
+for a given list of numbers by
+
+214
+00:13:12,430 --> 00:13:17,160
+more or less directly translating the
+rules of the game
+
+215
+00:13:17,160 --> 00:13:20,970
+into this Haskell program. Given an
+expression
+
+216
+00:13:20,970 --> 00:13:24,870
+this is our list of initial numbers and
+
+217
+00:13:24,870 --> 00:13:28,810
+this our target number now we have to
+check
+
+218
+00:13:28,810 --> 00:13:33,089
+whether this expression here is a
+solution
+
+219
+00:13:33,089 --> 00:13:37,350
+to the problem. What this says is
+that
+
+220
+00:13:37,350 --> 00:13:41,250
+first of all the expression must
+evaluate
+
+221
+00:13:41,250 --> 00:13:45,850
+to the number that we're looking for.
+That was a number that we're
+
+222
+00:13:45,850 --> 00:13:47,269
+required to find so
+
+223
+00:13:47,269 --> 00:13:50,350
+when we evaluate the expression it must
+
+224
+00:13:50,350 --> 00:13:53,990
+use that number and then
+
+225
+00:13:53,990 --> 00:13:58,640
+when we take all the values in that
+expression
+
+226
+00:13:58,640 --> 00:14:02,050
+and we take all the possible choices
+
+227
+00:14:02,050 --> 00:14:05,329
+for the input numbers
+
+228
+00:14:05,329 --> 00:14:08,800
+that thing, that list 
+
+229
+00:14:08,800 --> 00:14:12,110
+must be a member of that list.
+
+230
+00:14:12,110 --> 00:14:15,250
+If you go back
+
+231
+00:14:15,250 --> 00:14:18,699
+to the English description of the
+countdown problem
+
+232
+00:14:18,699 --> 00:14:21,870
+you will see that this is a very nice
+
+233
+00:14:21,870 --> 00:14:27,240
+direct translation of that definition.
+Now let's
+
+234
+00:14:27,240 --> 00:14:31,570
+look at a brute-force solution that
+searches
+
+235
+00:14:31,570 --> 00:14:34,940
+for all possible solutions.
+
+236
+00:14:34,940 --> 00:14:39,550
+To do that we will use another
+function
+
+237
+00:14:39,550 --> 00:14:42,990
+that you will have to define in the
+exercises
+
+238
+00:14:42,990 --> 00:14:47,300
+and this is the function split. 
+
+239
+00:14:47,300 --> 00:14:50,959
+Split takes a list and returns a pair of lists
+
+240
+00:14:50,959 --> 00:14:54,470
+inside another list
+
+241
+00:14:54,470 --> 00:14:58,490
+and it will give if you all the possible ways
+
+242
+00:14:58,490 --> 00:15:02,970
+that you can split that list into a pair
+of lists.
+
+243
+00:15:02,970 --> 00:15:06,490
+If we want to split [1,2,3,4]
+
+244
+00:15:06,490 --> 00:15:10,029
+I split it into [1]
+
+245
+00:15:10,029 --> 00:15:14,149
+[2,3,4]. I can split in [1,2] and [3,4].
+
+246
+00:15:14,149 --> 00:15:14,750
+I can
+
+247
+00:15:14,750 --> 00:15:17,860
+split it in [1,2,3] and [4] and
+
+248
+00:15:17,860 --> 00:15:21,040
+note that we don't take into account
+the empty list.
+
+249
+00:15:21,040 --> 00:15:24,840
+Splitting [1,2,3,4] into []
+
+250
+00:15:24,840 --> 00:15:29,160
+and [1,2,3,4] doesn't really make sense
+because then I have not
+
+251
+00:15:29,160 --> 00:15:34,260
+really split the list. I've just split off
+the empty list
+
+252
+00:15:34,260 --> 00:15:37,640
+which is nonsense. Again
+
+253
+00:15:37,640 --> 00:15:41,250
+this is a function that you will have to
+write in the exercises.
+
+254
+00:15:41,250 --> 00:15:44,350
+Alright
+
+255
+00:15:44,350 --> 00:15:48,270
+now we can define a function
+
+256
+00:15:48,270 --> 00:15:52,780
+that given a list of integers will
+return
+
+257
+00:15:52,780 --> 00:15:58,630
+a list of expressions whose values that are
+in that expression are 
+
+258
+00:15:58,630 --> 00:16:01,920
+exactly that list of given numbers.
+
+259
+00:16:01,920 --> 00:16:06,890
+If we're given an empty list of
+numbers
+
+260
+00:16:06,890 --> 00:16:12,450
+then we can build no expression. 
+If we are given
+
+261
+00:16:12,450 --> 00:16:16,370
+a singleton list, well the only
+expression we can build
+
+262
+00:16:16,370 --> 00:16:20,600
+that contains that value is the
+expression
+
+263
+00:16:20,600 --> 00:16:24,780
+that contains that value. Now
+
+264
+00:16:24,780 --> 00:16:28,920
+if we are given a list of numbers
+
+265
+00:16:28,920 --> 00:16:33,470
+how can be build all the expressions?
+Well we split the list
+
+266
+00:16:33,470 --> 00:16:37,820
+and then recursively use the left side
+
+267
+00:16:37,820 --> 00:16:41,950
+to create an expression the right side
+to create an expression
+
+268
+00:16:41,950 --> 00:16:45,190
+and then we're using our combine
+function
+
+269
+00:16:45,190 --> 00:16:49,410
+to combine the two. This is a
+brute-force
+
+270
+00:16:49,410 --> 00:16:52,460
+way of enumerating
+
+271
+00:16:52,460 --> 00:16:56,000
+all possible expressions that are built
+
+272
+00:16:56,000 --> 00:17:02,770
+out of these numbers. And the
+combine function here
+
+273
+00:17:02,770 --> 00:17:07,110
+just tries to combine these two
+expressions
+
+274
+00:17:07,110 --> 00:17:12,250
+using any of the operators. 
+What we can do
+
+275
+00:17:12,250 --> 00:17:15,959
+is we can write a list comprehension that
+says
+
+276
+00:17:15,959 --> 00:17:19,290
+give me all the choices for this
+
+277
+00:17:19,290 --> 00:17:23,900
+input list, brute force create all
+the expressions
+
+278
+00:17:23,900 --> 00:17:28,280
+and make sure that the value that I'm
+looking for
+
+279
+00:17:28,280 --> 00:17:31,920
+is the required value.
+
+280
+00:17:31,920 --> 00:17:37,240
+This
+
+281
+00:17:37,240 --> 00:17:40,940
+solution here, is a more or less
+
+282
+00:17:40,940 --> 00:17:44,100
+one-to-one translation of the original problem
+
+283
+00:17:44,100 --> 00:17:47,670
+it's super brute force but it works.
+
+284
+00:17:47,670 --> 00:17:51,370
+It works, if we run this on
+
+285
+00:17:51,370 --> 00:17:55,200
+a very very
+
+286
+00:17:55,200 --> 00:17:59,290
+slow laptop and we look
+
+287
+00:17:59,290 --> 00:18:04,520
+look for the solutions for our original
+problem it finds the first solution
+
+288
+00:18:04,520 --> 00:18:08,540
+in under half a second and in under a
+minute
+
+289
+00:18:08,540 --> 00:18:12,210
+it finds all solutions. Even for
+this
+
+290
+00:18:12,210 --> 00:18:15,430
+very simple brute-force solution
+
+291
+00:18:15,430 --> 00:18:18,520
+this is fast
+
+292
+00:18:18,520 --> 00:18:22,340
+and it takes about a minute to find
+
+293
+00:18:22,340 --> 00:18:25,910
+all the solutions. The question is
+
+294
+00:18:25,910 --> 00:18:29,650
+can we do better? We definitely can
+
+295
+00:18:29,650 --> 00:18:33,920
+since we are brute forcing all possible
+
+296
+00:18:33,920 --> 00:18:38,150
+expressions there will be many
+expressions that are invalid
+
+297
+00:18:38,150 --> 00:18:41,350
+and that we're going to have to filter out
+later. So if we can
+
+298
+00:18:41,350 --> 00:18:46,450
+make sure that we're not generating any
+invalid expressions
+
+299
+00:18:46,450 --> 00:18:49,810
+that it's definitely a win.
+
+300
+00:18:49,810 --> 00:18:53,140
+Let's do a back-of-the-envelope
+calculation here
+
+301
+00:18:53,140 --> 00:18:57,140
+there's possible expressions that we
+can build are
+
+302
+00:18:57,140 --> 00:19:01,350
+33 million and only 5 million of them
+
+303
+00:19:01,350 --> 00:19:05,360
+are actually valid. And then
+
+304
+00:19:05,360 --> 00:19:08,380
+what we will do is we will combine
+
+305
+00:19:08,380 --> 00:19:12,580
+the generation function with the
+evaluation function so we will fuse these
+
+306
+00:19:12,580 --> 00:19:13,250
+two
+
+307
+00:19:13,250 --> 00:19:16,810
+to make sure that things are rejected
+
+308
+00:19:16,810 --> 00:19:20,480
+earlier but before we do that this
+
+309
+00:19:20,480 --> 00:19:23,630
+sequence was rather long
+
+310
+00:19:23,630 --> 00:19:27,750
+so let's take a well-deserved break
+and then see you
+
+311
+00:19:27,750 --> 00:19:29,230
+in a bit. Thank you.
+

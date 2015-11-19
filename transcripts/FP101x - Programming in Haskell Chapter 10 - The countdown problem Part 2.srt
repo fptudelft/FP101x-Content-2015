@@ -1,0 +1,433 @@
+1
+00:00:00,789 --> 00:00:03,260
+Welcome back I hope that you
+
+2
+00:00:03,260 --> 00:00:06,549
+were able to rest a little bit
+
+3
+00:00:06,549 --> 00:00:09,730
+after this long sequence.
+
+4
+00:00:09,730 --> 00:00:12,960
+What we did in the first part of
+this lecture
+
+5
+00:00:12,960 --> 00:00:16,010
+is take the description,
+
+6
+00:00:16,010 --> 00:00:19,420
+the informal description of the
+expression 
+
+7
+00:00:19,420 --> 00:00:24,130
+problem, sorry not the expression problem
+but the countdown problem.
+
+8
+00:00:24,130 --> 00:00:27,710
+The expression problem is something
+completely different, you can Google that
+
+9
+00:00:27,710 --> 00:00:28,260
+and
+
+10
+00:00:28,260 --> 00:00:31,949
+again you can spend years trying to
+solve the expression problem.
+
+11
+00:00:31,949 --> 00:00:35,540
+But we are trying to solve the countdown
+problem here
+
+12
+00:00:35,540 --> 00:00:39,050
+and what we did is we constructed
+
+13
+00:00:39,050 --> 00:00:42,120
+a brute-force solution where
+
+14
+00:00:42,120 --> 00:00:45,920
+we just generate all possible
+expressions
+
+15
+00:00:45,920 --> 00:00:49,750
+and then checked whether they satisfied
+
+16
+00:00:49,750 --> 00:00:53,680
+the rules of the game. What we're going
+to do
+
+17
+00:00:53,680 --> 00:00:56,930
+now is we're going to try to check
+
+18
+00:00:56,930 --> 00:01:01,270
+if we can avoid to generate
+
+19
+00:01:01,270 --> 00:01:04,930
+invalid expressions up front.
+
+20
+00:01:04,930 --> 00:01:08,630
+Our hope is that this rule
+
+21
+00:01:08,630 --> 00:01:12,430
+definitely gives a performance
+improvement because
+
+22
+00:01:12,430 --> 00:01:16,689
+there's only quite a small fraction
+
+23
+00:01:16,689 --> 00:01:22,259
+of all the possible expressions that are
+valid. 
+
+24
+00:01:22,259 --> 00:01:26,689
+The way we're going to do that is
+we're going to look at
+
+25
+00:01:26,689 --> 00:01:30,350
+pairs of expressions and their
+
+26
+00:01:30,350 --> 00:01:34,509
+values. This is the expression
+
+27
+00:01:34,509 --> 00:01:39,729
+and this is the value, so we carry around
+both the symbolic representation of the
+
+28
+00:01:39,729 --> 00:01:40,640
+expression
+
+29
+00:01:40,640 --> 00:01:43,899
+and the numeric representation of the
+expression.
+
+30
+00:01:43,899 --> 00:01:46,990
+And what we want, is we want to have a
+
+31
+00:01:46,990 --> 00:01:51,210
+function that fuses together
+
+32
+00:01:51,210 --> 00:01:55,009
+the generation and the evaluation
+
+33
+00:01:55,009 --> 00:01:58,200
+of the expressions. This is the
+
+34
+00:01:58,200 --> 00:02:01,869
+result evaluating the expression and
+that is the
+
+35
+00:02:01,869 --> 00:02:05,670
+result of generating the expression but
+we needed
+
+36
+00:02:05,670 --> 00:02:09,539
+the result of evaluating the expression
+to check
+
+37
+00:02:09,539 --> 00:02:14,040
+whether it satisfied the constraints
+of the game.
+
+38
+00:02:14,040 --> 00:02:16,790
+That's what we're going to do, we're
+going to try
+
+39
+00:02:16,790 --> 00:02:19,920
+to define a function that will combine
+
+40
+00:02:19,920 --> 00:02:24,160
+the generation and evaluation.
+
+41
+00:02:24,160 --> 00:02:27,740
+The way we can do that is as follows:
+
+42
+00:02:27,740 --> 00:02:31,000
+if we want to find the results
+
+43
+00:02:31,000 --> 00:02:36,250
+for the empty list well that's the empty
+list, when we want to
+
+44
+00:02:36,250 --> 00:02:42,030
+generate the combination of expressions
+and their values
+
+45
+00:02:42,030 --> 00:02:45,140
+for a singleton list, well what do we do?
+
+46
+00:02:45,140 --> 00:02:48,320
+We did what we did before we 
+
+47
+00:02:48,320 --> 00:02:52,120
+generate the expression, we know its value,
+
+48
+00:02:52,120 --> 00:02:55,709
+but this is only valid remember when
+
+49
+00:02:55,709 --> 00:02:58,760
+the number was greater than 0
+
+50
+00:02:58,760 --> 00:03:01,870
+so now we can put this test right here
+
+51
+00:03:01,870 --> 00:03:06,080
+and the rest of the code is now
+
+52
+00:03:06,080 --> 00:03:10,130
+fairly obvious where we just do exactly
+the same
+
+53
+00:03:10,130 --> 00:03:13,360
+except that we recursively call results.
+
+54
+00:03:13,360 --> 00:03:17,230
+And then
+
+55
+00:03:17,230 --> 00:03:20,620
+we still have to define the combine
+function here
+
+56
+00:03:20,620 --> 00:03:23,780
+that will do the same thing that will check
+
+57
+00:03:23,780 --> 00:03:27,350
+whether the result are valid. Here is
+
+58
+00:03:27,350 --> 00:03:31,200
+combine, it's exactly the same
+
+59
+00:03:31,200 --> 00:03:35,220
+as our previous combine function, except
+
+60
+00:03:35,220 --> 00:03:39,519
+that now we also check whether the
+results are valid.
+
+61
+00:03:39,519 --> 00:03:43,019
+You see that we can do that because we
+are now
+
+62
+00:03:43,019 --> 00:03:47,010
+carrying around a pair of the expression
+and its value
+
+63
+00:03:47,010 --> 00:03:50,610
+and that allows us to check here whether
+
+64
+00:03:50,610 --> 00:03:54,010
+the result is valid as we are generating
+
+65
+00:03:54,010 --> 00:03:57,730
+these new expressions. It's a
+small
+
+66
+00:03:57,730 --> 00:04:00,780
+change but it's
+
+67
+00:04:00,780 --> 00:04:05,620
+quite dramatic. Here's the new
+function that solves the countdown problem
+
+68
+00:04:05,620 --> 00:04:09,090
+and it's just using
+
+69
+00:04:09,090 --> 00:04:12,900
+this new results function here so we
+take all the choices
+
+70
+00:04:12,900 --> 00:04:16,549
+we calculate the results given these
+and then
+
+71
+00:04:16,549 --> 00:04:20,160
+we check whether the result is the one
+
+72
+00:04:20,160 --> 00:04:26,310
+that we want. In this case if we run
+this now
+
+73
+00:04:26,310 --> 00:04:30,220
+it's about ten times faster so it's now
+
+74
+00:04:30,220 --> 00:04:33,280
+four hundredths of a second
+
+75
+00:04:33,280 --> 00:04:38,840
+and also this guy here, which used to be 43 seconds,
+
+76
+00:04:38,840 --> 00:04:42,930
+is now down to 3.5 seconds.
+
+77
+00:04:42,930 --> 00:04:46,150
+This is fabulous, this is really fabulous
+
+78
+00:04:46,150 --> 00:04:50,580
+Can we do even better?
+
+79
+00:04:50,580 --> 00:04:54,080
+Can we do even better? And we can.
+
+80
+00:04:54,080 --> 00:04:57,970
+Because we have now eliminated
+
+81
+00:04:57,970 --> 00:05:01,210
+generating invalid expressions
+
+82
+00:05:01,210 --> 00:05:05,320
+because we were generating the
+expressions with their results such that
+
+83
+00:05:05,320 --> 00:05:06,639
+we could always check
+
+84
+00:05:06,639 --> 00:05:09,940
+whether they were okay. But they're still
+
+85
+00:05:09,940 --> 00:05:13,630
+cemeteries that we're not using. 
+
+86
+00:05:13,630 --> 00:05:17,320
+Because if we have x times y
+
+87
+00:05:17,320 --> 00:05:22,099
+thats basically the same,
+or basically, that is the same
+
+88
+00:05:22,099 --> 00:05:25,210
+as y times x. We don't have to
+generate
+
+89
+00:05:25,210 --> 00:05:28,599
+both of these two results.
+
+90
+00:05:28,599 --> 00:05:33,039
+If we happened to multiply number by one
+
+91
+00:05:33,039 --> 00:05:37,060
+we might as well just use x.
+
+92
+00:05:37,060 --> 00:05:40,470
+If we use these properties we will
+eliminate,
+
+93
+00:05:40,470 --> 00:05:44,889
+we won't be using the
+expressions here on the left
+
+94
+00:05:44,889 --> 00:05:48,659
+because they are considered to be the
+same
+
+95
+00:05:48,659 --> 00:05:52,110
+as the expressions on the right.
+Hopefully
+
+96
+00:05:52,110 --> 00:05:55,860
+we can reduce the search space
+
+97
+00:05:55,860 --> 00:05:59,270
+for this. That's what we'll do
+
+98
+00:05:59,270 --> 00:06:03,349
+in the next part. Take a small break
+
+99
+00:06:03,349 --> 00:06:04,389
+and I'll see you soon.
+

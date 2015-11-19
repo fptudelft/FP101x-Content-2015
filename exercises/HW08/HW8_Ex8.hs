@@ -25,6 +25,6 @@ filterM'c p (x : xs) = do ys <- filterM'c p xs
 -- answer d
 filterM'd _ [] = return []
 filterM'd p (x : xs) = do flag <- p x
-                          ys <- filterM' p xs
+                          ys <- filterM'd p xs
                           if flag then return ys else return (x : ys)
 -}

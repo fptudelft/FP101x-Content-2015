@@ -1,0 +1,1065 @@
+1
+00:00:01,260 --> 00:00:03,260
+Welcome everybody to
+
+2
+00:00:03,260 --> 00:00:06,440
+another episode of Functional
+Programming 101
+
+3
+00:00:06,440 --> 00:00:10,410
+and today we are going to talk about
+
+4
+00:00:10,410 --> 00:00:15,059
+declaring types and classes ourselves.
+Up to now
+
+5
+00:00:15,059 --> 00:00:19,699
+only in the lecture on parsers
+
+6
+00:00:19,699 --> 00:00:23,570
+we have defined types ourselves
+
+7
+00:00:23,570 --> 00:00:28,500
+but for the rest we have assumed that
+the types are there. For example we have
+
+8
+00:00:28,500 --> 00:00:29,070
+assumed
+
+9
+00:00:29,070 --> 00:00:33,540
+that the type list exists and we have
+assumed that tuples exist
+
+10
+00:00:33,540 --> 00:00:37,940
+but of course, just like we can define
+new functions in Haskell
+
+11
+00:00:37,940 --> 00:00:40,950
+we also want to define new types.
+
+12
+00:00:40,950 --> 00:00:44,100
+What we are going to do in
+
+13
+00:00:44,100 --> 00:00:47,649
+this lecture is we are going to show
+
+14
+00:00:47,649 --> 00:00:52,399
+how to declare new types and how to
+declare new type classes
+
+15
+00:00:52,399 --> 00:00:56,010
+but also I'm going to compare and
+contrast this
+
+16
+00:00:56,010 --> 00:00:59,570
+with typical object-oriented programming
+
+17
+00:00:59,570 --> 00:01:03,070
+how these things work there. And what
+you will see
+
+18
+00:01:03,070 --> 00:01:07,659
+is that although the syntax is a little
+bit different a lot of the ideas are
+
+19
+00:01:07,659 --> 00:01:08,580
+very common.
+
+20
+00:01:08,580 --> 00:01:12,510
+And this is a general thing that I like
+to do. Instead of emphasizing the
+
+21
+00:01:12,510 --> 00:01:13,590
+differences
+
+22
+00:01:13,590 --> 00:01:17,830
+I think it is often much more productive
+to emphasize
+
+23
+00:01:17,830 --> 00:01:21,280
+commonalities.
+
+24
+00:01:21,280 --> 00:01:24,330
+Maybe you should try this too.
+
+25
+00:01:24,330 --> 00:01:28,640
+As programmers we often go: well,
+but, no...
+
+26
+00:01:28,640 --> 00:01:32,200
+It is much more productive to say:
+Yes, and...
+
+27
+00:01:32,200 --> 00:01:35,470
+and emphasize
+
+28
+00:01:35,470 --> 00:01:39,409
+what is common. And so I'm going to
+try to do that here
+
+29
+00:01:39,409 --> 00:01:42,700
+and please take that as a metalesson
+
+30
+00:01:42,700 --> 00:01:46,500
+for this lecture.
+
+31
+00:01:46,500 --> 00:01:50,010
+In Haskell we can
+
+32
+00:01:50,010 --> 00:01:53,190
+define an alias for an existing type
+
+33
+00:01:53,190 --> 00:01:56,330
+by saying type String
+
+34
+00:01:56,330 --> 00:01:59,490
+equals another type or
+
+35
+00:01:59,490 --> 00:02:03,310
+type new name equals another type.
+
+36
+00:02:03,310 --> 00:02:06,729
+And in this case we are defining String
+
+37
+00:02:06,729 --> 00:02:09,820
+as an alias for a list of characters.
+
+38
+00:02:09,820 --> 00:02:14,130
+And this is an idea
+
+39
+00:02:14,130 --> 00:02:17,820
+that we have used throughout all the
+lectures. Every time we saw
+
+40
+00:02:17,820 --> 00:02:18,650
+a String
+
+41
+00:02:18,650 --> 00:02:24,220
+we treated it as a list of characters,
+but in types we often wrote String
+
+42
+00:02:24,220 --> 00:02:25,470
+because
+
+43
+00:02:25,470 --> 00:02:29,430
+that's what we wanted to convey. But
+when we are coding against strings
+
+44
+00:02:29,430 --> 00:02:33,150
+we want to see them as a list of
+characters.
+
+45
+00:02:33,150 --> 00:02:36,760
+And here this type declaration achieves
+that.
+
+46
+00:02:36,760 --> 00:02:40,080
+This is just another name for this type.
+
+47
+00:02:40,080 --> 00:02:45,470
+
+
+48
+00:02:45,470 --> 00:02:48,959
+What we often do is, just like with
+String,
+
+49
+00:02:48,959 --> 00:02:52,690
+we use type aliases to convey the
+meaning
+
+50
+00:02:52,690 --> 00:02:58,340
+or our intent of what we want to do. For
+example: instead of having a pair of
+
+51
+00:02:58,340 --> 00:02:59,110
+integers
+
+52
+00:02:59,110 --> 00:03:02,730
+we can say: we declare this as
+
+53
+00:03:02,730 --> 00:03:06,250
+type position. And then instead of
+
+54
+00:03:06,250 --> 00:03:09,900
+writing (Int,Int) everywhere
+
+55
+00:03:09,900 --> 00:03:13,750
+we can write Pos. So the origin, that's
+
+56
+00:03:13,750 --> 00:03:18,190
+at coordinates (0,0). And then we want to
+
+57
+00:03:18,190 --> 00:03:22,950
+move a position to the left. So this is a
+function that takes a position
+
+58
+00:03:22,950 --> 00:03:26,380
+and returns a new position. And it
+takes a pair
+
+59
+00:03:26,380 --> 00:03:29,880
+(x,y) and it subtracts 1 from x.
+
+60
+00:03:29,880 --> 00:03:33,910
+And now by looking at this type
+
+61
+00:03:33,910 --> 00:03:37,070
+you get a better idea of what it is doing.
+
+62
+00:03:37,070 --> 00:03:41,910
+And the fact that we are using pairs to
+represent positions
+
+63
+00:03:41,910 --> 00:03:48,540
+is really just an implementation detail.
+Another example here
+
+64
+00:03:48,540 --> 00:03:52,290
+is a parametrized type
+
+65
+00:03:52,290 --> 00:03:56,140
+alias. So here we define the type of
+pairs
+
+66
+00:03:56,140 --> 00:03:58,380
+of type a
+
+67
+00:03:58,380 --> 00:04:01,420
+as pairs of type a.
+
+68
+00:04:01,420 --> 00:04:04,420
+So the type of pairs
+
+69
+00:04:04,420 --> 00:04:08,080
+of values of type a, are pairs of values
+
+70
+00:04:08,080 --> 00:04:12,770
+of type a. And now we can define functions
+
+71
+00:04:12,770 --> 00:04:17,070
+over that type. For example we can take a
+pair of integers
+
+72
+00:04:17,070 --> 00:04:21,440
+and return an integer by multiplying the
+two.
+
+73
+00:04:21,440 --> 00:04:24,530
+Or we can take a single value
+
+74
+00:04:24,530 --> 00:04:27,950
+and copy that into a pair
+
+75
+00:04:27,950 --> 00:04:31,530
+and there's the function copy, which
+takes an x
+
+76
+00:04:31,530 --> 00:04:35,610
+and returns a tuple that contains
+another copy of x.
+
+77
+00:04:35,610 --> 00:04:39,010
+Type declarations
+
+78
+00:04:39,010 --> 00:04:42,140
+of course can be nested.
+
+79
+00:04:42,140 --> 00:04:45,650
+If we define position as a pair of
+integers
+
+80
+00:04:45,650 --> 00:04:49,680
+then we can define another type synonym
+
+81
+00:04:49,680 --> 00:04:53,080
+to mean position to position.
+
+82
+00:04:53,080 --> 00:04:57,950
+A transformation of a position is a
+function that takes one position
+
+83
+00:04:57,950 --> 00:05:02,620
+and returns another position. So
+in this case here
+
+84
+00:05:02,620 --> 00:05:07,190
+we could have defined this function here
+to have type
+
+85
+00:05:07,190 --> 00:05:11,960
+Trans. One important thing here is that
+these
+
+86
+00:05:11,960 --> 00:05:16,790
+type synonyms are really just synonyms.
+They are just abbreviations
+
+87
+00:05:16,790 --> 00:05:21,510
+which means that they cannot be
+recursive. So in this case
+
+88
+00:05:21,510 --> 00:05:24,820
+when you define type Tree to be
+
+89
+00:05:24,820 --> 00:05:28,070
+a pair of an Int and a list of Trees
+
+90
+00:05:28,070 --> 00:05:31,440
+this is not allowed.
+
+91
+00:05:31,440 --> 00:05:34,870
+You can define, and we will see that
+later, it is
+
+92
+00:05:34,870 --> 00:05:38,090
+no problem to define recursive types in
+Haskell
+
+93
+00:05:38,090 --> 00:05:41,300
+but they always have to go via a nominal
+type.
+
+94
+00:05:41,300 --> 00:05:44,500
+And this is a restriction that
+
+95
+00:05:44,500 --> 00:05:48,530
+many languages have. If you have an
+object-oriented
+
+96
+00:05:48,530 --> 00:05:51,630
+language, typically it has a
+
+97
+00:05:51,630 --> 00:05:55,760
+nominal type system and that makes it
+easier to check
+
+98
+00:05:55,760 --> 00:06:00,350
+whether two types are equal or one type
+is a subtype of another.
+
+99
+00:06:00,350 --> 00:06:03,610
+If you have purely structural types
+that becomes
+
+100
+00:06:03,610 --> 00:06:07,669
+a little bit more difficult. So that is
+
+101
+00:06:07,669 --> 00:06:11,330
+typically the reason for that. But if
+you are interested in
+
+102
+00:06:11,330 --> 00:06:16,419
+programming languages and type systems, the
+field of structural versus nominal types
+
+103
+00:06:16,419 --> 00:06:18,370
+is a very interesting
+
+104
+00:06:18,370 --> 00:06:23,900
+field and you can spend years researching
+that and reading papers on
+
+105
+00:06:23,900 --> 00:06:24,550
+it and
+
+106
+00:06:24,550 --> 00:06:31,550
+get a PhD in that area. What I
+said is when we want to
+
+107
+00:06:32,479 --> 00:06:36,659
+make a recursive type, we have to go
+through a nominal type.
+
+108
+00:06:36,659 --> 00:06:40,449
+And the way we define nominal types in
+Haskell
+
+109
+00:06:40,449 --> 00:06:43,940
+is via data declarations.
+
+110
+00:06:43,940 --> 00:06:48,800
+Here we are defining a new type named
+Bool
+
+111
+00:06:48,800 --> 00:06:52,259
+and it has two constructors
+
+112
+00:06:52,259 --> 00:06:55,590
+True and False.
+
+113
+00:06:55,590 --> 00:07:00,430
+And since these constructors don't
+take arguments
+
+114
+00:07:00,430 --> 00:07:05,779
+they are at the same time values. If you
+
+115
+00:07:05,779 --> 00:07:09,270
+know Scala, you will see that Scala
+
+116
+00:07:09,270 --> 00:07:12,360
+case classes are very similar to algebraic
+
+117
+00:07:12,360 --> 00:07:15,469
+data types. But
+
+118
+00:07:15,469 --> 00:07:20,580
+even if you don't know Scala,
+but say you know Java or C#
+
+119
+00:07:20,580 --> 00:07:23,960
+one way to look at these data
+declarations is as follows:
+
+120
+00:07:23,960 --> 00:07:28,460
+this is an abstract base class Bool and
+then
+
+121
+00:07:28,460 --> 00:07:32,029
+the types here on the right hand side
+
+122
+00:07:32,029 --> 00:07:36,039
+are the subtypes, so False extends Bool
+
+123
+00:07:36,039 --> 00:07:41,779
+and True extends Bool. And since Bool
+itself is abstract, you cannot create an
+
+124
+00:07:41,779 --> 00:07:42,779
+instance of Bool
+
+125
+00:07:42,779 --> 00:07:46,419
+you can only create instances of False
+and True
+
+126
+00:07:46,419 --> 00:07:50,199
+but both have type Bool. And in Haskell
+
+127
+00:07:50,199 --> 00:07:55,419
+True and False don't have their own
+types, they always have type Bool
+
+128
+00:07:55,419 --> 00:08:00,839
+so that is even simpler than having an
+abstract base class
+
+129
+00:08:00,839 --> 00:08:06,620
+and two derived types. As I mentioned
+
+130
+00:08:06,620 --> 00:08:10,490
+the values on the right hand side
+there, True and False
+
+131
+00:08:10,490 --> 00:08:13,729
+are typically called constructors.
+
+132
+00:08:13,729 --> 00:08:16,930
+With the explanation I gave
+
+133
+00:08:16,930 --> 00:08:19,710
+with the abstract type and the
+
+134
+00:08:19,710 --> 00:08:22,790
+subtypes, that makes sense. They correspond
+
+135
+00:08:22,790 --> 00:08:25,860
+to constructors in an object-oriented
+language.
+
+136
+00:08:25,860 --> 00:08:30,600
+In Haskell type and constructor names
+
+137
+00:08:30,600 --> 00:08:34,130
+must begin with an uppercase letter.
+
+138
+00:08:34,130 --> 00:08:38,390
+Functions and type variables begin with
+a lowercase letter
+
+139
+00:08:38,390 --> 00:08:41,870
+and types and constructor names must
+begin
+
+140
+00:08:41,870 --> 00:08:45,860
+with an uppercase letter. And these
+algebraic
+
+141
+00:08:45,860 --> 00:08:50,390
+data types, another way to look at them
+are as context-free grammars
+
+142
+00:08:50,390 --> 00:08:53,720
+where the thing on the left hand side is
+non-terminal
+
+143
+00:08:53,720 --> 00:08:57,510
+and then the right hand side can contain
+
+144
+00:08:57,510 --> 00:09:02,880
+terminals, which are the constructors
+that themselves can recursively
+
+145
+00:09:02,880 --> 00:09:06,760
+contain other types, like a grammar
+can contain
+
+146
+00:09:06,760 --> 00:09:11,020
+recursively on the right hand side
+non-terminals as well.
+
+147
+00:09:11,020 --> 00:09:15,280
+Here is an example of
+
+148
+00:09:15,280 --> 00:09:19,260
+a slightly more interesting algebraic
+data type.
+
+149
+00:09:19,260 --> 00:09:22,730
+It is like a boolean thing with
+
+150
+00:09:22,730 --> 00:09:26,590
+three values, three valued booleans, so
+we have Yes
+
+151
+00:09:26,590 --> 00:09:30,860
+No and don't know. This is maybe
+like SQL
+
+152
+00:09:30,860 --> 00:09:34,600
+where this is like NULL. So it is
+three valued
+
+153
+00:09:34,600 --> 00:09:39,190
+logic. And now we can use this thing
+
+154
+00:09:39,190 --> 00:09:44,020
+to say I want to have a list of answers:
+[Yes, No, Unknown].
+
+155
+00:09:44,020 --> 00:09:49,550
+And now I'm going to define another
+function that flips the answers.
+
+156
+00:09:49,550 --> 00:09:52,740
+This is like the generalization of
+negation.
+
+157
+00:09:52,740 --> 00:09:57,070
+If I have Yes and I flip it,
+it becomes No.
+
+158
+00:09:57,070 --> 00:10:01,750
+If I have No and I flip it,
+it becomes Yes.
+
+159
+00:10:01,750 --> 00:10:05,390
+And if I don't know and I flip it
+
+160
+00:10:05,390 --> 00:10:10,050
+I still don't know. If you are
+familiar with SQL
+
+161
+00:10:10,050 --> 00:10:13,200
+this will be very similar, where
+
+162
+00:10:13,200 --> 00:10:17,720
+unknown plays the role of NULL.
+
+163
+00:10:17,720 --> 00:10:24,149
+Here is the standard OO example of
+circles and rectangles and shapes.
+
+164
+00:10:24,149 --> 00:10:27,170
+In Haskell it looks as follows:
+we have an
+
+165
+00:10:27,170 --> 00:10:31,700
+abstract base class Shape and two
+subtypes: Circle
+
+166
+00:10:31,700 --> 00:10:35,310
+and Rectangle. Both of them are Shapes
+
+167
+00:10:35,310 --> 00:10:38,970
+and in Haskell Circle and Rectangle
+don't have their own types.
+
+168
+00:10:38,970 --> 00:10:42,430
+So when you create a circle using the
+Circle constructor
+
+169
+00:10:42,430 --> 00:10:46,910
+you get a Shape and if you create a
+rectangle using the Rectangle
+
+170
+00:10:46,910 --> 00:10:47,800
+constructor
+
+171
+00:10:47,800 --> 00:10:52,990
+you also get a Shape. That is the
+main difference between
+
+172
+00:10:52,990 --> 00:10:56,010
+algebraic data types in Haskell and
+
+173
+00:10:56,010 --> 00:10:59,670
+the way you typically write
+inheritance hierarchies
+
+174
+00:10:59,670 --> 00:11:03,579
+in an OO language. Now we can
+
+175
+00:11:03,579 --> 00:11:07,660
+use this constructor to create
+
+176
+00:11:07,660 --> 00:11:11,029
+a particular Shape, a square. So
+
+177
+00:11:11,029 --> 00:11:14,380
+we take a value for
+
+178
+00:11:14,380 --> 00:11:18,440
+the first coordinate there and we create
+a Shape
+
+179
+00:11:18,440 --> 00:11:22,520
+by just duplicating that value here. And
+we can
+
+180
+00:11:22,520 --> 00:11:25,920
+compute the area of a Shape
+
+181
+00:11:25,920 --> 00:11:30,350
+and that will return a Float. Here
+you see that area
+
+182
+00:11:30,350 --> 00:11:34,190
+is defined on Shape. And then we do
+
+183
+00:11:34,190 --> 00:11:37,709
+a pattern match here, which is very much
+like doing
+
+184
+00:11:37,709 --> 00:11:41,170
+a dynamic dispatch. So if
+
+185
+00:11:41,170 --> 00:11:45,040
+the Shape happens to be a Circle, then
+
+186
+00:11:45,040 --> 00:11:48,459
+I take pi * r^2.
+
+187
+00:11:48,459 --> 00:11:51,670
+If the Shape is a Rectangle
+
+188
+00:11:51,670 --> 00:11:55,380
+I just multiply the sides.
+
+189
+00:11:55,380 --> 00:11:59,050
+So pattern matching kind of corresponds
+
+190
+00:11:59,050 --> 00:12:02,339
+to virtual dispatch, when you think
+
+191
+00:12:02,339 --> 00:12:06,140
+of algebraic data types as object
+hierarchies.
+
+192
+00:12:06,140 --> 00:12:11,440
+
+
+193
+00:12:11,440 --> 00:12:14,899
+When we look at these constructors
+
+194
+00:12:14,899 --> 00:12:18,610
+that we define in here
+
+195
+00:12:18,610 --> 00:12:22,000
+they implicitly define constructors,
+
+196
+00:12:22,000 --> 00:12:26,440
+functions that take a Float and
+return a Shape
+
+197
+00:12:26,440 --> 00:12:27,810
+and
+
+198
+00:12:27,810 --> 00:12:30,500
+a second function that takes two Floats
+
+199
+00:12:30,500 --> 00:12:34,740
+and returns a Shape. And these functions
+are called Circle
+
+200
+00:12:34,740 --> 00:12:38,580
+and Rectangle. So if you look at the type,
+if you ask
+
+201
+00:12:38,580 --> 00:12:41,780
+:t Circle, Haskell will tell you
+
+202
+00:12:41,780 --> 00:12:45,100
+Float -> Shape and if you ask
+
+203
+00:12:45,100 --> 00:12:49,210
+what is the type of Rectangle, it will
+tell you it is a function that takes two
+
+204
+00:12:49,210 --> 00:12:49,920
+Floats
+
+205
+00:12:49,920 --> 00:12:53,090
+and returns a Shape.
+
+206
+00:12:53,090 --> 00:12:57,070
+So again, the analogy with objects
+
+207
+00:12:57,070 --> 00:13:00,640
+is still intact. You define
+
+208
+00:13:00,640 --> 00:13:03,840
+your subtypes and really what you get
+for free
+
+209
+00:13:03,840 --> 00:13:10,630
+is constructors to construct these types.
+We mentioned the
+
+210
+00:13:10,630 --> 00:13:15,310
+Maybe type a couple of times. The Maybe
+type is like a list
+
+211
+00:13:15,310 --> 00:13:18,920
+that is either empty or has a single
+value.
+
+212
+00:13:18,920 --> 00:13:22,560
+Usually it's convenient to just use
+list, but
+
+213
+00:13:22,560 --> 00:13:25,650
+if you really want to use the Maybe type,
+maybe
+
+214
+00:13:25,650 --> 00:13:30,940
+you are an F# person or an ML
+person where Maybe is used a lot
+
+215
+00:13:30,940 --> 00:13:34,000
+you just define a new algebraic
+data type:
+
+216
+00:13:34,000 --> 00:13:37,770
+Maybe of a is either Nothing or Just
+
+217
+00:13:37,770 --> 00:13:41,589
+an a. And now we can define
+
+218
+00:13:41,589 --> 00:13:46,330
+a lot of functions, that people are
+proud of
+
+219
+00:13:46,330 --> 00:13:50,600
+because we can take a list and we can
+take the head
+
+220
+00:13:50,600 --> 00:13:54,339
+but if the list is empty, we return
+Nothing
+
+221
+00:13:54,339 --> 00:13:58,530
+and if the list is not empty, we take the
+head
+
+222
+00:13:58,530 --> 00:14:02,570
+and we return Just. I am not a big fan
+
+223
+00:14:02,570 --> 00:14:07,130
+of this kind of definition of head,
+because we are now still stuck with this
+
+224
+00:14:07,130 --> 00:14:08,030
+Maybe.
+
+225
+00:14:08,030 --> 00:14:11,070
+So you really have now reduced a list
+
+226
+00:14:11,070 --> 00:14:15,190
+to a singleton list, but you have not
+really gotten the head out. And in order
+
+227
+00:14:15,190 --> 00:14:17,150
+to go from a Maybe of a
+
+228
+00:14:17,150 --> 00:14:20,710
+to a, you will still run in the same
+difficulties
+
+229
+00:14:20,710 --> 00:14:24,390
+as you had when you went from
+an empty list
+
+230
+00:14:24,390 --> 00:14:27,690
+to a with proper head.
+
+231
+00:14:27,690 --> 00:14:31,280
+So that's why I typically don't
+care about
+
+232
+00:14:31,280 --> 00:14:34,410
+this Maybe type. It stands in
+the way.
+
+233
+00:14:34,410 --> 00:14:38,260
+It doesn't help you, because at
+some point you have to get rid of it
+
+234
+00:14:38,260 --> 00:14:39,620
+anyway.
+
+235
+00:14:39,620 --> 00:14:42,130
+Alright. That was the end of part 1.
+
+236
+00:14:42,130 --> 00:14:45,880
+Let's take a short break and I'll see
+you soon
+
+237
+00:14:45,880 --> 00:14:46,530
+for part 2.
+

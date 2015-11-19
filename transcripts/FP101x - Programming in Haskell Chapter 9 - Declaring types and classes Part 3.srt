@@ -1,0 +1,590 @@
+1
+00:00:00,320 --> 00:00:03,449
+Hey everybody! Welcome back. In the
+
+2
+00:00:03,449 --> 00:00:07,330
+previous segment we looked at a simple
+recursive type
+
+3
+00:00:07,330 --> 00:00:10,730
+of natural numbers and in this segment
+
+4
+00:00:10,730 --> 00:00:14,280
+we are going to look at a couple of more
+interesting
+
+5
+00:00:14,280 --> 00:00:17,760
+recursive types. And in particular
+
+6
+00:00:17,760 --> 00:00:23,010
+I like this type. Remember when we
+were doing the parser
+
+7
+00:00:23,010 --> 00:00:26,099
+we were trying to build a
+
+8
+00:00:26,099 --> 00:00:29,689
+abstract syntax tree, that
+
+9
+00:00:29,689 --> 00:00:32,719
+represented the structure of our string
+
+10
+00:00:32,719 --> 00:00:38,579
+as a tree. But when we were doing parsers,
+we didn't know yet
+
+11
+00:00:38,579 --> 00:00:42,120
+how to define new types, so instead
+
+12
+00:00:42,120 --> 00:00:46,270
+we computed the value of the expression
+as we were parsing.
+
+13
+00:00:46,270 --> 00:00:50,059
+But with recursive types we can define
+
+14
+00:00:50,059 --> 00:00:54,360
+an algebraic data type of expressions and
+then define various
+
+15
+00:00:54,360 --> 00:00:59,730
+interesting functions over those
+expressions. How would we define
+
+16
+00:00:59,730 --> 00:01:03,780
+expressions in Haskell? Well, again
+
+17
+00:01:03,780 --> 00:01:06,780
+we define an abstract base class Expr
+
+18
+00:01:06,780 --> 00:01:11,049
+and then three concrete subtypes: simple
+value
+
+19
+00:01:11,049 --> 00:01:14,380
+multiplication and addition
+
+20
+00:01:14,380 --> 00:01:20,580
+of expressions. We can now write that
+tree on the previous slide
+
+21
+00:01:20,580 --> 00:01:23,790
+as follows: we add 1 to
+
+22
+00:01:23,790 --> 00:01:30,110
+2 times 3. Once we have
+
+23
+00:01:30,110 --> 00:01:35,000
+expressions like this, we can define
+recursive functions
+
+24
+00:01:35,000 --> 00:01:40,060
+over these expressions. And again they all
+follow the same structure. We pattern
+
+25
+00:01:40,060 --> 00:01:40,829
+match
+
+26
+00:01:40,829 --> 00:01:44,479
+over each case. You see that here.
+You don't have to
+
+27
+00:01:44,479 --> 00:01:48,579
+look at the definitions yet, just look at
+those pattern matches and then we do something
+
+28
+00:01:48,579 --> 00:01:48,960
+here.
+
+29
+00:01:48,960 --> 00:01:54,159
+And in this case, when we want to compute
+the size of an expression we want to
+
+30
+00:01:54,159 --> 00:01:54,880
+count
+
+31
+00:01:54,880 --> 00:01:59,210
+how many values appear in that
+expression.
+
+32
+00:01:59,210 --> 00:02:02,500
+If it is a value, it's 1. Otherwise we
+
+33
+00:02:02,500 --> 00:02:06,640
+recursively calculate the size of the
+left and the right hand side
+
+34
+00:02:06,640 --> 00:02:11,129
+and add them up. In an
+object-oriented language
+
+35
+00:02:11,129 --> 00:02:12,680
+you would probably make
+
+36
+00:02:12,680 --> 00:02:15,959
+size into a virtual method of
+
+37
+00:02:15,959 --> 00:02:19,540
+the expression superclass and then
+override
+
+38
+00:02:19,540 --> 00:02:23,439
+that virtual method in each of the
+concrete subtypes.
+
+39
+00:02:23,439 --> 00:02:28,090
+Here is the evaluator for expressions or
+the interpreter.
+
+40
+00:02:28,090 --> 00:02:32,560
+So what it does is it takes an
+expression and calculates the integer
+
+41
+00:02:32,560 --> 00:02:33,230
+value.
+
+42
+00:02:33,230 --> 00:02:37,189
+If you already have a value you are done.
+Otherwise
+
+43
+00:02:37,189 --> 00:02:40,650
+you evaluate the left hand side and the
+right hand side
+
+44
+00:02:40,650 --> 00:02:44,530
+and if you happen to have an
+addition you add them up
+
+45
+00:02:44,530 --> 00:02:48,049
+and in case you have a multiplication you
+multiply them.
+
+46
+00:02:48,049 --> 00:02:53,549
+When you look at the structure of those
+
+47
+00:02:53,549 --> 00:02:56,950
+functions, what you see
+
+48
+00:02:56,950 --> 00:03:02,359
+is that all they are doing is they are
+replacing the constructors
+
+49
+00:03:02,359 --> 00:03:06,019
+respectively Val, Add and Mul
+
+50
+00:03:06,019 --> 00:03:10,040
+by other functions. So let's go back here
+and check that.
+
+51
+00:03:10,040 --> 00:03:13,849
+So in this case I replace the
+constructor Val
+
+52
+00:03:13,849 --> 00:03:18,760
+by the constant function 1. Here I
+replace the constructor Add
+
+53
+00:03:18,760 --> 00:03:23,180
+by plus and Mul by plus. And for the
+evaluator
+
+54
+00:03:23,180 --> 00:03:27,349
+we replace this constructor by the
+identity
+
+55
+00:03:27,349 --> 00:03:31,669
+Add by plus and the constructor Mul
+
+56
+00:03:31,669 --> 00:03:35,040
+by times. And guess what?
+
+57
+00:03:35,040 --> 00:03:39,180
+If we would define a foldr over
+expressions
+
+58
+00:03:39,180 --> 00:03:43,639
+then we don't have to write 2 recursive
+functions. We can do it once
+
+59
+00:03:43,639 --> 00:03:48,069
+and in that case for example the eval
+function
+
+60
+00:03:48,069 --> 00:03:51,109
+simply reads as follows: we
+
+61
+00:03:51,109 --> 00:03:55,430
+replace Val, the Val constructor,
+by the identity
+
+62
+00:03:55,430 --> 00:03:58,669
+we replace the Add
+
+63
+00:03:58,669 --> 00:04:01,689
+constructor by plus and we replace
+
+64
+00:04:01,689 --> 00:04:07,250
+the multiplication constructor by times.
+
+65
+00:04:07,250 --> 00:04:10,319
+Next example: binary trees.
+
+66
+00:04:10,319 --> 00:04:13,349
+Here is a picture of a binary tree.
+
+67
+00:04:13,349 --> 00:04:16,530
+We will deal with binary trees
+
+68
+00:04:16,530 --> 00:04:20,430
+that have values in the nodes and values
+
+69
+00:04:20,430 --> 00:04:26,030
+in the leaves. And that leads to the
+following recursive definition.
+
+70
+00:04:26,030 --> 00:04:29,170
+A Tree is either a Leaf with an integer
+
+71
+00:04:29,170 --> 00:04:32,310
+or it is a Node with two subtrees and
+
+72
+00:04:32,310 --> 00:04:35,520
+an integer right there. And
+
+73
+00:04:35,520 --> 00:04:39,050
+the picture of the previous slide
+becomes this:
+
+74
+00:04:39,050 --> 00:04:42,290
+we had a Node with 5 at the root
+
+75
+00:04:42,290 --> 00:04:48,140
+and two subnodes, that had a 3
+and a 7 respectively
+
+76
+00:04:48,140 --> 00:04:52,580
+et cetera. So this value here
+
+77
+00:04:52,580 --> 00:04:56,320
+represents that picture. You see
+5, 3, 7
+
+78
+00:04:56,320 --> 00:04:59,540
+1, 4, 6, 9.
+
+79
+00:04:59,540 --> 00:05:02,910
+3, 5, 7, 1, 4
+
+80
+00:05:02,910 --> 00:05:07,700
+6, 9. That sounds like a telephone number.
+
+81
+00:05:07,700 --> 00:05:11,570
+Just like on expressions we can define
+
+82
+00:05:11,570 --> 00:05:16,010
+recursive functions on the structure of
+binary trees.
+
+83
+00:05:16,010 --> 00:05:20,090
+For example we can search if a given
+
+84
+00:05:20,090 --> 00:05:23,530
+integer is present
+
+85
+00:05:23,530 --> 00:05:27,320
+in this binary tree and then we will
+return a boolean.
+
+86
+00:05:27,320 --> 00:05:30,460
+And we have two cases.
+
+87
+00:05:30,460 --> 00:05:35,310
+If we have a Leaf, then we check that the
+value at the Leaf
+
+88
+00:05:35,310 --> 00:05:40,500
+is the same as the value that we are
+looking for, and that's the result of the
+
+89
+00:05:40,500 --> 00:05:42,540
+boolean, the recursive invocation.
+
+90
+00:05:42,540 --> 00:05:45,880
+When we have a Node,
+
+91
+00:05:45,880 --> 00:05:48,880
+we check whether the value at that Node
+
+92
+00:05:48,880 --> 00:05:52,200
+is the one we are looking for, or
+
+93
+00:05:52,200 --> 00:05:56,500
+we check whether the value occurs in the
+left subtree
+
+94
+00:05:56,500 --> 00:05:59,530
+or we check whether it appears
+
+95
+00:05:59,530 --> 00:06:03,669
+in the right subtree.
+
+96
+00:06:03,669 --> 00:06:07,040
+But when the integer does not occur in
+the tree
+
+97
+00:06:07,040 --> 00:06:10,260
+we will traverse the whole tree.
+
+98
+00:06:10,260 --> 00:06:13,880
+That is
+
+99
+00:06:13,880 --> 00:06:16,960
+the algorithm there.
+
+100
+00:06:16,960 --> 00:06:20,229
+Now let's look at another function here.
+
+101
+00:06:20,229 --> 00:06:26,850
+Let's try to find it in a different way.
+Let's first say we take the Tree and
+
+102
+00:06:26,850 --> 00:06:30,020
+we flatten it into a list.
+
+103
+00:06:30,020 --> 00:06:33,490
+So when we have a Leaf, we return a
+singleton list.
+
+104
+00:06:33,490 --> 00:06:38,640
+When we have a Tree with a left and a
+right subtree and a Node
+
+105
+00:06:38,640 --> 00:06:42,210
+we first flatten the left subtree, we
+splice in that
+
+106
+00:06:42,210 --> 00:06:45,300
+value and then we append the right
+subtree.
+
+107
+00:06:45,300 --> 00:06:51,020
+Now we say that a Tree is a search tree
+
+108
+00:06:51,020 --> 00:06:54,690
+if when we flatten it into a list, it is
+
+109
+00:06:54,690 --> 00:06:57,750
+sorted. So our example
+
+110
+00:06:57,750 --> 00:07:01,170
+is a search tree, because
+
+111
+00:07:01,170 --> 00:07:04,330
+when we flatten it, we get
+
+112
+00:07:04,330 --> 00:07:08,750
+a sorted list: [1,3,4,5,6,7,9].
+
+113
+00:07:08,750 --> 00:07:13,840
+So now we can define
+
+114
+00:07:13,840 --> 00:07:18,580
+occurs as follows.
+
+115
+00:07:18,580 --> 00:07:22,240
+If we have a search tree we can check
+whether it is a
+
+116
+00:07:22,240 --> 00:07:26,810
+Leaf. When we have a Node, we check
+whether
+
+117
+00:07:26,810 --> 00:07:31,510
+the values are the same, we return
+True.
+
+118
+00:07:31,510 --> 00:07:34,690
+Now since we know more about the
+structure we
+
+119
+00:07:34,690 --> 00:07:38,510
+only traverse one path down the Tree.
+
+120
+00:07:38,510 --> 00:07:42,500
+So we don't have to say: if it is not the
+same we are checking this
+
+121
+00:07:42,500 --> 00:07:45,790
+or we are checking that. No, we know
+that if
+
+122
+00:07:45,790 --> 00:07:49,710
+m is less than n, if the number that
+we are searching for
+
+123
+00:07:49,710 --> 00:07:56,570
+is less than the Node here, then we only
+have to search in the left subtree.
+
+124
+00:07:56,570 --> 00:08:00,980
+If this gentlemen here
+
+125
+00:08:00,980 --> 00:08:05,080
+is larger than n, then we only have to
+search
+
+126
+00:08:05,080 --> 00:08:08,360
+in the right Tree. So now we don't have
+
+127
+00:08:08,360 --> 00:08:11,720
+to search the whole Tree, because we have
+exploited
+
+128
+00:08:11,720 --> 00:08:15,710
+the fact that the values in the Tree
+
+129
+00:08:15,710 --> 00:08:21,310
+are in a certain relation and we defined
+that relation by saying
+
+130
+00:08:21,310 --> 00:08:25,380
+when you flatten the Tree the result is
+a sorted list.
+
+131
+00:08:25,380 --> 00:08:29,300
+Happy hacking
+
+132
+00:08:29,300 --> 00:08:30,400
+and see you next week.
+

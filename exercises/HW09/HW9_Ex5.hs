@@ -8,7 +8,7 @@ balanced :: Tree -> Bool
 {-
 -- answer a
 leavesa (Leaf x) = x
-leavesa (Node l r) = leavesa l + leavesa b
+leavesa (Node l r) = leavesa l + leavesa r
 balanceda (Leaf _) = True
 balanceda (Node l r) = abs (leavesa l - leavesa r) <= 1 || balanceda l || balanceda r
 -}
@@ -18,7 +18,7 @@ balanceda (Node l r) = abs (leavesa l - leavesa r) <= 1 || balanceda l || balanc
 leavesb (Leaf _) = True
 leavesb (Node l r) = leavesb l + leavesb r
 balancedb (Leaf _) = True
-balancedb (Node l r) = abs (leavesb l + leavesb r) <= 1
+balancedb (Node l r) = abs (leavesb l - leavesb r) <= 1
 -}
 
 {-
@@ -34,5 +34,5 @@ balancedc (Node l r) = abs (leavesc l + leavesc r) <= 1
 leavesd (Leaf _) = 1
 leavesd (Node l r) = leavesd l + leavesd r
 balancedd (Leaf _) = True
-balancedd (Node l r) = abs (leavesd l - leavesd r) <= 1 || balancedd l || balancedd r
+balancedd (Node l r) = abs (leavesd l - leavesd r) <= 1 && balancedd l && balancedd r
 -}

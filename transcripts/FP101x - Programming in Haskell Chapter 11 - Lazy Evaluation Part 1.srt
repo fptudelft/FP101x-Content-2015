@@ -1,0 +1,1194 @@
+1
+00:00:01,969 --> 00:00:04,500
+Today is a special day
+
+2
+00:00:04,500 --> 00:00:07,669
+because this is the last lecture of
+
+3
+00:00:07,669 --> 00:00:11,540
+the FP101x series
+
+4
+00:00:11,540 --> 00:00:15,690
+on functional programming I hope that
+you enjoyed 
+
+5
+00:00:15,690 --> 00:00:19,960
+the ride and that you learned
+
+6
+00:00:19,960 --> 00:00:24,510
+how to apply the ideas of pure
+functional programming
+
+7
+00:00:24,510 --> 00:00:28,680
+in Haskell to
+
+8
+00:00:28,680 --> 00:00:33,680
+your own programming language that you
+use at work there's one thing
+
+9
+00:00:33,680 --> 00:00:36,980
+that we have waved our hands
+
+10
+00:00:36,980 --> 00:00:40,489
+about and that is lazy evaluation
+
+11
+00:00:40,489 --> 00:00:44,190
+and lazy evaluation is also something
+that is
+
+12
+00:00:44,190 --> 00:00:49,039
+unique to Haskell. There are
+other languages like Scala
+
+13
+00:00:49,039 --> 00:00:52,340
+that do have some form of lazy
+evaluation
+
+14
+00:00:52,340 --> 00:00:55,420
+but the interesting thing about Haskell
+
+15
+00:00:55,420 --> 00:00:58,579
+is that everything
+
+16
+00:00:58,579 --> 00:01:01,989
+uses lazy evaluation
+
+17
+00:01:01,989 --> 00:01:05,030
+unless you make things strict.
+
+18
+00:01:05,030 --> 00:01:10,409
+And that's the topic of this lecture
+
+19
+00:01:10,409 --> 00:01:13,590
+is to give you a little bit of an
+introduction
+
+20
+00:01:13,590 --> 00:01:17,030
+about the various possible evaluation
+strategies
+
+21
+00:01:17,030 --> 00:01:22,270
+for functional programs.
+
+22
+00:01:22,270 --> 00:01:26,290
+Okay, up to now we have not
+
+23
+00:01:26,290 --> 00:01:32,540
+really looked at all at the details of
+how expressions are evaluated
+
+24
+00:01:32,540 --> 00:01:36,570
+we've done evaluations
+
+25
+00:01:36,570 --> 00:01:40,590
+on the slides where we unfolded
+definitions and so on
+
+26
+00:01:40,590 --> 00:01:43,990
+but we have not made this thing precise
+
+27
+00:01:43,990 --> 00:01:48,869
+and actually
+
+28
+00:01:48,869 --> 00:01:53,460
+haskell expressions are evaluated with
+a fairly simple strategy
+
+29
+00:01:53,460 --> 00:01:56,729
+and the idea is that it's
+
+30
+00:01:56,729 --> 00:02:00,799
+lazy. Think about you being a lazy
+person
+
+31
+00:02:00,799 --> 00:02:05,340
+The prototypical example is doing
+the dishes.
+
+32
+00:02:05,340 --> 00:02:09,879
+I hate doing the dishes so I
+want to avoid
+
+33
+00:02:09,879 --> 00:02:14,040
+unnecessary evaluation
+
+34
+00:02:14,040 --> 00:02:16,739
+I want to only
+
+35
+00:02:16,739 --> 00:02:20,249
+wash a dish when it's absolutely necessary.
+
+36
+00:02:20,249 --> 00:02:25,159
+Doing this lazy evaluation
+
+37
+00:02:25,159 --> 00:02:29,329
+allows us to program with infinite data
+structures
+
+38
+00:02:29,329 --> 00:02:32,370
+because we're never doing more work
+
+39
+00:02:32,370 --> 00:02:36,489
+than necessary, even if you give me
+an
+
+40
+00:02:36,489 --> 00:02:40,239
+infinite list, an infinite stack
+
+41
+00:02:40,239 --> 00:02:43,359
+of dishes, if I'm sufficiently lazy
+
+42
+00:02:43,359 --> 00:02:47,439
+I will only wash as many as I need so
+
+43
+00:02:47,439 --> 00:02:52,239
+you cannot catch me with that and
+the other thing that we'll see
+
+44
+00:02:52,239 --> 00:02:56,260
+is lazy evaluation makes it easier to
+compose programs
+
+45
+00:02:56,260 --> 00:03:00,040
+because there's never more work done
+
+46
+00:03:00,040 --> 00:03:03,840
+than necessary. And this
+
+47
+00:03:03,840 --> 00:03:06,969
+evaluation strategy is why
+
+48
+00:03:06,969 --> 00:03:10,060
+haskell is called a lazy language.
+
+49
+00:03:10,060 --> 00:03:13,359
+Let's look at some concrete
+examples
+
+50
+00:03:13,359 --> 00:03:17,519
+and what we do to evaluate a
+Haskell program
+
+51
+00:03:17,519 --> 00:03:22,319
+is to take a sub-expression
+
+52
+00:03:22,319 --> 00:03:25,389
+if we are evaluating a big expression
+
+53
+00:03:25,389 --> 00:03:28,540
+for taking a sub-expression there and
+we are 
+
+54
+00:03:28,540 --> 00:03:33,150
+evaluating that sub-expression.
+And in this case
+
+55
+00:03:33,150 --> 00:03:36,689
+say that we have a function definition
+square n
+
+56
+00:03:36,689 --> 00:03:41,699
+is n times n, now if we have an
+expression
+
+57
+00:03:41,699 --> 00:03:45,759
+like that, square three-plus four then
+
+58
+00:03:45,759 --> 00:03:49,340
+we can evaluate this in two ways.
+
+59
+00:03:49,340 --> 00:03:53,400
+One is to first evaluate
+
+60
+00:03:53,400 --> 00:03:58,590
+three plus four to seven and then 
+we use the definition of square.
+
+61
+00:03:58,590 --> 00:04:03,500
+Substitute seven for n, then we get seven
+times seven.
+
+62
+00:04:03,500 --> 00:04:06,750
+And then we evaluate it to get forty-nine.
+
+63
+00:04:06,750 --> 00:04:09,949
+But another evaluation strategy
+
+64
+00:04:09,949 --> 00:04:13,400
+is also to say: well we take square
+
+65
+00:04:13,400 --> 00:04:16,570
+of three plus four, we substitute 
+
+66
+00:04:16,570 --> 00:04:19,769
+three plus four for n. 
+We get three plus four here,
+
+67
+00:04:19,769 --> 00:04:22,889
+and three plus four here
+
+68
+00:04:22,889 --> 00:04:23,830
+and then we
+
+69
+00:04:23,830 --> 00:04:28,189
+evaluate the results and we get
+
+70
+00:04:28,189 --> 00:04:31,310
+the same value. In that case
+
+71
+00:04:31,310 --> 00:04:35,280
+you might think: but now we have
+evaluated
+
+72
+00:04:35,280 --> 00:04:38,879
+three plus four twice. And as we will see
+
+73
+00:04:38,879 --> 00:04:41,990
+Haskell has some smart ways to avoid
+
+74
+00:04:41,990 --> 00:04:45,229
+duplicating that computation.
+
+75
+00:04:45,229 --> 00:04:48,699
+Let's look at the first
+
+76
+00:04:48,699 --> 00:04:52,110
+sample, the first strategy.
+
+77
+00:04:52,110 --> 00:04:55,560
+We first evaluate three plus four 
+to give us seven.
+
+78
+00:04:55,560 --> 00:04:58,690
+Then we substitute the definition of
+square.
+
+79
+00:04:58,690 --> 00:05:02,889
+n equals seven so we get seven
+times seven and we get forty-nine.
+
+80
+00:05:02,889 --> 00:05:06,069
+Now let's do it the other way around.
+
+81
+00:05:06,069 --> 00:05:09,930
+We take this expression, we
+
+82
+00:05:09,930 --> 00:05:16,099
+instantiate n with three plus four. 
+We get three plus four times three plus four.
+
+83
+00:05:16,099 --> 00:05:20,460
+Now we execute this guy to seven, 
+we execute that guy
+
+84
+00:05:20,460 --> 00:05:23,569
+to seven and we get 49.
+
+85
+00:05:23,569 --> 00:05:27,699
+In this case we have first applied
+square
+
+86
+00:05:27,699 --> 00:05:31,960
+before doing the addition but the nice
+thing
+
+87
+00:05:31,960 --> 00:05:35,719
+is that the final result is the same.
+
+88
+00:05:35,719 --> 00:05:38,930
+Now imagine that there were side effects
+
+89
+00:05:38,930 --> 00:05:43,449
+in this code. Well in that case since we're
+doing the evaluation
+
+90
+00:05:43,449 --> 00:05:47,319
+in different orders, the side effects might
+happen in different order.
+
+91
+00:05:47,319 --> 00:05:51,039
+And the result might be different. 
+But since we're here
+
+92
+00:05:51,039 --> 00:05:54,569
+in the pure world it doesn't matter 
+in what
+
+93
+00:05:54,569 --> 00:05:59,099
+order you do these reductions.
+
+94
+00:05:59,099 --> 00:06:02,169
+That's a fact
+
+95
+00:06:02,169 --> 00:06:06,990
+about haskell: if there are two
+different ways,
+
+96
+00:06:06,990 --> 00:06:10,699
+that both terminate, to evaluate
+
+97
+00:06:10,699 --> 00:06:14,409
+the same expression then these will
+always give
+
+98
+00:06:14,409 --> 00:06:18,279
+the same final result. 
+And that makes it also easy to
+
+99
+00:06:18,279 --> 00:06:22,389
+refactor Haskell programs
+because you can always
+
+100
+00:06:22,389 --> 00:06:26,389
+substitue and massage things independent
+
+101
+00:06:26,389 --> 00:06:30,180
+of where they appear. 
+And thats because of this
+
+102
+00:06:30,180 --> 00:06:34,960
+property.
+
+103
+00:06:34,960 --> 00:06:36,590
+Now we've seen two
+
+104
+00:06:36,590 --> 00:06:40,290
+strategies to reduce our program. 
+
+105
+00:06:40,290 --> 00:06:43,500
+Let's talk about that in a more
+
+106
+00:06:43,500 --> 00:06:46,650
+general sense. What we do
+
+107
+00:06:46,650 --> 00:06:51,760
+is when we're evaluating an expression
+there might be many choices
+
+108
+00:06:51,760 --> 00:06:55,430
+of sub-expressions that we can reduce.
+
+109
+00:06:55,430 --> 00:06:59,850
+We have seen in this very small
+example, we've seen this already.
+
+110
+00:06:59,850 --> 00:07:03,120
+We could either first apply the
+definition of square
+
+111
+00:07:03,120 --> 00:07:06,910
+or we could first do the arithmetic
+
+112
+00:07:06,910 --> 00:07:09,940
+on the arguments.
+
+113
+00:07:09,940 --> 00:07:13,090
+There are two basic strategies
+
+114
+00:07:13,090 --> 00:07:16,620
+to decide which of the expressions
+
+115
+00:07:16,620 --> 00:07:20,890
+of all possible expressions to choose.
+And one
+
+116
+00:07:20,890 --> 00:07:25,440
+is innermost reduction which says:
+
+117
+00:07:25,440 --> 00:07:29,590
+the innermost expression that can be
+reduced is always
+
+118
+00:07:29,590 --> 00:07:34,550
+reduced and then there's the 
+outermost reduction where you take
+
+119
+00:07:34,550 --> 00:07:39,430
+the outermost expression to be reduced.
+And of course you can say
+
+120
+00:07:39,430 --> 00:07:44,780
+since this rule, we can also do random
+execution we can pick
+
+121
+00:07:44,780 --> 00:07:47,830
+any expression to be reduced
+
+122
+00:07:47,830 --> 00:07:52,070
+but that's not very systematic right? 
+And that makes it 
+
+123
+00:07:52,070 --> 00:07:55,669
+hard to read. It's kind of nice
+
+124
+00:07:55,669 --> 00:07:59,230
+to have a fixed strategy such that we
+can reason about
+
+125
+00:07:59,230 --> 00:08:03,210
+its properties. And let's look at
+
+126
+00:08:03,210 --> 00:08:07,650
+this example here, where we have a weird
+
+127
+00:08:07,650 --> 00:08:10,970
+recursive definition. We define
+
+128
+00:08:10,970 --> 00:08:14,919
+loop to take the tail of loop.
+
+129
+00:08:14,919 --> 00:08:18,720
+Now what does that mean? 
+Well first of all
+
+130
+00:08:18,720 --> 00:08:21,990
+it means that loop must have type list.
+
+131
+00:08:21,990 --> 00:08:27,460
+And then we take the tail of the list. 
+This is a list that chases
+
+132
+00:08:27,460 --> 00:08:28,370
+its own tail.
+
+133
+00:08:28,370 --> 00:08:32,400
+And lets evaluate the expression
+
+134
+00:08:32,400 --> 00:08:35,719
+give me the first of the pair
+
+135
+00:08:35,719 --> 00:08:39,010
+one and loop. And lets
+
+136
+00:08:39,010 --> 00:08:42,849
+compare and contrast these two reduction
+strategies.
+
+137
+00:08:42,849 --> 00:08:44,740
+Notice that when we
+
+138
+00:08:44,740 --> 00:08:47,960
+reduce this guy:
+
+139
+00:08:47,960 --> 00:08:52,880
+Loop equals tail of loop. Let's substitute
+loop, so we get tail of tail of tail ...
+
+140
+00:08:52,880 --> 00:08:53,620
+of tail
+
+141
+00:08:53,620 --> 00:08:57,220
+so this thing actually
+chases its tail.
+
+142
+00:08:57,220 --> 00:09:01,250
+And it will never find an
+actual list
+
+143
+00:09:01,250 --> 00:09:05,480
+that it can take a tail, so it will loop.
+
+144
+00:09:05,480 --> 00:09:08,990
+Let's look at this guy. 
+The innermost reduction
+
+145
+00:09:08,990 --> 00:09:12,820
+takes the innermost reducible
+expression
+
+146
+00:09:12,820 --> 00:09:16,110
+and reduces that. 
+In this expression here the
+
+147
+00:09:16,110 --> 00:09:20,130
+innermost reducible expression is
+loop.
+
+148
+00:09:20,130 --> 00:09:23,290
+We expand
+
+149
+00:09:23,290 --> 00:09:26,740
+loop into tail of loop. Now loop
+
+150
+00:09:26,740 --> 00:09:30,960
+is again the innermost expression and
+then we execute this.
+
+151
+00:09:30,960 --> 00:09:35,400
+This will not terminate. 
+This evaluation order
+
+152
+00:09:35,400 --> 00:09:39,470
+is too strict. It tries to 
+evaluate 
+
+153
+00:09:39,470 --> 00:09:42,560
+the argument here of first
+
+154
+00:09:42,560 --> 00:09:46,180
+nside this tuple and then
+
+155
+00:09:46,180 --> 00:09:49,830
+that diverges and there's no chance that
+we can
+
+156
+00:09:49,830 --> 00:09:56,070
+take the first of this pair. 
+Now let's look at the outermost reduction.
+
+157
+00:09:56,070 --> 00:10:00,120
+In that case we take the outermost
+
+158
+00:10:00,120 --> 00:10:03,930
+reducible expression. 
+That's first. It's applied
+
+159
+00:10:03,930 --> 00:10:08,280
+to a tuple which is a reducible expression.
+
+160
+00:10:08,280 --> 00:10:11,310
+First of a tuple A and B is B.
+
+161
+00:10:11,310 --> 00:10:15,680
+It's one, and we're done. 
+Alright, this strategy
+
+162
+00:10:15,680 --> 00:10:19,540
+gives us the result in one step 
+whereas the
+
+163
+00:10:19,540 --> 00:10:25,680
+innermost reduction would never terminate.
+Okay, what are
+
+164
+00:10:25,680 --> 00:10:29,910
+some facts here? It's that the outermost
+reduction
+
+165
+00:10:29,910 --> 00:10:33,710
+may give the result when the innermost
+reduction
+
+166
+00:10:33,710 --> 00:10:37,340
+fails to terminate and this is what we
+have seen.
+
+167
+00:10:37,340 --> 00:10:40,860
+And the second fact is that:
+
+168
+00:10:40,860 --> 00:10:46,050
+if for an expression there exists
+
+169
+00:10:46,050 --> 00:10:49,150
+a sequence that terminates, then the
+
+170
+00:10:49,150 --> 00:10:53,220
+outermost reduction also terminate.
+
+171
+00:10:53,220 --> 00:10:56,990
+And it will return with the same result.
+If there
+
+172
+00:10:56,990 --> 00:11:00,490
+is any reduction sequence that
+terminates, the
+
+173
+00:11:00,490 --> 00:11:03,950
+outermost reduction will always also
+terminate.
+
+174
+00:11:03,950 --> 00:11:07,089
+That gives a strong hint that the
+
+175
+00:11:07,089 --> 00:11:10,709
+outermost strategy is not a bad
+thing.
+
+176
+00:11:10,709 --> 00:11:14,790
+If there is any way that this thing
+will 
+
+177
+00:11:14,790 --> 00:11:18,800
+return a value in finite time
+
+178
+00:11:18,800 --> 00:11:25,339
+the outermost reduction will also
+terminate. Now let's look at
+
+179
+00:11:25,339 --> 00:11:29,810
+a few other examples of 
+innermost and
+
+180
+00:11:29,810 --> 00:11:32,830
+outermost reduction.
+
+181
+00:11:32,830 --> 00:11:36,240
+And then maybe
+
+182
+00:11:36,240 --> 00:11:39,390
+throw some doubt on the 
+
+183
+00:11:39,390 --> 00:11:44,490
+outermost reduction. 
+And this is our familiar example
+
+184
+00:11:44,490 --> 00:11:49,350
+with square. If we do the innermost
+reduction
+
+185
+00:11:49,350 --> 00:11:53,279
+we do three plus four, seven,
+seven times seven
+
+186
+00:11:53,279 --> 00:11:56,540
+forty-nine. This is done in 
+
+187
+00:11:56,540 --> 00:12:01,180
+one two three steps. But if we do the
+outermost reduction
+
+188
+00:12:01,180 --> 00:12:06,440
+we're duplicating that reducible
+expression three plus four.
+
+189
+00:12:06,440 --> 00:12:10,190
+We're doing the work twice.
+
+190
+00:12:10,190 --> 00:12:13,550
+That's a fact
+
+191
+00:12:13,550 --> 00:12:17,920
+that outermost reduction may require
+more steps
+
+192
+00:12:17,920 --> 00:12:22,300
+then innermost reduction. 
+But as we have seen sometimes
+
+193
+00:12:22,300 --> 00:12:28,540
+innermost reduction will not terminate.
+Here's the crucial question:
+
+194
+00:12:28,540 --> 00:12:31,810
+Is there a way to have our cake
+
+195
+00:12:31,810 --> 00:12:35,370
+and eat it too? And it turns out that
+
+196
+00:12:35,370 --> 00:12:38,540
+there is. And the way
+
+197
+00:12:38,540 --> 00:12:42,190
+we solve this problem is by using
+sharing
+
+198
+00:12:42,190 --> 00:12:45,620
+when we substitute
+
+199
+00:12:45,620 --> 00:12:49,459
+three plus four into the definition of
+square
+
+200
+00:12:49,459 --> 00:12:53,980
+we don't just copy that expression
+three plus four
+
+201
+00:12:53,980 --> 00:12:58,020
+but we share it so we have pointers
+
+202
+00:12:58,020 --> 00:13:02,850
+to that expression such that when we
+reduce it once
+
+203
+00:13:02,850 --> 00:13:07,550
+it to seven, and now the results are shared
+
+204
+00:13:07,550 --> 00:13:10,529
+and then we get forty-nine.
+
+205
+00:13:10,529 --> 00:13:13,510
+Alright, and that's what lazy evaluation is.
+
+206
+00:13:13,510 --> 00:13:16,960
+Lazy evaluation is outermost reduction
+
+207
+00:13:16,960 --> 00:13:20,070
+plus sharing. Lazy evaluation
+
+208
+00:13:20,070 --> 00:13:24,390
+it's like having your cake and eating it
+too.
+
+209
+00:13:24,390 --> 00:13:27,700
+And Haskell uses lazy evaluation.
+
+210
+00:13:27,700 --> 00:13:31,459
+Here's another example
+
+211
+00:13:31,459 --> 00:13:35,940
+that shows the advantages of lazy
+evaluation.
+
+212
+00:13:35,940 --> 00:13:39,490
+By defining a
+
+213
+00:13:39,490 --> 00:13:43,440
+recursive type of list, a recursive value.
+
+214
+00:13:43,440 --> 00:13:47,010
+I should say of List. List is off
+course a recursive type but we're
+
+215
+00:13:47,010 --> 00:13:47,730
+looking here
+
+216
+00:13:47,730 --> 00:13:51,930
+at a recursive value. We define the
+list,
+
+217
+00:13:51,930 --> 00:13:55,000
+the infinite list of ones as:
+
+218
+00:13:55,000 --> 00:14:00,810
+ones cons ones. Let's unfold the
+recursion a couple of times. We see that
+
+219
+00:14:00,810 --> 00:14:02,490
+ones is ones cons ones.
+
+220
+00:14:02,490 --> 00:14:06,160
+Unfold it again, we get ones cons
+ones cons ones.
+
+221
+00:14:06,160 --> 00:14:09,320
+Et cetera, et cetera. 
+
+222
+00:14:09,320 --> 00:14:14,270
+Ones is an infinite list of ones. 
+Now let's look at the
+
+223
+00:14:14,270 --> 00:14:18,260
+evaluation of head of ones. 
+
+224
+00:14:18,260 --> 00:14:22,550
+And what we want to do is we want to
+compare and contrast
+
+225
+00:14:22,550 --> 00:14:27,760
+innermost evaluation with lazy
+evaluation and you can already guess
+
+226
+00:14:27,760 --> 00:14:33,430
+what will happen. When we use innermost
+reduction this is the same example
+
+227
+00:14:33,430 --> 00:14:38,930
+as with loop, we are taking the
+innermost reducable expression which is ones.
+
+228
+00:14:38,930 --> 00:14:42,480
+we unfold it, we unfold it, we unfold it
+
+229
+00:14:42,480 --> 00:14:46,089
+so we never get around to taking the
+head
+
+230
+00:14:46,089 --> 00:14:50,670
+of that list. Whereas this list is
+already
+
+231
+00:14:50,670 --> 00:14:56,370
+in the shape where we can take its head.
+It doesn't terminate.
+
+232
+00:14:56,370 --> 00:15:00,370
+Whereas if we use lazy evaluation,
+head of ones
+
+233
+00:15:00,370 --> 00:15:06,560
+that's still not reduceable so we
+have to unfold this guy so we get 
+
+234
+00:15:06,560 --> 00:15:09,890
+one cons of ones. Now we can do this
+
+235
+00:15:09,890 --> 00:15:13,630
+and we're done. In this case
+
+236
+00:15:13,630 --> 00:15:18,920
+the result is one.
+
+237
+00:15:18,920 --> 00:15:22,320
+In general, the slogan of lazy
+evaluation:
+
+238
+00:15:22,320 --> 00:15:25,970
+think of doing the dishes; we're doing
+
+239
+00:15:25,970 --> 00:15:29,110
+just enough work as required
+
+240
+00:15:29,110 --> 00:15:32,270
+to produce the final result.
+
+241
+00:15:32,270 --> 00:15:36,090
+And really, when we say that ones
+
+242
+00:15:36,090 --> 00:15:41,250
+is an infinite list, we're kind of lying
+because ones is not an infinite list.
+
+243
+00:15:41,250 --> 00:15:45,410
+It's a potentially infinite list. Only when
+
+244
+00:15:45,410 --> 00:15:49,710
+it's expanded on demand.
+
+245
+00:15:49,710 --> 00:15:53,940
+And it's not expanded eagerly to an 
+infinite list. It's just the recipe
+
+246
+00:15:53,940 --> 00:15:58,740
+to create an infinite list. 
+And if you would do this
+
+247
+00:15:58,740 --> 00:16:03,230
+in a strict language what typically
+happens is, you would say
+
+248
+00:16:03,230 --> 00:16:07,540
+this ones is defined using some form
+
+249
+00:16:07,540 --> 00:16:12,130
+of a thunk. You put in a unit arrow
+somewhere
+
+250
+00:16:12,130 --> 00:16:15,890
+to stop the evaluation because that
+function unit arrow
+
+251
+00:16:15,890 --> 00:16:22,360
+is already a value. Now let's look at the
+next example here.
+
+252
+00:16:22,360 --> 00:16:27,020
+We mentioned that, lazy evaluation
+makes code
+
+253
+00:16:27,020 --> 00:16:31,090
+more modular and the reason is that it's
+because
+
+254
+00:16:31,090 --> 00:16:34,320
+it does just enough evaluation to 
+
+255
+00:16:34,320 --> 00:16:37,430
+make the next step. Let's look at
+
+256
+00:16:37,430 --> 00:16:41,120
+take five of ones. 
+
+257
+00:16:41,120 --> 00:16:44,460
+That will return a list of five ones.
+
+258
+00:16:44,460 --> 00:16:48,900
+And ones is really the same
+
+259
+00:16:48,900 --> 00:16:52,670
+as this expression here. 
+The infinite list of ones
+
+260
+00:16:52,670 --> 00:16:55,720
+and that also returns five ones.
+
+261
+00:16:55,720 --> 00:17:01,490
+And again, the reason is that we have
+seen that take was defined by induction
+
+262
+00:17:01,490 --> 00:17:06,610
+over the structure of the list. 
+Every time that ones
+
+263
+00:17:06,610 --> 00:17:09,970
+pattern matches on that list 
+
+264
+00:17:09,970 --> 00:17:13,340
+it's evaluated just enough to
+
+265
+00:17:13,340 --> 00:17:16,860
+get the next value such that we nicely
+
+266
+00:17:16,860 --> 00:17:22,120
+terminate here. This is the end of
+Part [one]
+
+267
+00:17:22,120 --> 00:17:25,820
+about lazy evaluation, see you in a
+few minutes.
+

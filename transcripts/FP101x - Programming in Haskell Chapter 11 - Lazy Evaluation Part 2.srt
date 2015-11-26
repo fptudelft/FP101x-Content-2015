@@ -1,0 +1,636 @@
+1
+00:00:00,870 --> 00:00:03,980
+Hey! Welcome back to our very last segment
+
+2
+00:00:03,980 --> 00:00:07,020
+of the very last lecture of
+
+3
+00:00:07,020 --> 00:00:11,660
+functional programming 101 and in
+this last
+
+4
+00:00:11,660 --> 00:00:16,309
+segment, I am going to make up for
+some clowny code
+
+5
+00:00:16,309 --> 00:00:19,600
+that we wrote a couple of lectures ago.
+
+6
+00:00:19,600 --> 00:00:22,820
+I don't know if you remember
+
+7
+00:00:22,820 --> 00:00:26,769
+but when we were talking about list
+comprehensions
+
+8
+00:00:26,769 --> 00:00:30,210
+we wrote a really really
+
+9
+00:00:30,210 --> 00:00:33,340
+really embarrassing version
+
+10
+00:00:33,340 --> 00:00:37,180
+of a prime number generator. And
+
+11
+00:00:37,180 --> 00:00:41,680
+we want to do better. That code was not
+
+12
+00:00:41,680 --> 00:00:46,149
+the most beautiful code I have written
+in my life. So let's redeem ourselves
+
+13
+00:00:46,149 --> 00:00:50,000
+and write a beautiful way to generate
+primes
+
+14
+00:00:50,000 --> 00:00:55,070
+that leverages lazy evaluation. Here is a
+
+15
+00:00:55,070 --> 00:00:59,379
+recipe to generate an infinite list of
+primes
+
+16
+00:00:59,379 --> 00:01:02,620
+in a very
+
+17
+00:01:02,620 --> 00:01:06,000
+nice way. We start with the list
+
+18
+00:01:06,000 --> 00:01:10,220
+of all natural numbers, starting at 2,
+and then
+
+19
+00:01:10,220 --> 00:01:13,850
+we look in this list and we mark the
+first
+
+20
+00:01:13,850 --> 00:01:17,369
+value in that list as a prime.
+
+21
+00:01:17,369 --> 00:01:22,159
+So the first prime here is 2. The next
+thing we do
+
+22
+00:01:22,159 --> 00:01:26,100
+is we say: okay, if we know that this
+thing is a prime
+
+23
+00:01:26,100 --> 00:01:29,350
+then all multiples of that
+
+24
+00:01:29,350 --> 00:01:34,180
+number are not primes. So for example
+
+25
+00:01:34,180 --> 00:01:37,829
+4 is a multiple of 2
+
+26
+00:01:37,829 --> 00:01:41,729
+so we know that 4 is not a prime number.
+
+27
+00:01:41,729 --> 00:01:45,710
+Given the first marked prime
+
+28
+00:01:45,710 --> 00:01:49,930
+we are going to delete, we are going to
+filter out all the multiples of that
+
+29
+00:01:49,930 --> 00:01:51,159
+number from the list.
+
+30
+00:01:51,159 --> 00:01:55,670
+And then we note that then
+
+31
+00:01:55,670 --> 00:01:59,380
+the next value is the prime and then we
+
+32
+00:01:59,380 --> 00:02:04,360
+delete all the duplicates and so on.
+
+33
+00:02:04,360 --> 00:02:07,790
+This algorithm is really old.
+
+34
+00:02:07,790 --> 00:02:12,129
+This algorithm was really invented
+before
+
+35
+00:02:12,129 --> 00:02:13,370
+any of us was
+
+36
+00:02:13,370 --> 00:02:16,470
+born. And this is called
+
+37
+00:02:16,470 --> 00:02:20,290
+the sieve of Eratosthenes. So this was
+
+38
+00:02:20,290 --> 00:02:23,799
+invented by ancient Greek
+
+39
+00:02:23,799 --> 00:02:27,900
+mathematicians. Let's draw the picture
+here
+
+40
+00:02:27,900 --> 00:02:31,590
+of a few of these steps. We start here
+
+41
+00:02:31,590 --> 00:02:35,239
+with the list of natural numbers
+starting at 2.
+
+42
+00:02:35,239 --> 00:02:38,940
+First number here is a prime, so
+
+43
+00:02:38,940 --> 00:02:42,340
+we cross out all the multiples of 2.
+
+44
+00:02:42,340 --> 00:02:45,629
+So we cross out 4, 6, 8, 10, 12
+
+45
+00:02:45,629 --> 00:02:49,590
+et cetera. And now the first number
+
+46
+00:02:49,590 --> 00:02:53,829
+that is not crossed out, 3 is a prime,
+that's a prime.
+
+47
+00:02:53,829 --> 00:02:59,200
+4 was already crossed out; 5 is not a
+multiple of 3; 6 is a multiple of 3
+
+48
+00:02:59,200 --> 00:03:00,690
+was already crossed out;
+
+49
+00:03:00,690 --> 00:03:05,209
+9 was not crossed out yet, is a
+multiple of 3, so we cross that out
+
+50
+00:03:05,209 --> 00:03:09,840
+and we continue. So now 5 is
+
+51
+00:03:09,840 --> 00:03:13,090
+the next prime. We are going to remove all
+
+52
+00:03:13,090 --> 00:03:16,470
+multiples of 5 et cetera. So here you see
+
+53
+00:03:16,470 --> 00:03:20,690
+that fairly easily we find the first
+
+54
+00:03:20,690 --> 00:03:23,750
+few prime numbers 2, 3, 5
+
+55
+00:03:23,750 --> 00:03:27,260
+7 and 11. Let's
+
+56
+00:03:27,260 --> 00:03:30,799
+translate this into Haskell.
+
+57
+00:03:30,799 --> 00:03:34,069
+And the beauty of this is that this
+
+58
+00:03:34,069 --> 00:03:39,319
+algorithm is more or less directly
+translated
+
+59
+00:03:39,319 --> 00:03:42,459
+into Haskell. Of course
+
+60
+00:03:42,459 --> 00:03:45,590
+again, there is a huge
+
+61
+00:03:45,590 --> 00:03:50,480
+field of literature on different
+versions of this sieve and more efficient
+
+62
+00:03:50,480 --> 00:03:51,099
+versions.
+
+63
+00:03:51,099 --> 00:03:54,549
+You can spend years researching that.
+
+64
+00:03:54,549 --> 00:03:58,120
+It is a beautiful area, but this is the
+
+65
+00:03:58,120 --> 00:04:02,579
+simplest version of this and to
+show you the power
+
+66
+00:04:02,579 --> 00:04:07,389
+of lazy evaluation and infinite lists.
+We start here with the infinite
+
+67
+00:04:07,389 --> 00:04:11,199
+list of natural numbers starting at 2
+and then we are going to
+
+68
+00:04:11,199 --> 00:04:15,220
+sieve out all these numbers, just
+following that recipe.
+
+69
+00:04:15,220 --> 00:04:19,560
+So how does this sieve work? Well, we start
+with the first number in the list, that is
+
+70
+00:04:19,560 --> 00:04:20,310
+a prime
+
+71
+00:04:20,310 --> 00:04:23,560
+and what we do is we return that
+number
+
+72
+00:04:23,560 --> 00:04:25,530
+and then we say
+
+73
+00:04:25,530 --> 00:04:28,870
+throw out all the multiples of p
+
+74
+00:04:28,870 --> 00:04:33,010
+from xs and then recursively
+
+75
+00:04:33,010 --> 00:04:37,340
+go back to step 2, sieve out all the
+numbers from there.
+
+76
+00:04:37,340 --> 00:04:40,340
+Isn't that beautiful?
+
+77
+00:04:40,340 --> 00:04:43,610
+Here is a quite imperative
+
+78
+00:04:43,610 --> 00:04:48,890
+description, return to step 2, but what
+we see here
+
+79
+00:04:48,890 --> 00:04:52,040
+is that return to step 2 is really
+
+80
+00:04:52,040 --> 00:04:56,700
+this recursive call here. So we start
+with the
+
+81
+00:04:56,700 --> 00:05:01,480
+numbers from 2 and up, the first number
+must be prime
+
+82
+00:05:01,480 --> 00:05:05,150
+we remove all the numbers that are
+duplicate
+
+83
+00:05:05,150 --> 00:05:10,620
+and then we just sieve the result. That
+must now start with the next prime.
+
+84
+00:05:10,620 --> 00:05:13,630
+We are going to keep that
+
+85
+00:05:13,630 --> 00:05:17,930
+and then sieve out the rest et cetera.
+You can also see
+
+86
+00:05:17,930 --> 00:05:22,060
+why there are more efficient versions and
+we already saw that here
+
+87
+00:05:22,060 --> 00:05:25,150
+because multiples of 2
+
+88
+00:05:25,150 --> 00:05:29,680
+are eliminated and here multiples of 2
+are eliminated and so
+
+89
+00:05:29,680 --> 00:05:33,230
+there are many ways you can do this sieve
+
+90
+00:05:33,230 --> 00:05:36,590
+in a more efficient way, with wheels and
+
+91
+00:05:36,590 --> 00:05:40,630
+whatever. Again, I would just google for
+
+92
+00:05:40,630 --> 00:05:43,820
+sieve of Eratosthenes and you will find
+
+93
+00:05:43,820 --> 00:05:48,020
+a large collection of papers that
+describe
+
+94
+00:05:48,020 --> 00:05:52,250
+different variants of this, that are much
+more efficient
+
+95
+00:05:52,250 --> 00:05:56,040
+and that use all properties of
+natural numbers
+
+96
+00:05:56,040 --> 00:05:59,150
+to make this computation more efficient.
+
+97
+00:05:59,150 --> 00:06:03,420
+But if we execute this, primes
+
+98
+00:06:03,420 --> 00:06:08,010
+this thing will just spew out an
+infinite list
+
+99
+00:06:08,010 --> 00:06:13,140
+of prime numbers. It will just continue and
+after a while it will get slower and slower
+
+100
+00:06:13,140 --> 00:06:15,180
+because the prime numbers
+
+101
+00:06:15,180 --> 00:06:18,660
+there will be more space between them.
+
+102
+00:06:18,660 --> 00:06:22,110
+But you can just run it forever, and if
+you have enough patience
+
+103
+00:06:22,110 --> 00:06:25,630
+you will find the prime number
+that you are looking for.
+
+104
+00:06:25,630 --> 00:06:30,540
+Since this is an infinite list
+
+105
+00:06:30,540 --> 00:06:35,860
+it is not really an infinite list,
+because it is a recipe for generating
+
+106
+00:06:35,860 --> 00:06:36,940
+an infinite list.
+
+107
+00:06:36,940 --> 00:06:40,130
+If we only take the first 10 prime
+numbers
+
+108
+00:06:40,130 --> 00:06:43,910
+this function will terminate
+
+109
+00:06:43,910 --> 00:06:48,919
+and just give us the first 10 prime
+numbers. It won't first compute all prime
+
+110
+00:06:48,919 --> 00:06:49,750
+numbers, no.
+
+111
+00:06:49,750 --> 00:06:53,160
+It will just do enough work to give you
+the first 10
+
+112
+00:06:53,160 --> 00:06:58,210
+prime numbers. Or if we want to take the
+prime numbers that are less than 15
+
+113
+00:06:58,210 --> 00:07:01,280
+we can use takeWhile and again
+
+114
+00:07:01,280 --> 00:07:04,990
+just enough work will be done
+
+115
+00:07:04,990 --> 00:07:08,360
+to do that. Imagine that you are
+
+116
+00:07:08,360 --> 00:07:11,850
+in an imperative language or in a
+strict language
+
+117
+00:07:11,850 --> 00:07:14,870
+now you have to choose whether you want
+to take the first
+
+118
+00:07:14,870 --> 00:07:19,199
+primes or you want to take primes up to
+a certain number
+
+119
+00:07:19,199 --> 00:07:23,150
+because you cannot do this in this
+modular way.
+
+120
+00:07:23,150 --> 00:07:27,900
+So you cannot first compute the primes or
+have a promise to compute the primes
+
+121
+00:07:27,900 --> 00:07:31,669
+and then take the first 10 and then
+use that very same
+
+122
+00:07:31,669 --> 00:07:35,160
+description of computing primes and then
+take
+
+123
+00:07:35,160 --> 00:07:38,320
+all the ones that are less than 15.
+
+124
+00:07:38,320 --> 00:07:41,720
+You have to immediately fuse...
+
+125
+00:07:41,720 --> 00:07:46,419
+let me see if I can...
+
+126
+00:07:46,419 --> 00:07:49,520
+it is too hard to not stand in
+front, but
+
+127
+00:07:49,520 --> 00:07:54,190
+you want to fuse take 10 with
+primes into one function
+
+128
+00:07:54,190 --> 00:07:58,080
+and takeWhile less than a certain value
+with primes
+
+129
+00:07:58,080 --> 00:08:01,630
+to get one function if you don't have
+lazy evaluation.
+
+130
+00:08:01,630 --> 00:08:04,720
+A very nice paper to read here
+
+131
+00:08:04,720 --> 00:08:09,150
+is John Hughes paper "Why Functional
+Programming Matters" that has many more
+
+132
+00:08:09,150 --> 00:08:09,979
+examples
+
+133
+00:08:09,979 --> 00:08:13,099
+of the fact that lazy evaluation
+
+134
+00:08:13,099 --> 00:08:17,630
+makes your code more modular. Okay.
+
+135
+00:08:17,630 --> 00:08:21,500
+That was the end of the lecture series.
+
+136
+00:08:21,500 --> 00:08:25,479
+I enjoyed it enormously.
+
+137
+00:08:25,479 --> 00:08:28,860
+I hope you did so too.
+
+138
+00:08:28,860 --> 00:08:32,000
+And please try to
+
+139
+00:08:32,000 --> 00:08:35,150
+use everything you learned here to
+become
+
+140
+00:08:35,150 --> 00:08:38,430
+a better programmer and I'm pretty sure
+that is the case.
+
+141
+00:08:38,430 --> 00:08:41,529
+And I hope to see you in another MOOC
+
+142
+00:08:41,529 --> 00:08:44,660
+at another time. Thank you so much
+
+143
+00:08:44,660 --> 00:08:47,680
+and again see you soon.
+
+144
+00:08:47,680 --> 00:08:47,940
+Bye bye.
+

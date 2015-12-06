@@ -1,6 +1,6 @@
 {-
 -- original statement
-balanced :: [Integer] -> Tree
+balance :: [Integer] -> Tree
 -}
 
 {-

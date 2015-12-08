@@ -19,7 +19,7 @@ removeoneb x (y : ys)
 removeonec x [] = []
 removeonec x ys
     | x == head ys = ys
-    | otherwise = removeonec y ys
+    | otherwise = removeonec x ys
 -}
 
 {-

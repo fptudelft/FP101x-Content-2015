@@ -74,7 +74,7 @@ occursg m (Node l n r)
 
 {-
 -- answer h
-occursh m (Leaf n) = m == n
+occursh m n = m == n
 occursh m (Node l n r)
     | m == n = False
     | m < n = occursh m r

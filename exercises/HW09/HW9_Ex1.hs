@@ -47,6 +47,7 @@ integerToNatg = head . m
     where {
         ; m 0 = [0]
         ; m (n + 1) = [sum [x | x <- (1 : m n)]]
+        }
 -}
 
 {-

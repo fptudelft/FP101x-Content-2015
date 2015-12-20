@@ -1,29 +1,29 @@
 {-
 -- answer a
-split :: [a] -> [([a], [a])]
-split [] = []
-split [x] = [x]
-split (x : xs) = [([x] : (ls ++ rs)) | (ls, rs) <- split xs]
+splita :: [a] -> [([a], [a])]
+splita [] = []
+splita [x] = [x]
+splita (x : xs) = [([x] : (ls ++ rs)) | (ls, rs) <- splita xs]
 -}
 
 {-
 -- answer b
-split :: [a] -> [([a], [a])]
-split [] = []
-split (x : xs) = ([x], xs) : (split xs)
+splitb :: [a] -> [([a], [a])]
+splitb [] = []
+splitb (x : xs) = ([x], xs) : (splitb xs)
 -}
 
 {-
 -- answer c
-split :: [a] -> [([a], [a])]
-split [] = []
-split (x : xs) = [(x : ls, rs) | (ls, rs) <- split xs]
+splitc :: [a] -> [([a], [a])]
+splitc [] = []
+splitc (x : xs) = [(x : ls, rs) | (ls, rs) <- splitc xs]
 -}
 
 {-
 -- answer d
-split :: [a] -> [([a], [a])]
-split [] = []
-split [_] = []
-split (x : xs) = ([x], xs) : [(x : ls, rs) | (ls, rs) <- split xs]
+splitd :: [a] -> [([a], [a])]
+splitd [] = []
+splitd [_] = []
+splitd (x : xs) = ([x], xs) : [(x : ls, rs) | (ls, rs) <- splitd xs]
 -}
